@@ -1,0 +1,57 @@
+name: Olenara paper trader
+on:
+  workflow_dispatch:
+    inputs:
+      strategy_date:
+        description: "策略对应的交易日 YYYY-MM-DD"
+        required: true
+        default: "2026-10-12"
+  schedule:
+    # 15:55 China Standard Time (UTC+8) on weekdays. This is post-close reporting, not intraday execution.
+    - cron: "55 7 * * 1-5"
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Resolve strategy date
+        id: date
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.strategy_date }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Refresh free market data (best effort)
+        run: |
+          python - <<'PY'
+          from src.market_data import refresh_free_data
+          codes = ["300369", "002212", "300364", "601929", "603067"]
+          result = refresh_free_data(codes)
+          print("Tencent quote rows:", len(result["quotes"]))
+          print("AkShare minute rows:", len(result["minute_rows"]))
+          for err in result["errors"]:
+              print("DATA SOURCE WARNING:", err)
+          PY
+      - name: Run simulation
+        run: python -m src.main --strategy-date "${{ steps.date.outputs.value }}" --dry-run
+      - name: Upload reports and snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-trader-report
+          path: |
+            reports/
+            data/signals/
+          if-no-files-found: warn
+          retention-days: 90
+
