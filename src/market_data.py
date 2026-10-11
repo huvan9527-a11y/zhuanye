@@ -141,6 +141,13 @@ def upsert_market_rows(rows, path, keys):
     df = df.drop_duplicates(subset=keys, keep="last")
     df.to_csv(path, index=False, encoding="utf-8-sig")
 
+def refresh_minute_data(codes):
+    """Refresh intraday bars without repeatedly polling the auction endpoint."""
+    bars, errors = fetch_akshare_minute_bars(codes)
+    if bars:
+        upsert_market_rows(bars, ROOT/"data/market/minute_bars.csv", ["date", "code", "time"])
+    return {"minute_rows": bars, "errors": errors}
+
 def append_quote_snapshots(rows, path=None):
     path = Path(path or ROOT/"data/market/quotes.csv")
     path.parent.mkdir(parents=True, exist_ok=True)
