@@ -82,7 +82,7 @@ python -m src.main --strategy-date 2026-10-12 --dry-run --allow-user-seed
 
 ## 定时任务
 
-`.github/workflows/daily.yml` 配置为周一至周五 UTC 07:55 运行（北京时间 15:55）。它用于收盘后抓取/结算，不用于 09:25 竞价决策。GitHub 官方说明定时 workflow 可能延迟；如需盘中决策，应由本地常驻行情进程或可靠行情服务触发。
+`.github/workflows/daily.yml` 配置为周一至周五 UTC 01:52 运行（北京时间 09:52），用于抓取当日竞价及分钟行情，并回看 09:35–09:50 入场窗口，输出模拟信号。GitHub 定时 workflow 可能延迟；应查看运行时间和行情时间戳，延迟或缺少数据时不把信号当作实时提示。
 
 ## 局限与安全
 
