@@ -7,14 +7,14 @@ on:
         required: true
         default: "2026-10-12"
   schedule:
-    # 09:52 China Standard Time (UTC+8) on weekdays: evaluate the completed 09:35–09:50 entry window.
-    - cron: "52 1 * * 1-5"
+    # Start before the opening auction: 09:20 China Standard Time (UTC+8).
+    - cron: "20 1 * * 1-5"
 permissions:
   contents: read
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,19 +31,12 @@ jobs:
           else
             echo "value=$(date -u +%F)" >> "$GITHUB_OUTPUT"
           fi
-      - name: Refresh free market data (best effort)
+      - name: Run intraday paper session
+        if: github.event_name == 'schedule'
         run: |
-          python - <<'PY'
-          from src.market_data import refresh_free_data
-          codes = ["300369", "002212", "300364", "601929", "603067"]
-          result = refresh_free_data(codes)
-          print("Tencent quote rows:", len(result["quotes"]))
-          print("Auction rows:", len(result["auction_rows"]))
-          print("AkShare minute rows:", len(result["minute_rows"]))
-          for err in result["errors"]:
-              print("DATA SOURCE WARNING:", err)
-          PY
-      - name: Run simulation
+          python -m src.session --strategy-date "${{ steps.date.outputs.value }}"
+      - name: Refresh data and run requested-date simulation
+        if: github.event_name == 'workflow_dispatch'
         run: python -m src.main --strategy-date "${{ steps.date.outputs.value }}" --dry-run
       - name: Upload reports and snapshots
         if: always()
@@ -53,6 +46,7 @@ jobs:
           path: |
             reports/
             data/signals/
+            data/market/
           if-no-files-found: warn
           retention-days: 90
 
