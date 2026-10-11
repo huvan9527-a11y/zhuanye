@@ -24,6 +24,8 @@ pip install -r requirements.txt
 python -m src.main --strategy-date 2026-10-12 --dry-run
 # 如需显式用用户提供的 10/12 候选表做初始化测试（不是网页自动解析）：
 python -m src.main --strategy-date 2026-10-12 --dry-run --allow-user-seed
+# 盘中会话：在目标交易日 09:25 前启动，等待竞价并监控入场窗口
+python -m src.session --strategy-date 2026-10-12
 ```
 
 没有当日真实行情文件时，程序只输出信号与数据缺失，不虚构买入。
@@ -82,7 +84,9 @@ python -m src.main --strategy-date 2026-10-12 --dry-run --allow-user-seed
 
 ## 定时任务
 
-`.github/workflows/daily.yml` 配置为周一至周五 UTC 01:52 运行（北京时间 09:52），用于抓取当日竞价及分钟行情，并回看 09:35–09:50 入场窗口，输出模拟信号。GitHub 定时 workflow 可能延迟；应查看运行时间和行情时间戳，延迟或缺少数据时不把信号当作实时提示。
+`.github/workflows/daily.yml` 配置为周一至周五 UTC 01:20（北京时间 09:20）启动盘中会话：09:26 后读取竞价结果，随后逐分钟刷新行情，09:36–09:51 获取已收完的分钟线，最后评估 09:35–09:50 入场窗口并生成报告。若在本地运行，可在目标交易日 09:25 前执行 `python -m src.session --strategy-date YYYY-MM-DD`。
+
+GitHub 定时 workflow 可能延迟；如果任务启动时已错过盘前阶段，报告中的竞价/分钟数据只能用于事后模拟，不能视作实时信号。没有可靠竞价记录或分钟均价时，系统标记数据不足并跳过交易。所有模拟成交基于分钟线估算，不代表真实排队成交或券商订单。
 
 ## 局限与安全
 
