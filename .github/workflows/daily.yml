@@ -7,8 +7,8 @@ on:
         required: true
         default: "2026-10-12"
   schedule:
-    # 15:55 China Standard Time (UTC+8) on weekdays. This is post-close reporting, not intraday execution.
-    - cron: "55 7 * * 1-5"
+    # 09:52 China Standard Time (UTC+8) on weekdays: evaluate the completed 09:35–09:50 entry window.
+    - cron: "52 1 * * 1-5"
 permissions:
   contents: read
 jobs:
@@ -38,6 +38,7 @@ jobs:
           codes = ["300369", "002212", "300364", "601929", "603067"]
           result = refresh_free_data(codes)
           print("Tencent quote rows:", len(result["quotes"]))
+          print("Auction rows:", len(result["auction_rows"]))
           print("AkShare minute rows:", len(result["minute_rows"]))
           for err in result["errors"]:
               print("DATA SOURCE WARNING:", err)
