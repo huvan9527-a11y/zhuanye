@@ -79,12 +79,67 @@ def fetch_akshare_minute_bars(codes, period="1"):
                     "code": str(code).zfill(6), "time": dt.strftime("%H:%M"),
                     "open": r.get("开盘"), "high": r.get("最高"), "low": r.get("最低"),
                     "close": r.get("收盘"), "volume": r.get("成交量"),
-                    "amount": r.get("成交额"), "avg_price": None,
+                    "amount": r.get("成交额"), "avg_price": r.get("均价"),
                     "source": "AkShare Eastmoney minute",
                 })
         except Exception as e:
             errors.append(f"{code}: {type(e).__name__}: {e}")
     return all_rows, errors
+
+def fetch_akshare_auction_rows(codes, quote_rows):
+    """Read today's final opening auction from Eastmoney's 09:26 pre-market row."""
+    try:
+        import akshare as ak
+    except ImportError:
+        return [], ["akshare is not installed"]
+
+    today = datetime.now().astimezone().date().isoformat()
+    prev_close = {str(r.get("code", "")).zfill(6): r.get("prev_close") for r in quote_rows}
+    rows, errors = [], []
+    for raw_code in codes:
+        code = str(raw_code).zfill(6)
+        try:
+            df = ak.stock_zh_a_hist_pre_min_em(
+                symbol=code, start_time="09:26:00", end_time="09:26:59"
+            )
+            if df is None or df.empty or not {"时间", "收盘", "成交额"}.issubset(df.columns):
+                errors.append(f"{code}: missing 09:26 auction fields")
+                continue
+            stamps = pd.to_datetime(df["时间"], errors="coerce")
+            same_day = df[stamps.dt.strftime("%Y-%m-%d") == today].copy()
+            same_day["_time"] = stamps[stamps.dt.strftime("%Y-%m-%d") == today].dt.strftime("%H:%M:%S")
+            match = same_day[same_day["_time"].str.startswith("09:26")]
+            if match.empty:
+                errors.append(f"{code}: no same-day 09:26 auction row")
+                continue
+            item = match.iloc[-1]
+            price = float(item["收盘"])
+            amount = float(item["成交额"])
+            close = float(prev_close.get(code) or 0)
+            if price <= 0 or amount <= 0 or close <= 0:
+                errors.append(f"{code}: invalid 09:26 price/amount or previous close")
+                continue
+            rows.append({
+                "date": today, "code": code, "auction_price": price,
+                "prev_close": close, "auction_pct": round((price / close - 1) * 100, 4),
+                "source": "AkShare Eastmoney pre-market 09:26 row (logical 09:25 match)",
+                "observed_at": datetime.now().astimezone().isoformat(),
+            })
+        except Exception as e:
+            errors.append(f"{code}: {type(e).__name__}: {e}")
+    return rows, errors
+
+def upsert_market_rows(rows, path, keys):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    df = pd.DataFrame(rows)
+    if df.empty:
+        return
+    if path.exists() and path.stat().st_size:
+        old = pd.read_csv(path, dtype={"code": str})
+        df = pd.concat([old, df], ignore_index=True)
+    df = df.drop_duplicates(subset=keys, keep="last")
+    df.to_csv(path, index=False, encoding="utf-8-sig")
 
 def append_quote_snapshots(rows, path=None):
     path = Path(path or ROOT/"data/market/quotes.csv")
@@ -98,22 +153,20 @@ def append_quote_snapshots(rows, path=None):
     df.to_csv(path, index=False, encoding="utf-8-sig")
 
 def refresh_free_data(codes):
-    """Pull best-effort live quotes + minutes. Returns a diagnostic dictionary."""
-    out = {"quotes": [], "minute_rows": [], "errors": []}
+    """Pull same-day auction results, live quotes, and minute bars best-effort."""
+    out = {"quotes": [], "auction_rows": [], "minute_rows": [], "errors": []}
     try:
         out["quotes"] = fetch_tencent_quotes(codes)
         append_quote_snapshots(out["quotes"])
     except Exception as e:
         out["errors"].append(f"Tencent quote source failed: {type(e).__name__}: {e}")
+    auctions, auction_errors = fetch_akshare_auction_rows(codes, out["quotes"])
+    out["auction_rows"] = auctions
+    out["errors"].extend(auction_errors)
+    upsert_market_rows(auctions, ROOT/"data/market/auction.csv", ["date", "code"])
     bars, errs = fetch_akshare_minute_bars(codes)
     out["minute_rows"], out["errors"] = bars, out["errors"] + errs
     if bars:
-        path = ROOT/"data/market/minute_bars.csv"
-        df = pd.DataFrame(bars)
-        if path.exists() and path.stat().st_size:
-            old = pd.read_csv(path, dtype={"code": str})
-            old = old[~((old["date"].astype(str).isin(df["date"].astype(str))) &
-                        (old["code"].astype(str).str.zfill(6).isin(df["code"].astype(str).str.zfill(6))))]
-            df = pd.concat([old, df], ignore_index=True)
-        df.to_csv(path, index=False, encoding="utf-8-sig")
+        upsert_market_rows(bars, ROOT/"data/market/minute_bars.csv", ["date", "code", "time"])
     return out
+
