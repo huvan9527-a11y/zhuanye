@@ -8,6 +8,12 @@ from pathlib import Path
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from decimal import Decimal
+from src.paper_account import (
+    ACCOUNT_DIR, NAV_PATH, POSITIONS_PATH, TRADES_PATH, append_trade,
+    calculate_nav, ensure_1012_backfill, fee_breakdown, load_config,
+    money, read_trades, replay_ledger, size_entry, write_positions, write_trades,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -74,6 +80,24 @@ def previous_trading_day(target):
     d = target - timedelta(days=1)
     while d.weekday() >= 5:
         d -= timedelta(days=1)
+    return d, "WEEKDAY_FALLBACK_NOT_HOLIDAY_AWARE"
+
+
+def next_trading_day(target):
+    """Return the next session from AkShare's calendar, with an explicit weekday fallback."""
+    try:
+        import akshare as ak
+        cal = ak.tool_trade_date_hist_sina()
+        col = "trade_date" if "trade_date" in cal.columns else cal.columns[0]
+        days = pd.to_datetime(cal[col], errors="coerce").dt.date.dropna()
+        future = [d for d in days if d > target]
+        if future:
+            return min(future), "akshare_sina_trade_calendar"
+    except Exception:
+        pass
+    d = target + timedelta(days=1)
+    while d.weekday() >= 5:
+        d += timedelta(days=1)
     return d, "WEEKDAY_FALLBACK_NOT_HOLIDAY_AWARE"
 
 
@@ -188,6 +212,74 @@ def evaluate_candidates(date_str, candidates):
     return rows
 
 
+def apply_paper_account(date_str, rows, selected_source, dry_run=False):
+    """Size, book, and report the one permitted estimated entry."""
+    config = load_config()
+    trades = read_trades()
+    if not trades:
+        trades = ensure_1012_backfill(trades, config)
+        if trades:
+            write_trades(trades)
+    state = replay_ledger(trades, config)
+    target_rows = [row for row in rows if row.get("status") == "FILLED_ESTIMATED"]
+    if not target_rows:
+        if not dry_run:
+            write_positions(state)
+        return state, []
+    # The signal evaluator already ranks eligible candidates by auction strength.
+    selected = target_rows[0]
+    code = str(selected["code"]).zfill(6)
+    event_id = f"{date_str}-buy-{code}"
+    existing = next((e for e in trades if e.get("event_id") == event_id), None)
+    if existing:
+        selected.update({
+            "status": "FILLED_ESTIMATED", "quantity": int(existing["quantity"]),
+            "gross": existing["gross"], "commission": existing["commission"],
+            "transfer_fee": existing["transfer_fee"], "cash_after": "",
+            "reason": "该日期的模拟买入已记账，重复运行未重复下单。",
+        })
+        return state, [existing]
+    if state.positions:
+        selected.update({
+            "status": "SKIP", "fill_price": "", "quantity": 0,
+            "reason": f"账户已有持仓 {next(iter(state.positions.values())).code}；最多持有一只，不加仓、不换仓。",
+        })
+        if not dry_run:
+            write_positions(state)
+        return state, []
+    price = money(Decimal(str(selected["fill_price"])))
+    sizing = size_entry(state.cash, state.cash, price, config)
+    if sizing.quantity <= 0:
+        selected.update({
+            "status": "SKIP", "fill_price": "", "quantity": 0,
+            "reason": "按20%仓位上限、可用现金、费用及100股整数手计算后买不起一手。",
+        })
+        return state, []
+    next_day, calendar_source = next_trading_day(date.fromisoformat(date_str))
+    event = {
+        "event_id": event_id, "trade_date": date_str, "fill_time": selected.get("fill_time", ""),
+        "code": code, "name": selected["name"], "side": "BUY",
+        "quantity": sizing.quantity, "price": str(price), "gross": str(sizing.gross),
+        "commission": str(sizing.commission), "stamp_duty": "0.00",
+        "transfer_fee": str(sizing.transfer_fee),
+        "slippage_rate": str(config["adverse_slippage_rate"]),
+        "source": selected_source or "strategy", "origin": "live_run",
+        "eligible_date": next_day.isoformat(),
+        "reason": f"估算成交；T+1日历来源：{calendar_source}",
+    }
+    selected.update({
+        "quantity": sizing.quantity, "gross": str(sizing.gross),
+        "commission": str(sizing.commission), "transfer_fee": str(sizing.transfer_fee),
+        "cash_after": str(money(state.cash - sizing.total_cost)),
+        "reason": selected.get("reason", "") + f"；买入{sizing.quantity}股，含费用后占用¥{sizing.total_cost}。",
+    })
+    if not dry_run:
+        trades = append_trade(trades, event)
+        state = replay_ledger(trades, config)
+        write_positions(state, {code: price}, date_str)
+    return state, [event] if not dry_run else []
+
+
 def process(date_str, dry_run=False, allow_user_seed=False):
     target = date.fromisoformat(date_str)
     REPORTS.mkdir(parents=True, exist_ok=True)
@@ -222,6 +314,12 @@ def process(date_str, dry_run=False, allow_user_seed=False):
     (folder / "source_decision.json").write_text(json.dumps(decision_record, ensure_ascii=False, indent=2), encoding="utf-8")
 
     rows = evaluate_candidates(date_str, decision["selected_candidates"]) if decision["selected_candidates"] else []
+    account_events = []
+    account_state = None
+    if not dry_run:
+        account_state, account_events = apply_paper_account(
+            date_str, rows, decision["selected_source"], dry_run=False
+        )
     out = pd.DataFrame(rows)
     outpath = REPORTS / f"{date_str}-signals.csv"
     out.to_csv(outpath, index=False, encoding="utf-8-sig")
@@ -244,9 +342,16 @@ def process(date_str, dry_run=False, allow_user_seed=False):
     elif out.empty:
         lines.append("策略候选已解析，但行情缺失或未满足条件；本日不交易。")
     else:
-        lines += ["|代码|名称|竞价涨幅|状态|估算价|原因|", "|---|---|---:|---|---:|---|"]
+        lines += ["|代码|名称|竞价涨幅|状态|估算价|数量|成交额|费用|原因|", "|---|---|---:|---|---:|---:|---:|---:|---|"]
         for _, r in out.iterrows():
-            lines.append(f"|{r.get('code','')}|{r.get('name','')}|{r.get('auction_pct','')}|{r.get('status','')}|{r.get('fill_price','')}|{r.get('reason','')}|")
+            fees = money(Decimal(str(r.get("commission", 0) or 0)) + Decimal(str(r.get("transfer_fee", 0) or 0)))
+            lines.append(f"|{r.get('code','')}|{r.get('name','')}|{r.get('auction_pct','')}|{r.get('status','')}|{r.get('fill_price','')}|{r.get('quantity','')}|{r.get('gross','')}|{fees}|{r.get('reason','')}|")
+    if account_state is not None:
+        lines += ["", "## 模拟账户（已记账）", "",
+                  f"- 可用现金：¥{account_state.cash}",
+                  f"- 当前持仓：{', '.join(f'{p.code} {p.name} {p.quantity}股' for p in account_state.positions.values()) or '空仓'}",
+                  f"- 本次新增成交：{len(account_events)}笔；详情写入 data/paper_account/trades.csv",
+                  "- 盘后估值与退出记录由独立收盘工作流生成；数据不足时净值会标记不完整。"]
     lines += ["", "## 数据与风险说明",
               "- 先检查上一交易日收盘复盘；只有它无法获取或没有有效候选时，才回退目标交易日盘前早报。",
               "- 若交易日历接口不可用，`WEEKDAY_FALLBACK_NOT_HOLIDAY_AWARE` 仅按工作日推算，遇中国市场假期需人工核验。",
