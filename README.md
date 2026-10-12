@@ -2,7 +2,7 @@
 
 面向 `olenara.com` 收盘复盘与盘前早报的 A 股**模拟交易**仓。默认初始资金 ¥100,000；免费行情优先；保守近似撮合；不连接券商、不发送真实订单。
 
-> 重要：GitHub Actions 不是实时行情终端。免费公开数据源可能延迟、缺字段或限流；常规分钟 K 线不能证明 09:25 集合竞价成交。凡缺少竞价/分钟数据的交易，系统会标记 `DATA_MISSING` / `ESTIMATED`，不把估算说成真实成交。2026-10-12 尚未发生时，不能预先声称已买入或有收益。
+> 重要：GitHub Actions 不是实时行情终端。免费公开数据源可能延迟、缺字段或限流；常规分钟 K 线不能证明 09:25 集合竞价成交。凡缺少竞价/分钟数据的交易，系统会标记数据不完整并停止推断，不把估算说成真实成交。所有成交均为模拟估算，报告会标记数据来源和完整性。
 
 ## 当前实现
 
@@ -11,7 +11,7 @@
 - 若两篇均无有效策略，输出 `NO_VALID_STRATEGY` 并严格不交易。2026-10-12 五只候选仅作为用户提供的初始化表，默认不会自动启用；只有显式传入 `--allow-user-seed` 才能作为手动备用。
 - 可编辑 `data/market/auction.csv`、`data/market/minute_bars.csv`，用于人工导入/复核免费行情。
 - 规则引擎：竞价阈值、09:35–09:50 买点窗口、放量/不破均价线近似确认、最多一只、单次仓位不超过 20%、10cm 止损 -3%、20cm 止损 -5%。
-- CSV 账本、每日 Markdown 报告、持仓快照；所有估算成交均标 `ESTIMATED`。
+- 持久模拟账户：10万元初始资金、单票最多20%仓位、100股整数手；逐笔账本、费用、持仓快照和每日净值都提交回仓库。所有估算成交明确标记来源。
 - GitHub Actions 可定时运行，也可手动指定策略日期。
 
 ## 快速开始（本地）
@@ -74,17 +74,15 @@ python -m src.session --strategy-date 2026-10-12
 
 ## 部署到 GitHub
 
-1. 解压本仓库 ZIP。
-2. GitHub → New repository → 建立 `olenara-paper-trader`（建议 Private）。
-3. 将解压后的所有文件上传并 commit 到默认分支 `main`。
-4. 打开 **Settings → Actions → General**，确认允许 Actions。
-5. 打开 **Actions**，手动运行 `Olenara paper trader`，输入 `strategy_date=2026-10-12`。
-6. 查看 workflow run 的 **Summary**，下载 `paper-trader-report` artifact；每日报告也会作为 artifact 保存。
-7. 若希望自动更新仓库里的账本，需额外授予 `contents: write` 并提交生成文件；本版默认不自动 commit 数据，避免竞态/覆盖。Actions artifact 是首选报告查看方式。
+1. 确认仓库中已包含 `config/paper_account.json`、`data/paper_account/` 和 `docs/paper-account-operations.md`。
+2. 在 **Settings → Actions → General** 中允许 Actions 工作流运行，并确认工作流拥有 `contents: write` 权限；定时任务会将账本、行情快照和报告提交回当前分支。
+3. 在 **Actions** 中可手动运行盘前流程预览或盘后恢复流程。手动运行默认不改写正式账本；只有核对指定日期及输出正确后，盘后恢复才显式选择 `commit_state=true`。
+4. 自动运行后，检查仓库提交记录以及 `data/paper_account/trades.csv`、`positions.csv`、`daily_nav.csv`。Artifacts 仅是运行诊断副本，正式跨日状态以仓库账本为准。
+5. 按 [`docs/paper-account-operations.md`](docs/paper-account-operations.md) 核对盘前、盘后报告与数据完整性。首次运行会从已提交的 2026-10-12 `backfill` 记录开始；这是回放重建，不代表当时真实记账成交。
 
 ## 定时任务
 
-`.github/workflows/daily.yml` 配置为周一至周五 UTC 01:20（北京时间 09:20）启动盘中会话：09:26 后读取竞价结果，随后逐分钟刷新行情，09:36–09:51 获取已收完的分钟线，最后评估 09:35–09:50 入场窗口并生成报告。若在本地运行，可在目标交易日 09:25 前执行 `python -m src.session --strategy-date YYYY-MM-DD`。
+`.github/workflows/daily.yml` 配置为周一至周五 UTC 01:20（北京时间 09:20）启动盘中会话；`.github/workflows/daily-close.yml` 配置为 UTC 07:05（北京时间 15:05）盘后结算。盘后作业读取持仓的完整分钟线，评估 T+1 允许的退出条件并写每日净值。完整操作顺序、核查清单和故障恢复方式见 [`docs/paper-account-operations.md`](docs/paper-account-operations.md)。本地盘中运行可在目标交易日 09:25 前执行 `python -m src.session --strategy-date YYYY-MM-DD`，本地盘后核对执行 `python -m src.close_session --strategy-date YYYY-MM-DD`。
 
 GitHub 定时 workflow 可能延迟；如果任务启动时已错过盘前阶段，报告中的竞价/分钟数据只能用于事后模拟，不能视作实时信号。没有可靠竞价记录或分钟均价时，系统标记数据不足并跳过交易。所有模拟成交基于分钟线估算，不代表真实排队成交或券商订单。
 

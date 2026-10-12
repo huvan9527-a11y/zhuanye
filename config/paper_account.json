@@ -1,0 +1,12 @@
+{
+  "initial_cash": "100000.00",
+  "max_position_pct": "0.20",
+  "lot_size": 100,
+  "commission_rate": "0.0003",
+  "commission_minimum": "5.00",
+  "transfer_fee_rate": "0.00001",
+  "sell_stamp_duty_rate": "0.0005",
+  "adverse_slippage_rate": "0.001",
+  "currency_precision": 2,
+  "mark_max_age_days": 4
+}

@@ -3,14 +3,17 @@ on:
   workflow_dispatch:
     inputs:
       strategy_date:
-        description: "策略对应的交易日 YYYY-MM-DD"
+        description: "Strategy date YYYY-MM-DD (preview only)"
         required: true
         default: "2026-10-12"
   schedule:
     # Start before the opening auction: 09:20 China Standard Time (UTC+8).
     - cron: "20 1 * * 1-5"
 permissions:
-  contents: read
+  contents: write
+concurrency:
+  group: paper-account
+  cancel-in-progress: false
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -33,11 +36,28 @@ jobs:
           fi
       - name: Run intraday paper session
         if: github.event_name == 'schedule'
-        run: |
-          python -m src.session --strategy-date "${{ steps.date.outputs.value }}"
-      - name: Refresh data and run requested-date simulation
+        run: python -m src.session --strategy-date "${{ steps.date.outputs.value }}"
+      - name: Preview requested date without changing account
         if: github.event_name == 'workflow_dispatch'
         run: python -m src.main --strategy-date "${{ steps.date.outputs.value }}" --dry-run
+      - name: Commit reconciled account and source data
+        if: success() && github.event_name == 'schedule'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/paper_account data/market data/signals reports
+          if ! git diff --cached --quiet; then
+            git commit -m "paper account: record ${{ steps.date.outputs.value }} entry session"
+            git push
+          fi
+      - name: Add account report to run summary
+        if: always() && github.event_name == 'schedule'
+        run: |
+          if [ -f "reports/${{ steps.date.outputs.value }}-report.md" ]; then
+            cat "reports/${{ steps.date.outputs.value }}-report.md" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No complete entry report was produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Upload reports and snapshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,6 +67,6 @@ jobs:
             reports/
             data/signals/
             data/market/
+            data/paper_account/
           if-no-files-found: warn
           retention-days: 90
-
