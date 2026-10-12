@@ -96,3 +96,11 @@ The daily report should show, at minimum: cash, position quantity and mark, mark
 4. T+1, stop-loss, five-minute average-line exit, adverse slippage, and fee calculations are reflected consistently in the ledger and reports.
 5. End-of-day NAV includes cash plus marked holdings and labels missing/stale marks as incomplete instead of reporting fabricated returns.
 6. The repository retains the ledger and reports across scheduled workflow runs; Actions artifacts remain available for diagnostics.
+
+
+### Fee policy references
+
+The sell-side stamp-duty default is 0.05%: the statutory securities-transfer stamp duty was 0.1%, and the Ministry of Finance/State Taxation Administration cut it by half effective 2023-08-28. The default transfer fee is 0.001% each side, consistent with ChinaClear's published A-share transaction transfer-fee rate. The 0.03% commission and ¥5 minimum remain illustrative, configurable account assumptions; they are not represented as a universal broker tariff.
+
+- [State Taxation Administration: 2023 securities transaction stamp duty reduction](https://shanghai.chinatax.gov.cn/zcfw/zcfgk/yhs/202308/t468451.html)
+- [ChinaClear Shanghai: securities registration and settlement charges](https://www.chinaclear.cn/zdjs/fbzyls/202506/9d22b74d9f2e40edb67b44d1f6596f18/files/%E4%B8%8A%E6%B5%B7%E5%B8%82%E8%AF%81%E5%88%B8%E7%99%BB%E8%AE%B0%E7%BB%93%E7%AE%97%E4%B8%9A%E5%8A%A1%E6%94%B6%E8%B4%B9%E5%8F%8A%E4%BB%A3%E6%94%B6%E7%A8%8E%E8%B4%B9%E4%B8%80%E8%A7%88%E8%A1%A8.pdf)
