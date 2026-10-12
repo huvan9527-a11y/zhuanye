@@ -1,0 +1,75 @@
+name: Paper account after close
+on:
+  workflow_dispatch:
+    inputs:
+      strategy_date:
+        description: "Trading date YYYY-MM-DD"
+        required: true
+        default: "2026-10-12"
+      commit_state:
+        description: "Persist account changes (only for an intentional recovery run)"
+        required: true
+        type: choice
+        options:
+          - "false"
+          - "true"
+        default: "false"
+  schedule:
+    # 15:05 China Standard Time (UTC+8), after the regular session.
+    - cron: "5 7 * * 1-5"
+permissions:
+  contents: write
+concurrency:
+  group: paper-account
+  cancel-in-progress: false
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Resolve trading date
+        id: date
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.strategy_date }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Reconcile exits and closing NAV
+        run: python -m src.close_session --strategy-date "${{ steps.date.outputs.value }}"
+      - name: Commit reconciled account close
+        if: success() && (github.event_name == 'schedule' || inputs.commit_state == 'true')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/paper_account data/market reports
+          if ! git diff --cached --quiet; then
+            git commit -m "paper account: close ${{ steps.date.outputs.value }}"
+            git push
+          fi
+      - name: Add close report to run summary
+        if: always()
+        run: |
+          if [ -f "reports/${{ steps.date.outputs.value }}-account-close.md" ]; then
+            cat "reports/${{ steps.date.outputs.value }}-account-close.md" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No account close report was produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload paper account and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-account-close
+          path: |
+            reports/
+            data/market/
+            data/paper_account/
+          if-no-files-found: warn
+          retention-days: 90
