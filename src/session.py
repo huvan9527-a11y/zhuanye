@@ -47,7 +47,7 @@ def run_session(strategy_date: str) -> None:
         for error in result["errors"]:
             print("DATA SOURCE WARNING:", error)
 
-    process(strategy_date, dry_run=True)
+    process(strategy_date, dry_run=False)
 
 
 def main() -> None:
