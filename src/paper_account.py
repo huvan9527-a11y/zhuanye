@@ -163,57 +163,15 @@ def replay_ledger(rows: Iterable[Mapping], config: Mapping) -> AccountState:
         code = str(event.get("code", "")).zfill(6)
         qty = int(event.get("quantity") or 0)
         price = money(_d(event.get("price")))
-        gross = money(_d(event.get("gross")) or price * qty)
-        fees = _event_fees(event)
         event_date = str(event.get("trade_date", ""))
-        name = str(event.get("name", code))
         if not code or qty <= 0 or price <= 0 or not event_date:
             raise ValueError(f"Invalid paper trade event: {event.get('event_id', '<no id>')}")
         if side == "BUY":
-            if state.positions and code not in state.positions:
-                raise ValueError("Ledger contains more than one simultaneous open position")
-            cost = money(gross + fees)
-            if cost > state.cash:
-                raise ValueError(f"Insufficient cash for BUY event {event.get('event_id')}")
-            state.cash = money(state.cash - cost)
-            old = state.positions.get(code)
-            if old:
-                combined_qty = old.quantity + qty
-                basis = money(old.cost_basis + cost)
-                old.quantity = combined_qty
-                old.average_entry_price = money((old.average_entry_price * old.quantity + price * qty) / combined_qty)
-                old.cost_basis = basis
-                old.name = name
-            else:
-                eligible = str(event.get("eligible_date") or "")
-                if not eligible:
-                    eligible = date.fromisoformat(event_date).fromordinal(date.fromisoformat(event_date).toordinal() + 1).isoformat()
-                state.positions[code] = Position(
-                    code=code, name=name, quantity=qty, average_entry_price=price,
-                    cost_basis=cost, entry_date=event_date, eligible_to_sell=eligible,
-                )
+            book_buy(state, event)
         elif side == "SELL":
-            pos = state.positions.get(code)
-            if not pos or qty > pos.quantity:
-                raise ValueError(f"SELL event exceeds open quantity for {code}")
-            eligible = str(event.get("eligible_date") or pos.eligible_to_sell)
-            if date.fromisoformat(event_date) < date.fromisoformat(eligible):
-                raise ValueError(f"T+1 violation in SELL event {event.get('event_id')}")
-            proceeds = money(gross - fees)
-            if proceeds < 0:
-                raise ValueError(f"Fees exceed SELL proceeds for {event.get('event_id')}")
-            allocated_basis = money(pos.cost_basis * Decimal(qty) / Decimal(pos.quantity))
-            state.cash = money(state.cash + proceeds)
-            state.realized_pnl = money(state.realized_pnl + proceeds - allocated_basis)
-            remaining = pos.quantity - qty
-            if remaining:
-                pos.quantity = remaining
-                pos.cost_basis = money(pos.cost_basis - allocated_basis)
-            else:
-                del state.positions[code]
+            book_sell(state, event)
         else:
             raise ValueError(f"Unknown ledger side {side!r}")
-        state.events += 1
     return state
 
 
@@ -236,18 +194,54 @@ def size_entry(equity: Decimal, cash: Decimal, price: Decimal, config: Mapping) 
 
 
 def book_buy(state: AccountState, event: Mapping) -> AccountState:
-    return replay_ledger([*_state_as_events(state), event], {
-        "initial_cash": str(state.initial_cash), "commission_rate": "0",
-        "commission_minimum": "0", "transfer_fee_rate": "0", "sell_stamp_duty_rate": "0",
-    })
+    """Apply one estimated BUY event after validating cash and T+1 metadata."""
+    if state.positions:
+        raise ValueError("A new BUY is not allowed while any position is open")
+    qty = int(event["quantity"])
+    price = money(_d(event["price"]))
+    gross = money(_d(event.get("gross")) or price * qty)
+    cost = money(gross + _event_fees(event))
+    if qty <= 0 or price <= 0 or cost > state.cash:
+        raise ValueError("Invalid or unaffordable BUY event")
+    trade_date = str(event["trade_date"])
+    eligible = str(event.get("eligible_date") or "")
+    if not eligible:
+        raise ValueError("BUY event must include the next trading date for T+1")
+    code = str(event["code"]).zfill(6)
+    state.cash = money(state.cash - cost)
+    state.positions[code] = Position(
+        code=code, name=str(event.get("name", code)), quantity=qty,
+        average_entry_price=price, cost_basis=cost, entry_date=trade_date,
+        eligible_to_sell=eligible,
+    )
+    state.events += 1
+    return state
 
 
-def _state_as_events(state: AccountState) -> list[dict]:
-    """Export a state as neutral ledger rows for validation by replay_ledger."""
-    # State mutation helpers are intentionally pure callers' responsibility; replay_ledger remains canonical.
-    if state.events == 0:
-        return []
-    raise ValueError("Use replay_ledger with the original ledger before adding an event")
+def book_sell(state: AccountState, event: Mapping) -> AccountState:
+    """Apply one estimated SELL event after validating T+1 and share quantity."""
+    code = str(event["code"]).zfill(6)
+    pos = state.positions.get(code)
+    qty = int(event["quantity"])
+    trade_date = date.fromisoformat(str(event["trade_date"]))
+    if not pos or qty <= 0 or qty > pos.quantity:
+        raise ValueError(f"SELL event exceeds open quantity for {code}")
+    if trade_date < date.fromisoformat(pos.eligible_to_sell):
+        raise ValueError(f"T+1 violation for {code}")
+    gross = money(_d(event.get("gross")) or _d(event["price"]) * qty)
+    proceeds = money(gross - _event_fees(event))
+    if proceeds < 0:
+        raise ValueError("SELL fees exceed proceeds")
+    allocated_basis = money(pos.cost_basis * Decimal(qty) / Decimal(pos.quantity))
+    state.cash = money(state.cash + proceeds)
+    state.realized_pnl = money(state.realized_pnl + proceeds - allocated_basis)
+    if qty == pos.quantity:
+        del state.positions[code]
+    else:
+        pos.quantity -= qty
+        pos.cost_basis = money(pos.cost_basis - allocated_basis)
+    state.events += 1
+    return state
 
 
 def append_nav(row: Mapping, path: Path = NAV_PATH) -> None:
@@ -309,7 +303,7 @@ def calculate_nav(state: AccountState, marks: Mapping[str, object], day: str, ma
             prior = prior_positions.get(code, {})
             mark_text = prior.get("last_mark", "")
             mark_date = prior.get("last_mark_date", "")
-            if mark_text and mark_date and (date.fromisoformat(day) - date.fromisoformat(mark_date)).days <= int(config.get("mark_max_age_hours", 24)) // 24:
+            if mark_text and mark_date and (date.fromisoformat(day) - date.fromisoformat(mark_date)).days <= int(config.get("mark_max_age_days", 24)) :
                 mark = money(mark_text)
                 complete = False
             else:
@@ -327,7 +321,7 @@ def calculate_nav(state: AccountState, marks: Mapping[str, object], day: str, ma
         "equity": str(equity), "realized_pnl": str(money(state.realized_pnl)),
         "unrealized_pnl": str(unrealized), "return_pct": str(return_pct),
         "max_drawdown_pct": str(drawdown), "complete": "YES" if complete else "NO",
-        "mark_source": mark_source if marks else "", "mark_timestamp": mark_timestamp if marks else "",
+        "mark_source": mark_source if effective_marks else "", "mark_timestamp": mark_timestamp if effective_marks else "",
         "_marks": effective_marks,
     }
 
