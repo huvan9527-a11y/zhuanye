@@ -8,5 +8,5 @@
   "sell_stamp_duty_rate": "0.0005",
   "adverse_slippage_rate": "0.001",
   "currency_precision": 2,
-  "mark_max_age_hours": 24
+  "mark_max_age_days": 4
 }
