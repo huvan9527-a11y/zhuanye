@@ -74,13 +74,11 @@ python -m src.session --strategy-date 2026-10-12
 
 ## 部署到 GitHub
 
-1. 解压本仓库 ZIP。
-2. GitHub → New repository → 建立 `olenara-paper-trader`（建议 Private）。
-3. 将解压后的所有文件上传并 commit 到默认分支 `main`。
-4. 打开 **Settings → Actions → General**，确认允许 Actions。
-5. 打开 **Actions**，手动运行 `Olenara paper trader`，输入 `strategy_date=2026-10-12`。
-6. 查看 workflow run 的 **Summary**，下载 `paper-trader-report` artifact；每日报告也会作为 artifact 保存。
-7. 若希望自动更新仓库里的账本，需额外授予 `contents: write` 并提交生成文件；本版默认不自动 commit 数据，避免竞态/覆盖。Actions artifact 是首选报告查看方式。
+1. 确认仓库中已包含 `config/paper_account.json`、`data/paper_account/` 和 `docs/paper-account-operations.md`。
+2. 在 **Settings → Actions → General** 中允许 Actions 工作流运行，并确认工作流拥有 `contents: write` 权限；定时任务会将账本、行情快照和报告提交回当前分支。
+3. 在 **Actions** 中可手动运行盘前流程预览或盘后恢复流程。手动运行默认不改写正式账本；只有核对指定日期及输出正确后，盘后恢复才显式选择 `commit_state=true`。
+4. 自动运行后，检查仓库提交记录以及 `data/paper_account/trades.csv`、`positions.csv`、`daily_nav.csv`。Artifacts 仅是运行诊断副本，正式跨日状态以仓库账本为准。
+5. 按 [`docs/paper-account-operations.md`](docs/paper-account-operations.md) 核对盘前、盘后报告与数据完整性。首次运行会从已提交的 2026-10-12 `backfill` 记录开始；这是回放重建，不代表当时真实记账成交。
 
 ## 定时任务
 
