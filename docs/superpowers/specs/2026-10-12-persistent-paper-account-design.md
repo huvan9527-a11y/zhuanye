@@ -104,3 +104,18 @@ The sell-side stamp-duty default is 0.05%: the statutory securities-transfer sta
 
 - [State Taxation Administration: 2023 securities transaction stamp duty reduction](https://shanghai.chinatax.gov.cn/zcfw/zcfgk/yhs/202308/t468451.html)
 - [ChinaClear Shanghai: securities registration and settlement charges](https://www.chinaclear.cn/zdjs/fbzyls/202506/9d22b74d9f2e40edb67b44d1f6596f18/files/%E4%B8%8A%E6%B5%B7%E5%B8%82%E8%AF%81%E5%88%B8%E7%99%BB%E8%AE%B0%E7%BB%93%E7%AE%97%E4%B8%9A%E5%8A%A1%E6%94%B6%E8%B4%B9%E5%8F%8A%E4%BB%A3%E6%94%B6%E7%A8%8E%E8%B4%B9%E4%B8%80%E8%A7%88%E8%A1%A8.pdf)
+
+
+## Permanent operating procedure and discipline
+
+The code package will include `docs/paper-account-operations.md` as the operator's durable runbook, plus concise links from the README. It is the canonical checklist for daily operation, reconciliation, failure recovery, account reset, and interpreting reconstructed versus live-run records.
+
+The runbook and workflow must enforce these disciplines:
+
+1. Never treat a signal as a booked trade until quantity, lot rounding, estimated fees, cash sufficiency, and the entry event have all been recorded atomically.
+2. Never silently reset, overwrite, or duplicate account history. The 2026-10-12 backfill is one-time and idempotent; any later correction must be an explicit, auditable adjustment event with a reason.
+3. Do not commit partial account state after a failed data refresh or failed account reconciliation. Preserve diagnostics as an artifact and visibly mark the date incomplete.
+4. Every estimated fill must retain its source, market-data timestamp, fill rule, slippage, fees, and origin. Mark-to-market prices must show their timestamp and source.
+5. Morning and after-close jobs must serialize account mutations. Commit persistent ledgers, snapshots, and reports only after successful reconciliation.
+6. On each trading day, operators can verify the workflow outcome, account balance, open position, trade events, fees, and NAV from repository files and the run summary; the guide describes the exact review order and recovery steps.
+7. Historical corrections never rewrite original market snapshots or old fills. Corrections append an adjustment and produce a revised NAV with the audit trail intact.
