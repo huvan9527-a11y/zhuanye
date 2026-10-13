@@ -1,1 +1,6 @@
-date,code,name,last_price,prev_close,open,change_pct,source,observed_at,raw_symbol
+﻿date,code,name,last_price,prev_close,open,change_pct,source,observed_at,raw_symbol
+2026-10-13,300369,绿盟科技,10.26,11.13,10.8,-7.8167,Tencent qt.gtimg.cn,2026-10-13T01:36:17.407147+00:00,sz300369
+2026-10-13,002212,天融信,7.47,7.63,7.43,-2.097,Tencent qt.gtimg.cn,2026-10-13T01:36:17.407188+00:00,sz002212
+2026-10-13,300364,中文在线,24.24,25.41,24.92,-4.6045,Tencent qt.gtimg.cn,2026-10-13T01:36:17.407219+00:00,sz300364
+2026-10-13,601929,吉视传媒,2.65,2.75,2.78,-3.6364,Tencent qt.gtimg.cn,2026-10-13T01:36:17.407247+00:00,sh601929
+2026-10-13,603067,振华股份,42.3,41.26,40.13,2.5206,Tencent qt.gtimg.cn,2026-10-13T01:36:17.407270+00:00,sh603067

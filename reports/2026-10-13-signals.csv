@@ -1,0 +1,2 @@
+﻿code,name,reference_close,board_pct,auction_min_pct,rule,auction_pct,status,reason,fill_price,fill_time,estimated
+601929,吉视传媒,2.5,10,2.0,竞价≥+2%，且不破2.50,1.091,SKIP,竞价未达+2.0%门槛,,,

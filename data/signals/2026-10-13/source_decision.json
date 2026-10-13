@@ -1,0 +1,35 @@
+{
+  "target_date": "2026-10-13",
+  "previous_trading_day": "2026-10-12",
+  "trading_calendar_source": "akshare_sina_trade_calendar",
+  "checked_sources": [
+    {
+      "kind": "close",
+      "url": "https://olenara.com/2026-10-12-close.html",
+      "fetched_at": "2026-10-13T01:51:13.498914+00:00",
+      "http_status": 404,
+      "fetch_error": "HTTP 404",
+      "available": false,
+      "sha256": null
+    },
+    {
+      "kind": "morning",
+      "url": "https://olenara.com/morning-2026-10-13.html",
+      "fetched_at": "2026-10-13T01:51:13.499367+00:00",
+      "http_status": 200,
+      "fetch_error": null,
+      "available": true,
+      "sha256": "07cd48b7b317ac4bdfc0cffb4f666146b871fbff01708b72589e4f251d21b577"
+    }
+  ],
+  "selected_source": "morning_brief",
+  "selected_url": "https://olenara.com/morning-2026-10-13.html",
+  "status": "VALID_STRATEGY",
+  "selection_reason": "上一交易日收盘复盘不可用或未解析到有效候选，回退到目标交易日盘前早报。",
+  "close_parse_note": "empty source text",
+  "morning_parse_note": "candidate codes matched in source text; rules use reviewed profile",
+  "candidate_codes": [
+    "601929"
+  ],
+  "decided_at": "2026-10-13T01:51:13.533489+00:00"
+}
