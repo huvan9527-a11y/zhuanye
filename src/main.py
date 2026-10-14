@@ -18,7 +18,7 @@ from src.paper_account import (
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 REPORTS = ROOT / "reports"
-CLOSE_URL = "https://olenara.com/{date}-close.html"
+CLOSE_URL = "https://olenara.com/{date}.html"
 MORNING_URL = "https://olenara.com/morning-{date}.html"
 
 # User-provided 2026-10-12 candidates. Never silently substitute these for article content.

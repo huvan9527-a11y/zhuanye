@@ -35,7 +35,7 @@ python -m src.session --strategy-date 2026-10-12
 对目标交易日 `T`，程序按以下顺序执行：
 
 1. 用 AkShare 的新浪交易日历接口尝试确定 `T` 的上一交易日 `P`。
-2. 先抓取 `https://olenara.com/{P}-close.html`。
+2. 先抓取 `https://olenara.com/{P}.html`。
 3. 若复盘无法抓取，或没有解析出本项目支持的有效候选，再抓取 `https://olenara.com/morning-{T}.html`。
 4. 若早报也没有有效候选，保存 `NO_VALID_STRATEGY`，不交易。
 5. 将两个来源的状态、URL、SHA256、解析原因和最终选择写入 `data/signals/T/source_decision.json`，同时保存 HTML/TXT 快照。
