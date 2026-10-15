@@ -32,7 +32,7 @@ def _minute_key(value: str) -> datetime:
 def find_exit(position, bars, board_pct, config):
     """Find the first conservative exit in complete one-minute bars."""
     stop_rate = Decimal("0.05") if int(board_pct) == 20 else Decimal("0.03")
-    stop_price = floor_tick(position.average_entry_price * (Decimal("1") - stop_rate))
+    stop_price = position.stop_price or floor_tick(position.average_entry_price * (Decimal("1") - stop_rate))
     slippage = Decimal(str(config["adverse_slippage_rate"]))
     below_avg = 0
     previous_time = None
@@ -49,7 +49,7 @@ def find_exit(position, bars, board_pct, config):
         if low <= stop_price:
             trigger = min(stop_price, open_price) if open_price > 0 else min(stop_price, low)
             fill = floor_tick(trigger * (Decimal("1") - slippage))
-            return {"fill_time": bar_time, "price": fill, "reason": f"触发{int(stop_rate * 100)}%止损"}
+            return {"fill_time": bar_time, "price": fill, "reason": f"触发止损价¥{stop_price}"}
         is_consecutive = False
         if previous_time:
             try:

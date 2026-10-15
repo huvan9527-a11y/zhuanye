@@ -6,12 +6,10 @@ import time
 from datetime import date, datetime, time as clock_time, timedelta
 from zoneinfo import ZoneInfo
 
-from src.main import process, USER_SEED_1012
-from src.market_data import refresh_free_data, refresh_minute_data
+from src.main import process, resolve_strategy
+from src.market_data import refresh_free_data
 
 CHINA = ZoneInfo("Asia/Shanghai")
-CODES = [item["code"] for item in USER_SEED_1012]
-
 
 def wait_until(target: datetime) -> None:
     while True:
@@ -29,25 +27,31 @@ def run_session(strategy_date: str) -> None:
             f"Intraday session must run on its strategy date ({now.date()} in Asia/Shanghai); got {target_date}."
         )
 
-    # Wait for the 09:25 matching result to be published in the 09:26 source row.
+    prepared = resolve_strategy(strategy_date)
+    candidates = prepared["decision"]["selected_candidates"]
+    codes = [item["code"] for item in candidates]
+    if not candidates:
+        process(strategy_date, dry_run=False, prepared=prepared)
+        return
+
+    # Resolve the candidate pool first, then capture auction only for those codes.
     auction_capture = datetime.combine(target_date, clock_time(9, 26, 35), CHINA)
     wait_until(auction_capture)
-    auction_result = refresh_free_data(CODES)
+    auction_result = refresh_free_data(codes)
     print("Auction capture rows:", len(auction_result["auction_rows"]))
     for error in auction_result["errors"]:
         print("DATA SOURCE WARNING:", error)
 
-    # Refresh completed one-minute bars after each minute closes. At 09:51:05,
-    # the full 09:35–09:50 decision window is available for evaluation.
-    for minute in range(35, 51):
-        next_minute = datetime.combine(target_date, clock_time(9, minute + 1, 5), CHINA)
-        wait_until(next_minute)
-        result = refresh_minute_data(CODES)
-        print(f"Minute refresh after {minute:02d}:", len(result["minute_rows"]))
-        for error in result["errors"]:
-            print("DATA SOURCE WARNING:", error)
+    # The published rule is buy at the open once the auction threshold passes.
+    # Capture the live quote after the opening print; missing data fails closed.
+    opening_capture = datetime.combine(target_date, clock_time(9, 31, 5), CHINA)
+    wait_until(opening_capture)
+    opening_result = refresh_free_data(codes)
+    print("Opening quote rows:", len(opening_result["quotes"]))
+    for error in opening_result["errors"]:
+        print("DATA SOURCE WARNING:", error)
 
-    process(strategy_date, dry_run=False)
+    process(strategy_date, dry_run=False, prepared=prepared)
 
 
 def main() -> None:

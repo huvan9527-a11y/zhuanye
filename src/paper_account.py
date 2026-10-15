@@ -21,7 +21,7 @@ POSITIONS_PATH = ACCOUNT_DIR / "positions.csv"
 TRADE_FIELDS = [
     "event_id", "trade_date", "fill_time", "code", "name", "side", "quantity",
     "price", "gross", "commission", "stamp_duty", "transfer_fee",
-    "slippage_rate", "source", "origin", "eligible_date", "reason",
+    "slippage_rate", "source", "origin", "eligible_date", "reason", "stop_price", "stop_loss_pct",
 ]
 NAV_FIELDS = [
     "date", "cash", "position_value", "equity", "realized_pnl",
@@ -30,7 +30,7 @@ NAV_FIELDS = [
 ]
 POSITION_FIELDS = [
     "code", "name", "quantity", "average_entry_price", "cost_basis",
-    "last_mark", "last_mark_date", "entry_date", "eligible_to_sell",
+    "last_mark", "last_mark_date", "entry_date", "eligible_to_sell", "stop_price", "stop_loss_pct",
 ]
 
 
@@ -50,6 +50,8 @@ class Position:
     eligible_to_sell: str
     last_mark: Decimal | None = None
     last_mark_date: str = ""
+    stop_price: Decimal | None = None
+    stop_loss_pct: Decimal | None = None
 
 
 @dataclass
@@ -213,6 +215,8 @@ def book_buy(state: AccountState, event: Mapping) -> AccountState:
         code=code, name=str(event.get("name", code)), quantity=qty,
         average_entry_price=price, cost_basis=cost, entry_date=trade_date,
         eligible_to_sell=eligible,
+        stop_price=money(_d(event.get("stop_price"))) if _d(event.get("stop_price")) > 0 else None,
+        stop_loss_pct=_d(event.get("stop_loss_pct")) if _d(event.get("stop_loss_pct")) > 0 else None,
     )
     state.events += 1
     return state
@@ -279,6 +283,8 @@ def write_positions(state: AccountState, marks: Mapping[str, object] | None = No
             "last_mark": str(money(mark)) if mark not in (None, "") else "",
             "last_mark_date": marked_date, "entry_date": pos.entry_date,
             "eligible_to_sell": pos.eligible_to_sell,
+            "stop_price": str(pos.stop_price) if pos.stop_price is not None else "",
+            "stop_loss_pct": str(pos.stop_loss_pct) if pos.stop_loss_pct is not None else "",
         })
     _atomic_csv(Path(path), rows, POSITION_FIELDS)
 

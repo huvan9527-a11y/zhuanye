@@ -101,47 +101,82 @@ def next_trading_day(target):
     return d, "WEEKDAY_FALLBACK_NOT_HOLIDAY_AWARE"
 
 
-def parse_candidates(text):
-    """
-    Conservative parser: only recognizes codes for which the project has an explicit,
-    reviewed rule profile. The profile supplies thresholds; article must mention the
-    code and at least one actionable strategy term. Unknown codes are not traded.
-    """
-    if not text:
-        return [], "empty source text"
-    if not any(term in text for term in ACTION_TERMS):
-        return [], "no actionable strategy keywords"
-    found = []
-    for code, profile in KNOWN.items():
-        if code in text:
-            found.append(dict(profile))
-    if not found:
-        return [], "no supported candidate codes parsed"
-    return found, "candidate codes matched in source text; rules use reviewed profile"
+def _number(value):
+    match = re.search(r"[-+]?\d+(?:\.\d+)?", str(value).replace(",", ""))
+    return float(match.group()) if match else None
 
 
-def select_strategy(target_date, close_day, close_text, close_meta, morning_text, morning_meta):
-    close_candidates, close_note = parse_candidates(close_text)
-    morning_candidates, morning_note = parse_candidates(morning_text)
+def parse_candidates(html):
+    """Parse only rows beneath an explicitly labeled executable Table A."""
+    if not html:
+        return [], "empty source HTML", []
+    soup = BeautifulSoup(html, "html.parser")
+    candidates, rejected = [], []
+    for table in soup.find_all("table"):
+        heading = table.find_previous(["h2", "h3", "h4"])
+        label = heading.get_text(" ", strip=True) if heading else ""
+        if not re.search(r"表\s*A|可做池", label, re.I):
+            continue
+        rows = table.find_all("tr")
+        if len(rows) < 2:
+            continue
+        headers = [re.sub(r"\s+", "", cell.get_text(" ", strip=True)).lower() for cell in rows[0].find_all(["th", "td"])]
+        def column(pattern):
+            return next((i for i, header in enumerate(headers) if re.search(pattern, header, re.I)), None)
+        idx = {
+            "code": column(r"代码|证券代码"), "name": column(r"名称|股票名称"),
+            "threshold": column(r"竞价门槛|竞价阈值|竞价"), "stop": column(r"止损"),
+            "close": column(r"收|前收|参考价"),
+        }
+        if any(idx[k] is None for k in ("code", "name", "threshold", "stop")):
+            rejected.append({"table": label, "reason": "表A缺少代码、名称、竞价门槛或止损列"})
+            continue
+        for row in rows[1:]:
+            cells = [cell.get_text(" ", strip=True) for cell in row.find_all(["td", "th"])]
+            if len(cells) <= max(idx.values()):
+                continue
+            found = re.search(r"(?<!\d)(\d{6})(?!\d)", cells[idx["code"]])
+            code = found.group(1) if found else ""
+            name, threshold_text, stop_text = cells[idx["name"]].strip(), cells[idx["threshold"]], cells[idx["stop"]]
+            threshold, stop_price = _number(threshold_text), _number(stop_text)
+            reference_close = _number(cells[idx["close"]]) if idx["close"] is not None else None
+            if not code or not name or threshold is None or stop_price is None or stop_price <= 0:
+                rejected.append({"code": code, "name": name, "reason": "表A候选缺少有效代码/名称/阈值/绝对止损价"})
+                continue
+            candidates.append({
+                "code": code, "name": name, "auction_min_pct": threshold,
+                "reference_close": reference_close, "stop_price": stop_price,
+                "stop_loss_pct": round((1 - stop_price / reference_close) * 100, 4) if reference_close else None,
+                "rule": f"竞价≥+{threshold:g}%，按开盘价买入",
+            })
+        break
+    if not candidates:
+        return [], "未从明确标记的表A可做池解析到受支持候选", rejected
+    return candidates, "已从表A可做池按列解析动态候选", rejected
+
+def select_strategy(target_date, close_day, close_html, close_meta, morning_html, morning_meta):
+    close_candidates, close_note, close_rejected = parse_candidates(close_html)
+    morning_candidates, morning_note, morning_rejected = parse_candidates(morning_html)
     if close_meta["available"] and close_candidates:
         return {
             "status": "VALID_STRATEGY", "selected_source": "close_recap",
             "selected_url": close_meta["url"], "selected_candidates": close_candidates,
             "selection_reason": f"优先使用上一交易日 {close_day.isoformat()} 收盘复盘；解析到可识别候选。",
-            "close_parse_note": close_note, "morning_parse_note": morning_note,
+            "close_parse_note": close_note, "morning_parse_note": morning_note, "rejected_candidates": close_rejected + morning_rejected,
         }
     if morning_meta["available"] and morning_candidates:
         reason = "上一交易日收盘复盘不可用或未解析到有效候选，回退到目标交易日盘前早报。"
         return {
             "status": "VALID_STRATEGY", "selected_source": "morning_brief",
             "selected_url": morning_meta["url"], "selected_candidates": morning_candidates,
-            "selection_reason": reason, "close_parse_note": close_note, "morning_parse_note": morning_note,
+            "selection_reason": reason, "close_parse_note": close_note, "morning_parse_note": morning_note, "rejected_candidates": close_rejected + morning_rejected,
         }
     return {
         "status": "NO_VALID_STRATEGY", "selected_source": None, "selected_url": None,
         "selected_candidates": [],
         "selection_reason": "收盘复盘与目标日盘前早报均未能解析出有效、可识别的策略候选；严格空仓，不使用隐式种子数据。",
         "close_parse_note": close_note, "morning_parse_note": morning_note,
+        "rejected_candidates": close_rejected + morning_rejected,
     }
 
 
@@ -165,52 +200,50 @@ def pct(row):
 
 def evaluate_candidates(date_str, candidates):
     auction = read_csv(DATA / "market" / "auction.csv")
-    mins = read_csv(DATA / "market" / "minute_bars.csv")
+    quotes = read_csv(DATA / "market" / "quotes.csv")
     if not auction.empty and "date" in auction:
         auction = auction[auction["date"].astype(str) == date_str]
-    if not mins.empty and "date" in mins:
-        mins = mins[mins["date"].astype(str) == date_str]
+    if not quotes.empty and "date" in quotes:
+        quotes = quotes[quotes["date"].astype(str) == date_str]
+        quotes["code"] = quotes["code"].astype(str).str.zfill(6)
+        quotes = quotes.sort_values("observed_at") if "observed_at" in quotes else quotes
     rows, eligible = [], []
-    for c in candidates:
-        code = c["code"]
+    for candidate in candidates:
+        code = str(candidate["code"]).zfill(6)
         a = auction[auction["code"].astype(str).str.zfill(6) == code] if not auction.empty and "code" in auction else pd.DataFrame()
         if a.empty:
-            rows.append({**c, "auction_pct":"", "status":"DATA_MISSING", "reason":"缺少可靠09:25竞价记录；不假设满足条件", "fill_price":"", "fill_time":"", "estimated":""})
+            rows.append({**candidate, "auction_pct":"", "status":"DATA_MISSING", "reason":"缺少当日竞价记录；跳过", "fill_price":"", "fill_time":""})
             continue
-        ar = a.iloc[-1]
-        ap = pct(ar)
+        ap = pct(a.iloc[-1])
         if ap is None:
-            rows.append({**c, "auction_pct":"", "status":"DATA_INVALID", "reason":"竞价涨幅无法计算", "fill_price":"", "fill_time":"", "estimated":""})
+            rows.append({**candidate, "auction_pct":"", "status":"DATA_INVALID", "reason":"竞价涨幅无法计算", "fill_price":"", "fill_time":""})
             continue
-        if ap <= 0 and code in ("300369", "300364"):
-            rows.append({**c, "auction_pct":round(ap,3), "status":"SKIP", "reason":"策略规则：竞价≤0%放弃", "fill_price":"", "fill_time":"", "estimated":""})
+        if ap < float(candidate["auction_min_pct"]):
+            rows.append({**candidate, "auction_pct":round(ap,3), "status":"SKIP", "reason":f"竞价未达+{candidate['auction_min_pct']}%门槛", "fill_price":"", "fill_time":""})
             continue
-        if ap < c["auction_min_pct"]:
-            rows.append({**c, "auction_pct":round(ap,3), "status":"SKIP", "reason":f"竞价未达+{c['auction_min_pct']}%门槛", "fill_price":"", "fill_time":"", "estimated":""})
+        q = quotes[quotes["code"] == code] if not quotes.empty and "code" in quotes else pd.DataFrame()
+        if q.empty:
+            rows.append({**candidate, "auction_pct":round(ap,3), "status":"DATA_MISSING", "reason":"竞价达标但缺少09:30后开盘行情，跳过", "fill_price":"", "fill_time":""})
             continue
-        if mins.empty or not {"code", "time", "close", "low", "volume", "avg_price"}.issubset(mins.columns):
-            rows.append({**c, "auction_pct":round(ap,3), "status":"DATA_MISSING", "reason":"缺少09:35–09:50分钟线/均价字段，不能确认承接", "fill_price":"", "fill_time":"", "estimated":""})
+        qr = q.iloc[-1]
+        try:
+            open_price = float(qr.get("open"))
+            observed = pd.to_datetime(qr.get("observed_at"), errors="coerce")
+            if open_price <= 0 or pd.isna(observed) or observed.strftime("%Y-%m-%d") != date_str or observed.strftime("%H:%M") < "09:30":
+                raise ValueError("opening quote is stale or invalid")
+        except Exception:
+            rows.append({**candidate, "auction_pct":round(ap,3), "status":"DATA_INVALID", "reason":"开盘价无效或不是09:30后的当日行情，跳过", "fill_price":"", "fill_time":""})
             continue
-        m = mins[mins["code"].astype(str).str.zfill(6) == code].copy()
-        m = m[(m["time"].astype(str) >= "09:35") & (m["time"].astype(str) <= "09:50")]
-        for col in ("close", "low", "volume", "avg_price"):
-            m[col] = pd.to_numeric(m[col], errors="coerce")
-        m = m.dropna(subset=["close", "low", "volume", "avg_price"])
-        valid = m[(m["close"] >= m["avg_price"]) & (m["low"] >= c["reference_close"]) & (m["volume"] > 0)]
-        if valid.empty:
-            rows.append({**c, "auction_pct":round(ap,3), "status":"SKIP", "reason":"窗口内未找到收盘不低于均价且最低价不破参考价的有效分钟K线", "fill_price":"", "fill_time":"", "estimated":""})
-            continue
-        eligible.append((ap, c, valid.iloc[0]))
-    eligible.sort(key=lambda x: x[0], reverse=True)
+        fill = round(open_price * 1.001, 2)
+        eligible.append((ap, candidate, fill, observed.strftime("%H:%M")))
+    eligible.sort(key=lambda item: item[0], reverse=True)
     selected = eligible[0] if eligible else None
-    for ap, c, bar in eligible:
-        if selected and c["code"] == selected[1]["code"]:
-            price = round(float(bar["close"]) * 1.001, 2)
-            rows.append({**c, "auction_pct":round(ap,3), "status":"FILLED_ESTIMATED", "reason":"首个确认分钟收盘价加0.1%滑点估算；不代表真实盘口成交", "fill_price":price, "fill_time":str(bar["time"]), "estimated":"YES"})
+    for ap, candidate, fill, fill_time in eligible:
+        if selected and candidate["code"] == selected[1]["code"]:
+            rows.append({**candidate, "auction_pct":round(ap,3), "status":"FILLED_ESTIMATED", "reason":"竞价达标，按开盘价加0.1%滑点估算；仅模拟", "fill_price":fill, "fill_time":fill_time, "estimated":"YES"})
         else:
-            rows.append({**c, "auction_pct":round(ap,3), "status":"SKIP", "reason":"多只满足时按竞价强度只选一只", "fill_price":"", "fill_time":"", "estimated":""})
+            rows.append({**candidate, "auction_pct":round(ap,3), "status":"SKIP", "reason":"多只达标时按竞价涨幅降序选择一只", "fill_price":"", "fill_time":""})
     return rows
-
 
 def apply_paper_account(date_str, rows, selected_source, dry_run=False):
     """Size, book, and report the one permitted estimated entry."""
@@ -265,6 +298,8 @@ def apply_paper_account(date_str, rows, selected_source, dry_run=False):
         "slippage_rate": str(config["adverse_slippage_rate"]),
         "source": selected_source or "strategy", "origin": "live_run",
         "eligible_date": next_day.isoformat(),
+        "stop_price": str(selected.get("stop_price") or ""),
+        "stop_loss_pct": str(selected.get("stop_loss_pct") or ""),
         "reason": f"估算成交；T+1日历来源：{calendar_source}",
     }
     selected.update({
@@ -280,20 +315,47 @@ def apply_paper_account(date_str, rows, selected_source, dry_run=False):
     return state, [event] if not dry_run else []
 
 
-def process(date_str, dry_run=False, allow_user_seed=False):
+def resolve_strategy(date_str):
+    """Fetch and parse both sources before the auction so the session knows which codes to poll."""
     target = date.fromisoformat(date_str)
-    REPORTS.mkdir(parents=True, exist_ok=True)
     close_day, calendar_source = previous_trading_day(target)
-    close_day_str = close_day.isoformat()
-    close_url = CLOSE_URL.format(date=close_day_str)
+    close_url = CLOSE_URL.format(date=close_day.isoformat())
     morning_url = MORNING_URL.format(date=date_str)
-
     close_html, close_err, close_status = fetch(close_url)
     morning_html, morning_err, morning_status = fetch(morning_url)
-    close_text, close_meta = save_snapshot(date_str, "close", close_url, close_html, close_err, close_status)
-    morning_text, morning_meta = save_snapshot(date_str, "morning", morning_url, morning_html, morning_err, morning_status)
+    _, close_meta = save_snapshot(date_str, "close", close_url, close_html, close_err, close_status)
+    _, morning_meta = save_snapshot(date_str, "morning", morning_url, morning_html, morning_err, morning_status)
+    decision = select_strategy(target, close_day, close_html, close_meta, morning_html, morning_meta)
+    return {
+        "close_day": close_day, "calendar_source": calendar_source,
+        "close_url": close_url, "morning_url": morning_url,
+        "close_html": close_html, "morning_html": morning_html,
+        "close_err": close_err, "morning_err": morning_err,
+        "close_meta": close_meta, "morning_meta": morning_meta, "decision": decision,
+    }
 
-    decision = select_strategy(target, close_day, close_text, close_meta, morning_text, morning_meta)
+
+def process(date_str, dry_run=False, allow_user_seed=False, prepared=None):
+    target = date.fromisoformat(date_str)
+    REPORTS.mkdir(parents=True, exist_ok=True)
+    if prepared is None:
+        close_day, calendar_source = previous_trading_day(target)
+        close_day_str = close_day.isoformat()
+        close_url = CLOSE_URL.format(date=close_day_str)
+        morning_url = MORNING_URL.format(date=date_str)
+        close_html, close_err, close_status = fetch(close_url)
+        morning_html, morning_err, morning_status = fetch(morning_url)
+        close_text, close_meta = save_snapshot(date_str, "close", close_url, close_html, close_err, close_status)
+        morning_text, morning_meta = save_snapshot(date_str, "morning", morning_url, morning_html, morning_err, morning_status)
+        decision = select_strategy(target, close_day, close_html, close_meta, morning_html, morning_meta)
+    else:
+        close_day, calendar_source = prepared["close_day"], prepared["calendar_source"]
+        close_day_str = close_day.isoformat()
+        close_url, morning_url = prepared["close_url"], prepared["morning_url"]
+        close_html, morning_html = prepared["close_html"], prepared["morning_html"]
+        close_err, morning_err = prepared["close_err"], prepared["morning_err"]
+        close_meta, morning_meta = prepared["close_meta"], prepared["morning_meta"]
+        decision = prepared["decision"]
     # Optional, explicit manual override for the user-supplied initial table only.
     if decision["status"] == "NO_VALID_STRATEGY" and allow_user_seed and date_str == "2026-10-12":
         decision.update(status="VALID_STRATEGY_MANUAL_SEED", selected_source="user_supplied_seed",
@@ -307,6 +369,8 @@ def process(date_str, dry_run=False, allow_user_seed=False):
         "status": decision["status"], "selection_reason": decision["selection_reason"],
         "close_parse_note": decision["close_parse_note"], "morning_parse_note": decision["morning_parse_note"],
         "candidate_codes": [c["code"] for c in decision["selected_candidates"]],
+        "selected_candidates": decision["selected_candidates"],
+        "rejected_candidates": decision.get("rejected_candidates", []),
         "decided_at": datetime.now().astimezone().isoformat(),
     }
     folder = DATA / "signals" / date_str
@@ -355,7 +419,7 @@ def process(date_str, dry_run=False, allow_user_seed=False):
     lines += ["", "## 数据与风险说明",
               "- 先检查上一交易日收盘复盘；只有它无法获取或没有有效候选时，才回退目标交易日盘前早报。",
               "- 若交易日历接口不可用，`WEEKDAY_FALLBACK_NOT_HOLIDAY_AWARE` 仅按工作日推算，遇中国市场假期需人工核验。",
-              "- 仅支持已配置并审核规则的候选代码；未知股票不会被猜测加入。",
+              "- 仅执行从明确表A候选行解析且具备竞价门槛、止损价的股票；未知表格不会被猜测加入。",
               "- 竞价数据缺失、分钟线缺失或均价确认失败时不下单；估算成交不是实际可成交承诺。",
               "- `--allow-user-seed` 仅用于显式启用 2026-10-12 用户表格候选；默认关闭。"]
     report = REPORTS / f"{date_str}-report.md"

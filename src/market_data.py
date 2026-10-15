@@ -7,12 +7,14 @@ Neither adapter guarantees a historical 09:25 auction snapshot or queue-level fi
 from __future__ import annotations
 import re
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 import requests
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 UA = "Mozilla/5.0 (compatible; olenara-paper-trader/1.0)"
+CHINA = ZoneInfo("Asia/Shanghai")
 
 def market_prefix(code: str) -> str:
     code = str(code).zfill(6)
@@ -24,6 +26,7 @@ def fetch_tencent_quotes(codes):
     """Fetch Tencent quote snapshots. Returns normalized rows; errors fail closed."""
     symbols = [market_prefix(c) for c in codes]
     url = "https://qt.gtimg.cn/q=" + ",".join(symbols)
+    observed_now = datetime.now(CHINA)
     response = requests.get(url, timeout=12, headers={"User-Agent": UA, "Referer": "https://gu.qq.com/"})
     response.raise_for_status()
     response.encoding = "gbk"
@@ -47,12 +50,12 @@ def fetch_tencent_quotes(codes):
         if not code or price <= 0 or prev_close <= 0:
             continue
         result.append({
-            "date": datetime.now().strftime("%Y-%m-%d"),
+            "date": observed_now.date().isoformat(),
             "code": code, "name": fields[1], "last_price": price,
             "prev_close": prev_close, "open": open_price,
             "change_pct": round((price / prev_close - 1) * 100, 4),
             "source": "Tencent qt.gtimg.cn",
-            "observed_at": datetime.now().astimezone().isoformat(),
+            "observed_at": observed_now.isoformat(),
             "raw_symbol": symbol,
         })
     return result
@@ -93,7 +96,7 @@ def fetch_akshare_auction_rows(codes, quote_rows):
     except ImportError:
         return [], ["akshare is not installed"]
 
-    today = datetime.now().astimezone().date().isoformat()
+    today = datetime.now(CHINA).date().isoformat()
     prev_close = {str(r.get("code", "")).zfill(6): r.get("prev_close") for r in quote_rows}
     rows, errors = [], []
     for raw_code in codes:
@@ -123,7 +126,7 @@ def fetch_akshare_auction_rows(codes, quote_rows):
                 "date": today, "code": code, "auction_price": price,
                 "prev_close": close, "auction_pct": round((price / close - 1) * 100, 4),
                 "source": "AkShare Eastmoney pre-market 09:26 row (logical 09:25 match)",
-                "observed_at": datetime.now().astimezone().isoformat(),
+                "observed_at": datetime.now(CHINA).isoformat(),
             })
         except Exception as e:
             errors.append(f"{code}: {type(e).__name__}: {e}")
