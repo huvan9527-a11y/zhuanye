@@ -136,7 +136,7 @@ def parse_candidates(html):
             continue
         for row in rows[1:]:
             cells = [cell.get_text(" ", strip=True) for cell in row.find_all(["td", "th"])]
-            if len(cells) <= max(idx.values()):
+            if len(cells) <= max(i for i in idx.values() if i is not None):
                 continue
             found = re.search(r"(?<!\d)(\d{6})(?!\d)", cells[idx["code"]])
             code = found.group(1) if found else ""
