@@ -428,7 +428,7 @@ def process(date_str, dry_run=False, allow_user_seed=False, prepared=None):
               "- 先检查上一交易日收盘复盘；只有它无法获取或没有有效候选时，才回退目标交易日盘前早报。",
               "- 若交易日历接口不可用，`WEEKDAY_FALLBACK_NOT_HOLIDAY_AWARE` 仅按工作日推算，遇中国市场假期需人工核验。",
               "- 仅执行从明确表A候选行解析且具备竞价门槛、止损价的股票；未知表格不会被猜测加入。",
-              "- 竞价数据缺失、分钟线缺失或均价确认失败时不下单；估算成交不是实际可成交承诺。",
+              "- 竞价、09:30后开盘价或止损规则缺失时不下单；估算成交不是实际可成交承诺。",
               "- `--allow-user-seed` 仅用于显式启用 2026-10-12 用户表格候选；默认关闭。"]
     report = REPORTS / f"{date_str}-report.md"
     report.write_text("\n".join(lines), encoding="utf-8")
