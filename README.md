@@ -72,7 +72,9 @@ python -m src.session --strategy-date 2026-10-12
 
 若文章没有明确止盈/持有期限，报告会标记未定义；本版不自行编造止盈规则。任何手动补充规则请记录在 `data/signals/`，不要覆盖原文快照。
 
-当前每天的策略门槛和绝对止损价以当日来源页表A为准；下方 10/12 规则是历史样例，不会覆盖动态解析出的新规则。\n\n## 部署到 GitHub
+当前每天的策略门槛和绝对止损价以当日来源页表A为准；下方 10/12 规则是历史样例，不会覆盖动态解析出的新规则。
+
+## 部署到 GitHub
 
 1. 确认仓库中已包含 `config/paper_account.json`、`data/paper_account/` 和 `docs/paper-account-operations.md`。
 2. 在 **Settings → Actions → General** 中允许 Actions 工作流运行，并确认工作流拥有 `contents: write` 权限；定时任务会将账本、行情快照和报告提交回当前分支。

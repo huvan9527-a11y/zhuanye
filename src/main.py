@@ -111,6 +111,9 @@ def parse_candidates(html):
     if not html:
         return [], "empty source HTML", []
     soup = BeautifulSoup(html, "html.parser")
+    page_text = re.sub(r"\s+", "", soup.get_text(" ", strip=True))
+    if "按开盘价买入" not in page_text:
+        return [], "原文未明确说明达标后按开盘价买入，执行规则不支持", []
     candidates, rejected = [], []
     for table in soup.find_all("table"):
         heading = table.find_previous(["h2", "h3", "h4"])
@@ -138,8 +141,13 @@ def parse_candidates(html):
             found = re.search(r"(?<!\d)(\d{6})(?!\d)", cells[idx["code"]])
             code = found.group(1) if found else ""
             name, threshold_text, stop_text = cells[idx["name"]].strip(), cells[idx["threshold"]], cells[idx["stop"]]
-            threshold, stop_price = _number(threshold_text), _number(stop_text)
+            threshold = _number(threshold_text)
             reference_close = _number(cells[idx["close"]]) if idx["close"] is not None else None
+            multiplier = re.search(r"(?:×|x|\*)\s*(0?\.\d+)", stop_text, re.I)
+            if multiplier:
+                stop_price = reference_close * float(multiplier.group(1)) if reference_close else None
+            else:
+                stop_price = _number(stop_text)
             if not code or not name or threshold is None or stop_price is None or stop_price <= 0:
                 rejected.append({"code": code, "name": name, "reason": "表A候选缺少有效代码/名称/阈值/绝对止损价"})
                 continue
