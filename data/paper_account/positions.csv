@@ -1,1 +1,1 @@
-﻿code,name,quantity,average_entry_price,cost_basis,last_mark,last_mark_date,entry_date,eligible_to_sell
+﻿code,name,quantity,average_entry_price,cost_basis,last_mark,last_mark_date,entry_date,eligible_to_sell,stop_price,stop_loss_pct

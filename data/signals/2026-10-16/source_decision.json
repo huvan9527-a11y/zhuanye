@@ -1,0 +1,48 @@
+{
+  "target_date": "2026-10-16",
+  "previous_trading_day": "2026-10-15",
+  "trading_calendar_source": "akshare_sina_trade_calendar",
+  "checked_sources": [
+    {
+      "kind": "close",
+      "url": "https://olenara.com/2026-10-15.html",
+      "fetched_at": "2026-10-16T01:44:25.954224+00:00",
+      "http_status": 200,
+      "fetch_error": null,
+      "available": true,
+      "sha256": "6b46e22a503ebeab758e0994bcfdfb1a8b19aacbb4e6f73565ade71e8b7205ef"
+    },
+    {
+      "kind": "morning",
+      "url": "https://olenara.com/morning-2026-10-16.html",
+      "fetched_at": "2026-10-16T01:44:26.019048+00:00",
+      "http_status": 200,
+      "fetch_error": null,
+      "available": true,
+      "sha256": "461e28750844c0e37f1058c249007363f01cb76a71123917779dba3928cfefef"
+    }
+  ],
+  "selected_source": null,
+  "selected_url": null,
+  "status": "NO_VALID_STRATEGY",
+  "selection_reason": "收盘复盘与目标日盘前早报均未能解析出有效、可识别的策略候选；严格空仓，不使用隐式种子数据。",
+  "close_parse_note": "未从明确标记的表A可做池解析到受支持候选",
+  "morning_parse_note": "未从明确标记的表A可做池解析到受支持候选",
+  "candidate_codes": [],
+  "selected_candidates": [],
+  "rejected_candidates": [
+    {
+      "table": "表 A 兑现（可做池，门槛 ≥+3%）—— 达标 2 只，按规则买入双双亏损",
+      "reason": "表A缺少代码、名称、竞价门槛或止损列"
+    },
+    {
+      "table": "表A｜低位首板主攻池（首板 + 留存≥20% + 首封≤10:30 + 10日偏离不在 TOP60）",
+      "reason": "表A缺少代码、名称、竞价门槛或止损列"
+    },
+    {
+      "table": "表A 低位首板 · 8 只 —— 位置条件：10 日偏离值不在全市场 TOP60",
+      "reason": "表A缺少代码、名称、竞价门槛或止损列"
+    }
+  ],
+  "decided_at": "2026-10-16T01:44:26.057742+00:00"
+}
