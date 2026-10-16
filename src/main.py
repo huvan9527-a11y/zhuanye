@@ -114,11 +114,19 @@ def parse_candidates(html):
     page_text = re.sub(r"\s+", "", soup.get_text(" ", strip=True))
     if "按开盘价买入" not in page_text:
         return [], "原文未明确说明达标后按开盘价买入，执行规则不支持", []
+    shared_stop = re.search(
+        r"(?:止损|止损线|止损价)[^。；;]{0,100}?(?:昨收|前收|今收|\d{1,2}/\d{1,2}收盘|收盘价)[^。；;]{0,40}?[×x*]\s*(0?\.\d+)",
+        page_text,
+        re.I,
+    )
+    shared_stop_loss_pct = (1 - float(shared_stop.group(1))) * 100 if shared_stop else None
     candidates, rejected = [], []
     for table in soup.find_all("table"):
         heading = table.find_previous(["h2", "h3", "h4"])
         label = heading.get_text(" ", strip=True) if heading else ""
         if not re.search(r"表\s*A|可做池", label, re.I):
+            continue
+        if re.search(r"兑现|回顾|历史|结果", label):
             continue
         rows = table.find_all("tr")
         if len(rows) < 2:
@@ -129,32 +137,45 @@ def parse_candidates(html):
         idx = {
             "code": column(r"代码|证券代码"), "name": column(r"名称|股票名称"),
             "threshold": column(r"竞价门槛|竞价阈值|竞价"), "stop": column(r"止损"),
-            "close": column(r"收|前收|参考价"),
+            "close": column(r"昨收|前收|昨日收盘|参考价|收盘价"),
         }
-        if any(idx[k] is None for k in ("code", "name", "threshold", "stop")):
-            rejected.append({"table": label, "reason": "表A缺少代码、名称、竞价门槛或止损列"})
+        if any(idx[k] is None for k in ("code", "name", "threshold")):
+            rejected.append({"table": label, "reason": "表A缺少代码、名称或竞价门槛列"})
+            continue
+        if idx["stop"] is None and shared_stop_loss_pct is None:
+            rejected.append({"table": label, "reason": "表A没有止损列，正文也没有可识别的统一止损规则"})
             continue
         for row in rows[1:]:
             cells = [cell.get_text(" ", strip=True) for cell in row.find_all(["td", "th"])]
-            if len(cells) <= max(i for i in idx.values() if i is not None):
+            required_indices = [idx[k] for k in ("code", "name", "threshold")]
+            if idx["stop"] is not None:
+                required_indices.append(idx["stop"])
+            if idx["close"] is not None:
+                required_indices.append(idx["close"])
+            if len(cells) <= max(required_indices):
                 continue
             found = re.search(r"(?<!\d)(\d{6})(?!\d)", cells[idx["code"]])
             code = found.group(1) if found else ""
-            name, threshold_text, stop_text = cells[idx["name"]].strip(), cells[idx["threshold"]], cells[idx["stop"]]
+            name, threshold_text = cells[idx["name"]].strip(), cells[idx["threshold"]]
+            stop_text = cells[idx["stop"]] if idx["stop"] is not None else ""
             threshold = _number(threshold_text)
             reference_close = _number(cells[idx["close"]]) if idx["close"] is not None else None
             multiplier = re.search(r"(?:×|x|\*)\s*(0?\.\d+)", stop_text, re.I)
             if multiplier:
+                stop_loss_pct = (1 - float(multiplier.group(1))) * 100
                 stop_price = reference_close * float(multiplier.group(1)) if reference_close else None
             else:
                 stop_price = _number(stop_text)
-            if not code or not name or threshold is None or stop_price is None or stop_price <= 0:
-                rejected.append({"code": code, "name": name, "reason": "表A候选缺少有效代码/名称/阈值/绝对止损价"})
+                stop_loss_pct = round((1 - stop_price / reference_close) * 100, 4) if stop_price and reference_close else None
+            if stop_price is None and shared_stop_loss_pct is not None:
+                stop_loss_pct = shared_stop_loss_pct
+            if not code or not name or threshold is None or (stop_price is None and stop_loss_pct is None) or (stop_price is not None and stop_price <= 0):
+                rejected.append({"code": code, "name": name, "reason": "表A候选缺少有效代码/名称/阈值/止损规则"})
                 continue
             candidates.append({
                 "code": code, "name": name, "auction_min_pct": threshold,
                 "reference_close": reference_close, "stop_price": stop_price,
-                "stop_loss_pct": round((1 - stop_price / reference_close) * 100, 4) if reference_close else None,
+                "stop_loss_pct": stop_loss_pct,
                 "rule": f"竞价≥+{threshold:g}%，按开盘价买入",
             })
         break
@@ -217,6 +238,7 @@ def evaluate_candidates(date_str, candidates):
         quotes = quotes.sort_values("observed_at") if "observed_at" in quotes else quotes
     rows, eligible = [], []
     for candidate in candidates:
+        candidate = dict(candidate)
         code = str(candidate["code"]).zfill(6)
         a = auction[auction["code"].astype(str).str.zfill(6) == code] if not auction.empty and "code" in auction else pd.DataFrame()
         if a.empty:
@@ -226,6 +248,14 @@ def evaluate_candidates(date_str, candidates):
         if ap is None:
             rows.append({**candidate, "auction_pct":"", "status":"DATA_INVALID", "reason":"竞价涨幅无法计算", "fill_price":"", "fill_time":""})
             continue
+        if candidate.get("stop_price") is None and candidate.get("stop_loss_pct") is not None:
+            previous_close = candidate.get("reference_close") or _number(a.iloc[-1].get("prev_close"))
+            if previous_close and previous_close > 0:
+                candidate["reference_close"] = previous_close
+                candidate["stop_price"] = round(previous_close * (1 - float(candidate["stop_loss_pct"]) / 100), 2)
+            else:
+                rows.append({**candidate, "auction_pct":round(ap,3), "status":"DATA_INVALID", "reason":"止损规则缺少可用昨收价，跳过", "fill_price":"", "fill_time":""})
+                continue
         if ap < float(candidate["auction_min_pct"]):
             rows.append({**candidate, "auction_pct":round(ap,3), "status":"SKIP", "reason":f"竞价未达+{candidate['auction_min_pct']}%门槛", "fill_price":"", "fill_time":""})
             continue
