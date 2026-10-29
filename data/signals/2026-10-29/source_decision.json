@@ -1,0 +1,35 @@
+{
+  "target_date": "2026-10-29",
+  "previous_trading_day": "2026-10-28",
+  "trading_calendar_source": "akshare_sina_trade_calendar",
+  "checked_sources": [
+    {
+      "kind": "close",
+      "url": "https://olenara.com/2026-10-28.html",
+      "fetched_at": "2026-10-29T07:09:29.431601+00:00",
+      "http_status": 200,
+      "fetch_error": null,
+      "available": true,
+      "sha256": "fbc54d9c0f7eb61bed59a621863f3b2bbbf68ffd27521275e816077bf3d22c44"
+    },
+    {
+      "kind": "morning",
+      "url": "https://olenara.com/morning-2026-10-29.html",
+      "fetched_at": "2026-10-29T07:09:29.520861+00:00",
+      "http_status": 200,
+      "fetch_error": null,
+      "available": true,
+      "sha256": "ddfd8b25d66e8ed3f569ea7f0e0da9d4c7c9663927c4acd2a2d4b06a220e0cb8"
+    }
+  ],
+  "selected_source": null,
+  "selected_url": null,
+  "status": "NO_VALID_STRATEGY",
+  "selection_reason": "收盘复盘与目标日盘前早报均未能解析出有效、可识别的策略候选；严格空仓，不使用隐式种子数据。",
+  "close_parse_note": "未从明确标记的表A可做池解析到受支持候选",
+  "morning_parse_note": "未从明确标记的表A可做池解析到受支持候选",
+  "candidate_codes": [],
+  "selected_candidates": [],
+  "rejected_candidates": [],
+  "decided_at": "2026-10-29T07:09:29.605144+00:00"
+}
