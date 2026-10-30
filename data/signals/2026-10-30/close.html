@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026年10月29日 A股收盘复盘：崩塌确认，跌停42只，硬件算力链全线塌方</title>
+<script src="echarts.min.js"></script>
+<script>window.echarts || document.write('<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"><\/script>');</script>
+<style>
+:root{
+  --up:#d92b2b; --down:#1a9c5b;
+  --ink:#0F1319; --sub:#5F6875; --line:#E7EBF1; --soft:#F6F8FB; --bg2:#F5F7FA;
+  --purple:#7a4fd0; --orange:#c8841a; --gray:#8b919a; --teal:#0e8a8a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:#fff; color:var(--ink);
+  font-family:"HarmonyOS Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei UI",-apple-system,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+.num,td.n,th.n,.kpi b{font-variant-numeric:tabular-nums}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 22px 70px}
+
+.hero{
+  background:#fff;color:var(--ink);
+  border:1px solid var(--line);border-top:3px solid var(--up);
+  border-radius:14px;padding:26px 30px;margin-bottom:22px;
+}
+.hero .eyebrow{font-size:12px;letter-spacing:.16em;color:var(--up);font-weight:600;margin-bottom:10px}
+.hero h1{margin:0 0 10px;font-size:27px;line-height:1.35;letter-spacing:-.01em}
+.hero .sub{color:var(--sub);font-size:13.5px}
+.hero .meta{margin-top:14px;padding-top:13px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--sub);display:flex;flex-wrap:wrap;gap:6px 22px}
+
+.concl{
+  background:#fff;border:1px solid var(--line);border-left:3px solid var(--up);
+  border-radius:10px;padding:20px 24px;margin:0 0 26px;
+}
+.concl h2{margin:0 0 12px;font-size:15px;color:var(--up);letter-spacing:.04em}
+.concl ol{margin:0;padding-left:20px}
+.concl li{margin:9px 0}
+.concl li b{color:var(--ink)}
+
+h2.sec{
+  font-size:19px;margin:38px 0 14px;padding-left:12px;
+  border-left:4px solid var(--up);line-height:1.4;letter-spacing:-.005em;
+}
+h2.sec small{font-size:12.5px;color:var(--sub);font-weight:400;margin-left:8px;letter-spacing:0}
+h3{font-size:15px;margin:22px 0 8px;color:var(--ink)}
+p{margin:10px 0}
+.muted{color:var(--sub)}
+.up{color:var(--up)}
+.dn{color:var(--down)}
+.mono{font-variant-numeric:tabular-nums}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--soft);font-weight:600;font-size:12.5px;color:var(--sub);letter-spacing:.02em;white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:#fcfdfe}
+
+.tag{display:inline-block;padding:1px 8px;border-radius:4px;font-size:11.5px;line-height:1.7;font-weight:600;white-space:nowrap}
+.t-red{background:#fdecec;color:#b02020}
+.t-grn{background:#e9f6ef;color:#12774a}
+.t-gry{background:#eef1f5;color:#4d5663}
+.t-pur{background:#f1ebfb;color:#5c37a8}
+.t-org{background:#fdf3e3;color:#9a6410}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0 6px}
+.kpi{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi span{display:block;font-size:11.5px;color:var(--sub);letter-spacing:.03em;margin-bottom:5px}
+.kpi b{font-size:21px;font-weight:700;letter-spacing:-.01em}
+.kpi em{display:block;font-style:normal;font-size:11.5px;color:var(--sub);margin-top:4px}
+.kpi em.up{color:var(--up)}
+.kpi em.dn{color:var(--down)}
+
+.chart{width:100%;height:300px;margin:8px 0 4px}
+#c3{height:600px}
+#c4{height:420px}
+.cap{font-size:12px;color:var(--sub);margin:2px 0 20px}
+
+.note{
+  background:var(--soft);border:1px solid var(--line);border-radius:9px;
+  padding:13px 17px;font-size:13px;color:var(--sub);margin:16px 0;
+}
+.note b{color:var(--ink)}
+
+.warn{
+  background:#fffaf3;border:1px solid #f2e0c4;border-left:3px solid var(--orange);
+  border-radius:9px;padding:14px 18px;font-size:13.5px;margin:18px 0;
+}
+.warn b{color:#8a5a0c}
+
+.plan{
+  background:#f7fbf8;border:1px solid #dcebe2;border-left:3px solid var(--down);
+  border-radius:9px;padding:16px 20px;margin:18px 0;
+}
+.plan h4{margin:0 0 8px;font-size:14px;color:#12774a}
+.plan p{margin:6px 0;font-size:13.5px}
+
+.disc{
+  margin-top:46px;padding-top:20px;border-top:1px solid var(--line);
+  font-size:11.5px;color:#8b919a;line-height:1.85;
+}
+.disc b{color:var(--sub)}
+@media print{.chart{page-break-inside:avoid}}
+
+/* --- web 版补丁（make_web_review_1029 注入） --- */
+.h1sub{font-size:16px;color:var(--sub);margin:-2px 0 10px;line-height:1.55}
+.kpi em.up{color:var(--up)}
+.kpi em.dn{color:var(--down)}
+.kpi b.up{color:var(--up)}
+.kpi b.dn{color:var(--down)}
+</style>
+<!--site-skin--><style>
+:root{
+ /* —— 品牌与强调（JLC 主按钮红）—— */
+ --red:#E42313;--red-d:#8B150C;--red-l:#FEF2F2;--red-b:#FBD5D5;
+ /* —— 涨跌（A股惯例：红涨绿跌）—— 红绿只留给涨跌 —— */
+ --up:#D92B2B;--down:#0E9F6E;
+ /* —— 中性阶（cool slate，2026-10-22 换掉 zinc：zinc 偏绿，与红绿涨跌色打架显脏）——
+    全部收敛到同一色相族（hue≈220），避免十几种灰各自偏色造成「蒙了一层灰」。 */
+ --ink:#0F1319;--ink2:#333A45;--sub:#5F6875;--faint:#98A1AF;
+ --line:#E7EBF1;--line2:#D6DCE5;--soft:#F6F8FB;
+ --bg:#FFFFFF;--bg2:#F5F7FA;
+ /* —— 字体（2026-10-22 重做）——
+    ★ 旧的 --serif 在本机回落到 "Source Han Serif SC"（本机只装了 Heavy 那一个字重），
+      400 正文被渲染成粗宋，全站又黑又糊，是「字体丑」的根因。
+      现改为全站统一无衬线，中文优先 HarmonyOS Sans SC / Noto Sans SC（本机均有），
+      西文与数字优先 Segoe UI 的 tabular 数字，保证表格竖排对齐。 */
+ --sans:"HarmonyOS Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei UI","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+ --num:"Segoe UI","HarmonyOS Sans SC","Noto Sans SC",sans-serif;
+ --serif:"Noto Serif SC","Songti SC",Georgia,serif;
+ /* —— 柔和阴影：比 JLC 原版轻一档，避免白卡在白底上出现脏边 —— */
+ --sh:0 1px 2px rgba(15,23,42,.05),0 6px 20px rgba(15,23,42,.06);
+ --sh-s:0 1px 2px rgba(15,23,42,.04);
+ --wrap:1200px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.72;letter-spacing:.012em;
+ -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+ text-rendering:optimizeLegibility;font-feature-settings:"kern" 1}
+a{color:var(--red);text-decoration:none;transition:color .15s}
+a:hover{color:var(--red-d);text-decoration:underline;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
+::selection{background:var(--red-l);color:var(--red-d)}
+
+/* ---- 标题层级（JLC 的字号/字重/字距；中文负字距收窄到 -0.4px，否则汉字会贴在一起）---- */
+h1{font-size:37px;font-weight:700;letter-spacing:-.4px;line-height:1.28;margin:0}
+h2{font-size:27px;font-weight:700;letter-spacing:-.4px;line-height:1.35;margin:0;
+ border-left:0;padding-left:0}
+h3{font-size:20px;font-weight:600;letter-spacing:-.2px;line-height:1.45;margin:0}
+h4{font-size:17px;font-weight:600;letter-spacing:0;line-height:1.5;margin:0}
+
+nav.top{background:rgba(255,255,255,.93);-webkit-backdrop-filter:saturate(180%) blur(8px);
+ backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line);
+ position:sticky;top:0;z-index:50}
+nav.top .wrap{max-width:var(--wrap);margin:0 auto;padding:18px 24px;
+ display:flex;align-items:center;gap:22px}
+nav.top .brand{display:inline-flex;align-items:center;gap:11px;flex:none;
+ color:var(--red);font-weight:700;letter-spacing:-.2px;font-size:17px}
+nav.top .brand img{width:36px;height:36px;display:block;border-radius:9px;background:#fff;border:1px solid var(--line)}
+nav.top .brand .b-text{color:var(--red)}
+nav.top .nlinks{margin-left:auto;display:flex;align-items:center;gap:24px;min-width:0}
+nav.top .nlinks a{position:relative;color:var(--ink);font-size:14px;font-weight:500;
+ padding:4px 0;white-space:nowrap}
+nav.top .nlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;
+ background:var(--red);transform:scaleX(0);transform-origin:center;
+ transition:transform .3s ease-in-out}
+nav.top .nlinks a:hover{color:var(--red);text-decoration:none}
+nav.top .nlinks a:hover::after{transform:scaleX(1)}
+nav.top .nlinks a.on{color:var(--red);font-weight:600}
+nav.top .nlinks a.on::after{transform:scaleX(1)}
+nav.top .sp{color:var(--faint);font-size:12.5px;white-space:nowrap;flex:none}
+@media(max-width:1150px){
+ nav.top .sp{display:none}
+ nav.top .nlinks{gap:18px}
+ nav.top .nlinks a{font-size:13.5px}
+}
+@media(max-width:900px){
+ nav.top .wrap{padding:10px 14px;gap:8px;flex-wrap:wrap}
+ nav.top .brand{font-size:15px}
+ nav.top .brand img{width:28px;height:28px;border-radius:7px}
+ /* 窄屏：11 个频道横向滚动时，后半段（各方观点 / 明天跟谁）完全落在视口外，
+    用户会以为频道被删了（2026-10-20 实际发生）。改为整行铺满 + 自动换行，
+    保证每个入口都在首屏可见，不再依赖横向滑动。 */
+ nav.top .nlinks{margin-left:0;flex:1 1 100%;overflow:visible;flex-wrap:wrap;
+  gap:2px 12px;-webkit-overflow-scrolling:auto;scrollbar-width:none}
+ nav.top .nlinks a{font-size:12.5px;padding:2px 0}
+ nav.top .nlinks::-webkit-scrollbar{display:none}
+}
+
+/* ---- 页面底色：浅冷灰画布 + 纯白卡片（2026-10-22）----
+   旧版把 html/body 强刷纯白，卡片与页面同色、只剩 1px 灰边框做分隔，
+   在 1280px 宽屏上看就是「一整片灰白糊在一起」= 用户说的「颜色脏」。
+   现在恢复浅灰画布，卡片用白底 + 极轻投影，层次靠明度差而不是边框。 */
+html{background:var(--bg2) !important}
+body{background:var(--bg2) !important;color:var(--ink2);font-family:var(--sans);
+ font-size:15.5px;line-height:1.78;letter-spacing:.012em;
+ -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ---- 页头：白底 + 顶部品牌细线 + 发丝线收口（浅底深字，不用深色块）---- */
+header,header.top,.hd,.hero{background:#fff;background-image:none;color:var(--ink);
+ border:0;border-top:3px solid var(--up);border-bottom:1px solid var(--line);
+ border-radius:0;box-shadow:none;padding:30px 0 26px;margin:0 0 24px}
+header h1,header.top h1,.hd h1,.hero h1,h1{font-size:30px;font-weight:700;
+ letter-spacing:-.3px;line-height:1.32;color:var(--ink)}
+header .sub,header .sub2,.hero .sub,.hd .sub,.tagline{color:var(--sub);opacity:1;font-size:13.5px}
+.tagline,header .tags .tag{background:var(--soft);border:0;color:var(--ink2)}
+
+/* ---- 区块标题：去掉左侧色条，统一字号字重 ----
+   ★ 必须用 `h2,h2` 这种「重复自身选择器」的写法把权重抬到 (0,0,0,2)，
+     否则压不过各页自带的 `section h2{...border-left:4px solid var(--accent)}`
+     —— 那是 (0,0,1,2)，同权重时后写的胜出，但我们排在 <head> 末尾所以本该胜出，
+     唯独权重更低时必输。2026-09-28 实测 9/22 复盘页 7 个 section 标题就是栽在这。 */
+h2,h2,h2{padding-left:0;border-left:0;font-size:21px;font-weight:700;
+ letter-spacing:-.2px;color:var(--ink)}
+/* 部分页把区块标题写成 `.sec h2{...border-left}`（权重 0,0,1,1），比上面的 h2,h2,h2 高一级，
+   单靠 h2 压不住 → 这里补同权重选择器。2026-10-22 巡检抓到 morning-2026-10-20.html 就是这种。 */
+.sec h2,.sec>h2,.sec>h2>span{padding-left:0;border-left:0}
+h3,h3{font-weight:600;letter-spacing:0}
+h4,h4{font-weight:600}
+/* ★ 2026-10-22：删掉旧的 `p{font-family:var(--serif)}`。
+   本机 --serif 只有思源宋 Heavy 一个字重，400 正文被渲染成粗宋，
+   全页又黑又糊 —— 这是「字体丑」的真正来源。正文一律无衬线。 */
+p{font-family:var(--sans);font-size:15.5px;line-height:1.78}
+li{font-family:var(--sans)}
+
+/* ---- 数字：等宽表格数字，表格竖排才对得齐 ---- */
+.num,.kpi .v,.stat .v,.kpis .v{font-family:var(--num);
+ font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* ---- 语义提示块：把灰底/粉底的「脏块」提亮成近白，靠左侧细条区分语义 ---- */
+.note{background:#F8FAFC;border:1px solid var(--line);color:var(--sub);border-radius:10px}
+.warn{background:#FFFDF6;border:1px solid #F1E4C9;color:#7A5310;border-radius:10px}
+.danger{background:#FFF9F9;border:1px solid #F5DCDC;color:#8F2626;border-radius:10px}
+.ok{background:#F7FCF9;border:1px solid #D6EBDD;color:#116B42;border-radius:10px}
+/* ★ 结论块：各页写法是 `.hero .verdict`（权重 0,0,2,0），皮肤里必须用同权重或更高才压得住，
+   否则粉底 #fdf6f6 会留下来 —— 那正是「颜色脏」的主要来源之一。 */
+.verdict,.concl,.summary,.hero .verdict,.hd .verdict,.sec .verdict{
+ background:#FCFDFE;border-left:3px solid var(--up);border-radius:0 10px 10px 0;
+ padding:16px 18px}
+/* 频道首页（涨停/研究/日报/观点）的 .tag 是 div，默认 display:block 会把粉底拉成一整条长条，
+   看起来像一条脏色带。强制收成胶囊。 */
+.hero>.tag,.hd>.tag,.hero>div.tag{display:inline-block;width:auto;border-radius:20px;
+ padding:3px 11px;font-size:12.5px;font-weight:600;background:#FDEDED;color:#B32424}
+/* 结论块里的强调文字改用近黑加粗，不再整段刷红 ——
+   满屏红字既和「涨=红」的语义打架，也是页面显脏的原因（2026-10-22）。 */
+.hero .verdict b,.verdict b,.concl b{color:var(--ink);font-weight:700}
+
+/* ---- section 卡片：白底 + 发丝线 + 极轻投影，与画布拉开层次 ---- */
+section{background:#fff;border-color:var(--line);box-shadow:none}
+section h2{border-left:0;padding-left:0;font-size:21px;font-weight:700;letter-spacing:-.2px}
+
+/* ---- 卡片 / 表格外壳 ----
+   .chartbox 各页写法不一（9/22 是无边框的纯尺寸盒，9/24 是带边框的卡），
+   所以只归一化圆角，不强行加边框/内边距 —— 加了会把 9/22 的定高图表盒撑变形。 */
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-s)}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-s)}
+.chartbox{border-radius:12px}
+
+/* ---- 表格：表头浅底细线，行分隔降到最轻 ---- */
+th{background:#FAFBFD;color:var(--sub);font-weight:600;border-bottom:1px solid var(--line);
+ font-size:13.5px;letter-spacing:.02em}
+td{border-bottom:1px solid #F1F4F8;color:var(--ink2)}
+tbody tr:nth-child(even){background:#FBFCFE}
+tbody tr:hover{background:var(--soft)}
+
+/* ---- 标签胶囊：降饱和，避免一堆彩色小方块把版面弄花 ---- */
+.hero .tag,.hd .tag,.tag-pill{background:#FDEDED;color:#B32424}
+.chip{border-radius:6px;font-weight:600}
+.chip-r{background:#FDEDED;color:#B32424}
+.chip-g{background:#EAF7F0;color:#12784A}
+.chip-y{background:#FDF6E8;color:#96620A}
+.chip-b{background:#EEF3FD;color:#2F5FB3}
+.chip-n{background:#F3F5F8;color:#5A6472}
+
+/* ---- 数据源 / 免责 / 页脚 ---- */
+.src{color:var(--faint)}
+.srcbox,.disc,.foot{background:var(--soft);border:1px solid var(--line);
+ border-radius:10px;color:var(--sub)}
+footer{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);
+ color:var(--faint);font-size:12.5px;background:transparent;text-align:left}
+
+/* ---- 页内按钮统一胶囊形 ----
+   各报告页/模板页里的「下载 PDF / Markdown / 返回首页」按钮写法不一：
+   有的是 <a class="btn solid">，有的是 <a class="btn">，还有的裸写内联样式。
+   这里统一成与站点模板一致的胶囊形（radius 50px），主按钮取品牌红实心。
+   ★ 只覆盖圆角/内边距/字号与主按钮配色，不动布局宽度，避免把工具栏挤变形。 */
+.btn,.btns a,.btns button,.tools a,.tools button,header .btns a,header .btns button{
+ border-radius:50px;padding:10px 22px;font-size:14px;font-weight:500;display:inline-block;
+ transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+.btn.solid,.btns a.solid,.btns a.primary,.btns a:first-child,
+.tools a.solid,.tools a:first-child{background:var(--red);color:#fff;border-color:var(--red);font-weight:600}
+.btn.solid:hover,.btns a.solid:hover,.btns a:first-child:hover{background:var(--red-d);
+ border-color:var(--red-d);color:#fff;text-decoration:none;box-shadow:var(--sh)}
+.btn:not(.solid),.btns a:not(.solid):not(:first-child),.tools a:not(.solid){
+ border:1px solid var(--line2);background:#fff;color:var(--ink)}
+.btn:not(.solid):hover,.btns a:not(.solid):not(:first-child):hover,.tools a:not(.solid):hover{
+ background:var(--soft);border-color:var(--ink);color:var(--ink);text-decoration:none}
+
+/* 窄屏：这些报告页的数据表列多（实测 9/23 表宽 618px、9/24 表宽 539px、龙头思路 542px），
+   原本直接把整页撑出横向滚动。改成表格自己横向滚动，页面宽度不再被撑破。
+   注：display:block 会让表格按内容宽收缩（窄表不再铺满）——移动端这正是想要的效果。 */
+@media(max-width:820px){
+ header h1,header.top h1,.hd h1,.hero h1,h1{font-size:23px}
+ h2{font-size:18px}
+ table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ /* 9/24 早报页的 KPI 网格写死 repeat(4,1fr) 且该页没有任何媒体查询，
+    `1fr` 的最小内容宽在窄屏下把网格撑出 16px。其中一处还带内联
+    style="grid-template-columns:repeat(4,1fr)" —— 内联样式压过样式表，
+    只能上 !important 才能在窄屏接管。 */
+ .kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr)) !important}
+}
+@media(max-width:640px){
+ header,.hd,.hero{padding:18px 0 16px;margin-bottom:20px}
+ .card{border-radius:8px}
+}
+</style>
+</head>
+<body>
+<nav class="top"><div class="wrap"><a class="brand" href="index.html" title="返回首页"><img src="logo-icon.png" alt="明阳量化"><span class="b-text">明阳量化</span></a><div class="nlinks"><a href="index.html">首页</a><a href="daily.html" class="on">日报</a><a href="limitup.html">涨停</a><a href="lhb.html">龙虎榜</a><a href="research.html">研究</a><a href="guandian.html">观点</a></div></div></nav>
+<div class="wrap">
+
+<div class="hero">
+  <div class="eyebrow">A 股收盘复盘 · 2026 年 10 月 29 日（周四）</div>
+  <h1>2026年10月29日 A股收盘复盘</h1>
+  <div class="h1sub">涨停 39 只 · 炸板 25 只 · 跌停 42 只 · 全市场中位 −2.60% · 成交 1.57 万亿</div>
+  <div class="sub">跌停从上午 10 只扩到收盘 42 只，150 只跌超 9.5%，上证 50 逆势红盘</div>
+  <div class="meta">
+    <span>数据：同花顺官方池 · 收盘快照</span>
+    <span>样本：全市场 5,569 只有效</span>
+    <span>成交：1.57 万亿</span>
+  </div>
+</div>
+
+<div class="concl">
+  <h2>三句话</h2>
+  <ol>
+    <li><b>这是崩塌，不是回调。</b>涨停 39 只、炸板 25 只、跌停 <b>42 只</b>（上午才 10 只），全市场中位 <b>−2.60%</b>、上涨仅 781 只（14.0%）。更要紧的是 <b>150 只跌超 9.5%，但只有 42 只封死跌停</b>——剩下 108 只没跌透，明日还有惯性。</li>
+    <li><b>崩塌有明确方向：硬件算力链。</b>CPO −6.16%、PCB −5.36%、存储 −5.28%、消费电子 −4.64%、液冷 −4.12%。42 只跌停里 PCB/电子链占 <b>13 只</b>。天孚通信 −19.77%、成交 125 亿，是这条链今天的墓碑。</li>
+    <li><b>上证 50 +0.36% 与创业板 −4.45% 背离 4.81 个点。</b>资金没离场，是从算力硬件撤进权重。对做趋势的人是换仓，对打板的人是崩盘——涨停池的票几乎全在被卖的那一侧。</li>
+  </ol>
+</div>
+
+<section class="sec"><h2>一、指数 <small>权重在下午被拉，小票继续崩</small></h2></section>
+
+<div class="kpis">
+  <div class="kpi"><span>上证指数</span><b class="dn">3651.43</b><em class="dn">−0.82%　尾盘拉回 4 点</em></div>
+  <div class="kpi"><span>创业板指</span><b class="dn">2517.59</b><em class="dn">−4.45%　收在最低附近</em></div>
+  <div class="kpi"><span>上证 50</span><b class="up">2762.79</b><em class="up">+0.36%　唯一红盘</em></div>
+  <div class="kpi"><span>全市场中位</span><b class="dn">−2.60%</b><em>上涨 781 / 下跌 4727</em></div>
+</div>
+
+<table>
+<thead><tr><th>指数</th><th class="n">收盘</th><th class="n">涨跌</th><th class="n">竞价</th><th class="n">最低</th><th>日内形态</th></tr></thead>
+<tbody>
+<tr><td><b>上证指数</b></td><td class="n mono">3651.43</td><td class="n dn mono">-0.82%</td><td class="n dn mono">-0.13%</td><td class="n dn mono">-0.98%</td><td>尾盘拉回 4 点</td></tr>
+<tr><td><b>深证成指</b></td><td class="n mono">11138.20</td><td class="n dn mono">-2.92%</td><td class="n dn mono">-0.82%</td><td class="n dn mono">-2.94%</td><td>开盘即全天最高</td></tr>
+<tr><td><b>创业板指</b></td><td class="n mono">2517.59</td><td class="n dn mono">-4.45%</td><td class="n dn mono">-1.46%</td><td class="n dn mono">-4.48%</td><td>收在最低价附近</td></tr>
+<tr><td><b>科创50</b></td><td class="n mono">1228.09</td><td class="n dn mono">-4.27%</td><td class="n dn mono">-0.87%</td><td class="n dn mono">-4.86%</td><td>开盘即全天最高</td></tr>
+<tr><td><b>中证500</b></td><td class="n mono">6453.72</td><td class="n dn mono">-2.82%</td><td class="n dn mono">-0.55%</td><td class="n dn mono">-2.87%</td><td>开盘即全天最高</td></tr>
+<tr><td><b>上证50</b></td><td class="n mono">2762.79</td><td class="n up mono">+0.36%</td><td class="n up mono">+0.61%</td><td class="n dn mono">-0.67%</td><td>唯一红盘</td></tr>
+</tbody>
+</table>
+<div class="cap">数据来源：同花顺指数快照，2026-10-29 收盘。竞价 = 今开 ÷ 昨收 − 1。</div>
+
+<p>六个指数里有<b>四个的最高价就是开盘价</b>，上证 50 也是。区别在于下午：上证从午间 3647.12 拉回 3651.43，多了 4 点；创业板从 −3.63% 走到 −4.45%，又掉了 0.82 个点。<b>权重和小票在下午是反着走的</b>，这不是普跌，是定向抽血。</p>
+
+<div class="chart" id="c1"></div>
+<div class="cap">图 1　竞价涨幅 vs 收盘涨幅。柱子越长表示开盘后的单边幅度越大。</div>
+
+<p>看这张图的关键不是谁跌得多，是<b>竞价与收盘的差</b>。深成指、科创 50、中证 500 三根柱子的收盘段都比竞价段长得多，说明下跌全部发生在盘中——开盘那一刻没人抢跑，是开盘后一路卖。<b>这种形态次日开盘带惯性</b>，不会因为今天跌多了就自动反弹。</p>
+
+<section class="sec"><h2>二、全市场 <small>中位 −2.60%，150 只跌超 9.5%</small></h2></section>
+
+<div class="chart" id="c2"></div>
+<div class="cap">图 2　全市场 5,569 只有效样本的涨跌幅分布（收盘）。</div>
+
+<p>分布的形状比中位数更能说明问题。<b>−3%~−1% 这一桶 1,793 只、−5%~−3% 这一桶 1,419 只，两桶合计 3,212 只，占全市场 57.7%</b>。这是"普遍小跌"的形态，不是"少数暴跌"——真正的暴跌（≤−9.5%）只有 150 只，占 2.7%。</p>
+
+<p>但另一个数字更值得盯：<b>跌超 9.5% 的有 150 只，封死跌停的只有 42 只。</b>中间 108 只是创业板/科创 20cm 的票，跌了 10%~20% 却还没跌停。这意味着<b>抛压还没走完</b>——明日这 108 只里只要有一批继续跌，跌停家数会再上一个台阶。</p>
+
+<div class="note">
+<b>放量下跌确认。</b>两市成交 1.57 万亿，比昨日 1.63 万亿略缩，但在中位 −2.60% 的背景下，这个量能说明<b>是有序撤退，不是踩踏</b>。踩踏日成交量会先放大后急剧萎缩；今天是全天均匀放量。有序撤退的下一站通常是缩量阴跌，而不是 V 反。
+</div>
+
+<section class="sec"><h2>三、跌停 42 只 <small>从上午 10 只到收盘 42 只，三小时翻了四倍</small></h2></section>
+
+<p>上午 11:30 的跌停是 10 只，收盘 42 只。<b>下午两个半小时新增 32 只跌停</b>，这是今天最硬的一个数字，比指数跌幅更能定义这轮下跌的性质。</p>
+
+<table>
+<thead><tr><th>链别</th><th class="n">只数</th><th>名单</th></tr></thead>
+<tbody>
+<tr><td><b>PCB / 覆铜板 / 电子</b></td><td class="n"><b>13</b></td><td>鹏鼎控股、澳弘电子、剑桥科技、沪电股份、华正新材、杭电股份、景旺电子、华盛昌、先导基电、环旭电子、天融信、深赛格、奥士康</td></tr>
+<tr><td>汽车零部件</td><td class="n">7</td><td>岱美股份、飞龙股份、东安动力、正裕工业、百达精工、多伦科技、秦安股份</td></tr>
+<tr><td>机械 / 设备</td><td class="n">5</td><td>快意电梯、赛福天、金富科技、林州重机、国脉科技</td></tr>
+<tr><td>化工</td><td class="n">4</td><td>华昌化工、振华股份、三峡新材、湖北宜化</td></tr>
+<tr><td>商业 / 零售</td><td class="n">4</td><td>广誉远、汇嘉时代、桂发祥、新华百货</td></tr>
+<tr><td>锂电</td><td class="n">1</td><td>国轩高科</td></tr>
+<tr><td>其他</td><td class="n">8</td><td>三变科技、华瓷股份、*ST发展、郑中设计、恒为科技、欧菲光、四川长虹、光启技术</td></tr>
+</tbody>
+</table>
+<div class="cap">数据来源：同花顺跌停池，2026-10-29 收盘，共 42 只。</div>
+
+<div class="chart" id="c6"></div>
+<div class="cap">图 3　跌停 42 只的链别分布。</div>
+
+<p><b>PCB 链 13 只跌停是今天的核心事件。</b>不是"电子板块跌了"，是整条产业链——覆铜板（华正新材）、PCB 制造（沪电、景旺、奥士康、鹏鼎、澳弘）、上游材料（杭电）、设备（先导基电）、通信配套（剑桥科技、天融信）——一次性全部跌停。这种全链条同日跌停，通常对应<b>一个具体的产业利空</b>，而不是情绪波动。</p>
+
+<p>上午的跌停名单里 PCB 只有 3 只（鹏鼎、奥士康、环旭），下午又补进来 10 只。<b>下午是扩散段，不是探底段。</b>扩散段之后一般还有一天确认，明日 PCB 链能不能止跌，是判断这轮下跌是否结束的第一指标。</p>
+
+<div class="warn">
+<b>天孚通信 −19.77%，成交 125.3 亿。</b>竞价 −5.18%，开盘后一路走低，最低 −20.00%（触及跌停），收 −19.77%。单日成交 125 亿的 CPO 龙头接近跌停，说明<b>机构在成规模减仓，不是游资砸盘</b>。龙虎榜净卖出 5.11 亿。这条链的资金结构已经变了。
+</div>
+
+<section class="sec"><h2>四、概念 <small>CPO −6.16%，硬件算力链是唯一的震中</small></h2></section>
+
+<div class="chart" id="c3"></div>
+<div class="cap">图 4　24 个代表概念指数的收盘涨跌幅，按跌幅排序（同花顺概念指数，2026-10-29 收盘）。</div>
+
+<p>这张图的价值在于<b>分层极其干净</b>：</p>
+
+<table>
+<thead><tr><th>层级</th><th class="n">跌幅区间</th><th>代表方向</th><th>含义</th></tr></thead>
+<tbody>
+<tr><td>抗跌层</td><td class="n">−0.8% ~ −1.9%</td><td>煤炭、预制菜、冰雪、游戏、旅游、白酒、创新药</td><td>低位 + 防御，资金避风港</td></tr>
+<tr><td>中间层</td><td class="n">−2.1% ~ −2.7%</td><td>卫星导航、商业航天、军工、低空经济</td><td>题材还在，但被大盘拖</td></tr>
+<tr><td>重灾层</td><td class="n">−3.0% ~ −6.2%</td><td>CPO、PCB、存储、消费电子、液冷、人形机器人</td><td><b>硬件算力链，本轮唯一的震中</b></td></tr>
+</tbody>
+</table>
+
+<p><b>重灾层全是同一条链上的东西：光模块（CPO）→ 覆铜板（PCB）→ 存储 → 消费电子 → 液冷散热 → 机器人硬件。</b>它们共同的属性是"AI 硬件资本开支"这条叙事。<b>今天跌的不是"科技"，是这条特定叙事</b>——创新药只跌 1.87%，游戏只跌 1.17%，说明科技内部也在分化。</p>
+
+<p>抗跌层清一色是<b>低位 + 内需 + 防御</b>。煤炭 −0.81% 是全场最抗跌的，预制菜 −1.07%、冰雪 −1.17%、旅游 −1.30%——这些在 10 月一直不是主线，今天反而最稳。<b>这是典型的"杀高位不杀低位"</b>，和 10/15-16 那轮（低涨幅组 −3.59% 反而更差）方向相反，说明这次是估值/仓位驱动，不是情绪驱动。</p>
+
+<section class="sec"><h2>五、涨停 39 只 <small>商业航天是唯一还有厚度的方向</small></h2></section>
+
+<div class="kpis">
+  <div class="kpi"><span>涨停</span><b>39</b><em>上午 35 → 收盘 39</em></div>
+  <div class="kpi"><span>炸板</span><b>25</b><em>封板率 60.9%</em></div>
+  <div class="kpi"><span>炸板率</span><b>39.1%</b><em>落在退潮区（>35%）</em></div>
+  <div class="kpi"><span>首板占比</span><b>74.4%</b><em>29 / 39，题材尚未成梯队</em></div>
+</div>
+
+<table>
+<thead><tr><th>层级</th><th class="n">只数</th><th>名单</th></tr></thead>
+<tbody>
+<tr><td><b>4 板</b></td><td class="n">2</td><td>光洋股份（<b>炸 29 次</b>／封单仅 0.09 亿／成交 28.9 亿）、青岛食品（一字，成交 0.54 亿）</td></tr>
+<tr><td>3 板</td><td class="n">2</td><td>东贝集团（一字）、文投控股（炸 6 次）</td></tr>
+<tr><td>2 板</td><td class="n">6</td><td>实丰文化、上海沪工、山东矿机、宇晶股份、澳洋健康、联明股份</td></tr>
+<tr><td>首板</td><td class="n">29</td><td>商业航天 9、AI 应用 3、冰雪 3、消费 6、其他 8</td></tr>
+</tbody>
+</table>
+
+<h3>5.1　商业航天 10 只：有厚度，但板块在跌</h3>
+
+<p>39 只涨停里，商业航天/卫星链占 <b>10 只</b>（含太空算力、卫星通信终端），是唯一凑得出 10 只的方向。但必须同时看另一面：<b>商业航天板块指数 −2.21%</b>（上午 −1.17%，下午又补跌 1 个点）。</p>
+
+<div class="note">
+<b>板块跌、个股封 = 抱团，不是启动。</b>真正的启动形态是板块涨、个股跟、梯队厚。今天是板块里大部分票在跌，只有这 10 只小票被资金强行顶住。<b>区别在于：抱团靠的是少量资金的意志，一旦有一只炸板，其余会连锁；启动靠的是板块合力，单只炸板不影响整体。</b>
+</div>
+
+<table>
+<thead><tr><th>名称</th><th>代码</th><th class="n">板</th><th class="n">成交亿</th><th class="n">封单亿</th><th class="n">炸次</th><th class="n">竞价</th><th class="n">开买</th><th>首封</th><th>看点</th></tr></thead>
+<tbody>
+<tr><td><b>上海沪工</b></td><td class="mono muted">603131</td><td class="n"><span class="tag t-red">2板</span></td><td class="n mono">5.75</td><td class="n mono">1.34</td><td class="n mono ">0</td><td class="n mono">+6.07%</td><td class="n mono up">+3.71%</td><td class="mono muted">09:50</td><td class="muted">焊接机器人+商业航天</td></tr>
+<tr><td><b>邵阳液压</b></td><td class="mono muted">301079</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">4.73</td><td class="n mono">1.21</td><td class="n mono ">0</td><td class="n mono">−1.73%</td><td class="n mono up">+22.13%</td><td class="mono muted">09:58</td><td class="muted">航天+液压主业+三季报增长</td></tr>
+<tr><td><b>阳光照明</b></td><td class="mono muted">600261</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">2.79</td><td class="n mono">2.12</td><td class="n mono ">2</td><td class="n mono">−0.30%</td><td class="n mono up">+10.39%</td><td class="mono muted">09:32</td><td class="muted">激光通信投资+LED</td></tr>
+<tr><td><b>盛洋科技</b></td><td class="mono muted">603703</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">3.61</td><td class="n mono">1.56</td><td class="n mono ">0</td><td class="n mono">−0.30%</td><td class="n mono up">+10.37%</td><td class="mono muted">10:05</td><td class="muted">卫星通信终端+高速铜缆</td></tr>
+<tr><td><b>钧达股份</b></td><td class="mono muted">002865</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">10.99</td><td class="n mono">1.06</td><td class="n mono ">1</td><td class="n mono">−1.28%</td><td class="n mono up">+11.43%</td><td class="mono muted">09:58</td><td class="muted">商业航天+光伏电池</td></tr>
+<tr><td><b>西部材料</b></td><td class="mono muted">002149</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">18.47</td><td class="n mono">0.99</td><td class="n mono ">1</td><td class="n mono">−0.75%</td><td class="n mono up">+10.84%</td><td class="mono muted">10:54</td><td class="muted">航天铌合金+超导</td></tr>
+<tr><td><b>航天晨光</b></td><td class="mono muted">600501</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">5.69</td><td class="n mono">0.68</td><td class="n mono ">2</td><td class="n mono">−1.56%</td><td class="n mono up">+11.78%</td><td class="mono muted">10:25</td><td class="muted">特种装备+可控核聚变</td></tr>
+<tr><td><b>顺灏股份</b></td><td class="mono muted">002565</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">9.69</td><td class="n mono">0.93</td><td class="n mono ">1</td><td class="n mono">−0.54%</td><td class="n mono up">+10.60%</td><td class="mono muted">09:51</td><td class="muted">太空算力+特种纸</td></tr>
+<tr><td><b>中国卫星</b></td><td class="mono muted">600118</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">31.13</td><td class="n mono">0.83</td><td class="n mono dn">16</td><td class="n mono">−0.43%</td><td class="n mono up">+10.47%</td><td class="mono muted">10:24</td><td class="muted">卫星制造+商业航天龙头</td></tr>
+<tr><td><b>上海港湾</b></td><td class="mono muted">605598</td><td class="n"><span class="tag t-gry">1板</span></td><td class="n mono">1.38</td><td class="n mono">0.49</td><td class="n mono ">0</td><td class="n mono">+0.35%</td><td class="n mono up">+9.60%</td><td class="mono muted">10:02</td><td class="muted">卫星能源+钙钛矿</td></tr>
+</tbody>
+</table>
+<div class="cap">数据来源：同花顺涨停池 + 全市场快照，2026-10-29 收盘。开买 = 收盘 ÷ 今开 − 1。</div>
+
+<p>三点必须点出来：</p>
+
+<p><b>① 中国卫星是这条链的真龙头，但封板质量很差。</b>31.13 亿成交、<b>炸板 16 次</b>才封住，封单只有 0.83 亿。它竞价 −0.43%（低开），开盘后一路做到涨停——这是"资金硬做"的形态，不是"人气自然封"。<b>31 亿换手的票，明日高开概率大，但高开就是它的卖点，不是买点。</b></p>
+
+<p><b>② 邵阳液压开盘买入收益 +22.13%，是今天全市场最强的日内形态。</b>创业板 20cm，竞价 −1.73% 低开，09:58 封板，封单 1.21 亿、炸 0 次。它同时挂着"航天 + 液压主业 + 三季报增长 + 生肖炒作"四个标签——<b>这不是纯题材股，是有业绩的低位补涨</b>。今天能走出来的票，几乎都是这个结构。</p>
+
+<p><b>③ 十只里九只是低开或平开，只有上海港湾（+0.35%）和上海沪工（+6.07%）高开。</b>这是今天最重要的结构特征，下一节展开。</p>
+
+<section class="sec"><h2>六、昨涨停股 70 只 <small>剔封板中位 −3.32%，竞价分档前四档全负</small></h2></section>
+
+<table>
+<thead><tr><th>口径</th><th class="n">n</th><th class="n">收盘中位</th><th class="n">均值</th><th class="n">红盘</th><th class="n">开买中位</th><th class="n">开买胜率</th></tr></thead>
+<tbody>
+<tr><td>全部</td><td class="n">70</td><td class="n dn">−2.40%</td><td class="n dn">−0.71%</td><td class="n">32.9%</td><td class="n dn">−3.21%</td><td class="n">21.4%</td></tr>
+<tr><td>今日仍封板</td><td class="n">10</td><td class="n up">+10.01%</td><td class="n up">+10.03%</td><td class="n">100%</td><td class="n up">+1.35%</td><td class="n">50.0%</td></tr>
+<tr><td><b>今日未封板</b></td><td class="n">60</td><td class="n dn"><b>−3.32%</b></td><td class="n dn">−2.49%</td><td class="n">21.7%</td><td class="n dn"><b>−3.98%</b></td><td class="n"><b>16.7%</b></td></tr>
+</tbody>
+</table>
+<div class="cap">数据来源：同花顺 10-28 涨停池 70 只 × 10-29 收盘快照。「开买」= 收盘 ÷ 今开 − 1，即按开盘价买入的当日收益。</div>
+
+<p><b>只看第二行会误判，必须看第三行。</b>全部中位 −2.40% 里，10 只今日又封板的票把均值拉得很高；剔掉它们，60 只的真实中位是 <b>−3.32%</b>、开买胜率只有 <b>16.7%</b>。<b>昨天买涨停股、今天开盘买入，五次里输四次。</b></p>
+
+<h3>6.1　竞价分档：收盘口径把上午的结论又压低了一档</h3>
+
+<div class="chart" id="c4"></div>
+<div class="cap">图 5　昨涨停股按竞价涨幅分档的当日收益（收盘口径）。柱 = 开买收益中位 / 收盘中位，标签 = 胜率。</div>
+
+<table>
+<thead><tr><th>竞价档</th><th class="n">n</th><th class="n">开买中位</th><th class="n">收盘中位</th><th class="n">开买胜率</th><th>判读</th></tr></thead>
+<tbody>
+<tr><td>≤0%（低开）</td><td class="n">18</td><td class="n dn">−3.24%</td><td class="n dn">−5.12%</td><td class="n">16.7%</td><td>最差的一档，低开是"没人要"</td></tr>
+<tr><td>0~+2%</td><td class="n">24</td><td class="n dn">−3.46%</td><td class="n dn">−2.40%</td><td class="n">16.7%</td><td>同样差，平开等于没有方向</td></tr>
+<tr><td>+2~+5%</td><td class="n">19</td><td class="n dn"><b>−5.10%</b></td><td class="n dn">−1.65%</td><td class="n">26.3%</td><td>开买亏最多，但收盘拉回一半</td></tr>
+<tr><td>+5~+9%</td><td class="n">3</td><td class="n up"><b>+3.18%</b></td><td class="n up">+10.00%</td><td class="n">100%</td><td><b>唯一正收益，3 只全封</b></td></tr>
+<tr><td>≥+9%（一字）</td><td class="n">6</td><td class="n">0.00%</td><td class="n up">+10.01%</td><td class="n">0%</td><td>全封住，但买不到</td></tr>
+</tbody>
+</table>
+<div class="cap">样本：10-28 涨停股 70 只，按 10-29 竞价涨幅分档。</div>
+
+<p><b>上午 11:30 的口径是：≤0% −1.89%、0~+2% −2.32%、+2~+5% −3.04%。收盘口径全部再往下掉一档</b>（−3.24% / −3.46% / −5.10%）——下午没有修复，是继续恶化。</p>
+
+<p><b>+2~+5% 档最值得琢磨。</b>开买中位 −5.10%（五档里最惨），但收盘中位只 −1.65%（比低开档好得多）。意思是：<b>这一档的票开盘被砸得最凶，但盘中有人接</b>。19 只里有 5 只最后封板（宇晶股份 +7.26%、澳洋健康 +5.29% 就是这一档）。<b>这是"错杀后修复"的结构，不是"高开出货"的结构。</b></p>
+
+<div class="warn">
+<b>+5~+9% 档连续三天是唯一正收益档：10/27 −3.87% → 10/28 +2.71% → 10/29 +3.18%，后两天 7 只全封。</b><br>
+但 <b>n=3，不能当规律用</b>。三天的共同点是：能落在这一档的票，都是"昨日已经确认强度、但没被一字封死"的——强度有了，筹码还在换手，所以开盘买得进、当日还能封。<b>这是「形态好」与「能买到」唯一的交集区间，值得每天盯，但不该只凭 n=3 就重仓。</b>
+</div>
+
+<h3>6.2　今天最重要的发现：低开本身不产生收益</h3>
+
+<p>昨涨停股 ≤0% 档收盘中位 −5.12%，是五档里最差。<b>但今天 39 只新封板的票里，有 14 只是竞价平开或低开、盘中拉起来的</b>（阳光照明 −0.30、盛洋科技 −0.30、东方海洋 −0.43、邵阳液压 −1.73、钧达股份 −1.28、西部材料 −0.75、顺灏股份 −0.54、中国卫星 −0.43、航天晨光 −1.56、厦门信达 −0.59、祥源文旅 −1.02、一鸣食品 −2.82、海阳科技 −2.27、和泰机电 −0.10）。</p>
+
+<p><b>同样是低开，昨涨停股亏 5%，今天的新面孔却封板。差别不在低开，在于低开之后有没有人主动做。</b></p>
+
+<div class="note">
+<b>判据：低开 ≤−1% 之后，10:00 前能不能翻红站上均价。</b><br>
+· 翻红站上均价 → 是"有人捡"，可以买（仓位减半，当日了结）<br>
+· 10:00 前不翻红 → 是"没人要"，放弃，不看第二眼<br><br>
+今天 14 只低开拉起的票，全部满足前者。<b>低开不是买点，低开后的翻红才是买点。</b>
+</div>
+
+<section class="sec"><h2>七、晋级率 <small>1→2 只剩 9.7%，高度靠 3 板以上硬撑</small></h2></section>
+
+<div class="chart" id="c5"></div>
+<div class="cap">图 6　近四个交易日连板梯队结构（2 板 / 3 板 / 4 板 / 5 板 家数）。</div>
+
+<table>
+<thead><tr><th>晋级路径</th><th class="n">分母</th><th class="n">成功</th><th class="n">晋级率</th><th>判读</th></tr></thead>
+<tbody>
+<tr><td>1 板 → 2 板</td><td class="n">62</td><td class="n">6</td><td class="n dn"><b>9.7%</b></td><td>历史低位，宽度彻底消失</td></tr>
+<tr><td>2 板 → 3 板</td><td class="n">5</td><td class="n">2</td><td class="n">40.0%</td><td>尚可，但分母只有 5</td></tr>
+<tr><td>3 板 → 4 板</td><td class="n">2</td><td class="n">2</td><td class="n up">100%</td><td>样本太小，不构成信号</td></tr>
+<tr><td>5 板 → 6 板</td><td class="n">1</td><td class="n">0</td><td class="n dn">0%</td><td>襄阳轴承断板</td></tr>
+</tbody>
+</table>
+<div class="cap">分母取自 10-28 各层家数，成功数取自 10-29 连板天梯。</div>
+
+<p><b>1→2 只有 9.7%（6/62），这是近期最低。</b>对照历史：10/21 是 27.5%、10/27 是 18.2%、10/28 是 13.3%，一路往下。<b>「一进二」在这个市场里已经是负期望动作，不是"胜率低"，是"分母太大"</b>——62 只首板里只有 6 只能接住，随便挑一只的期望是 9.7%。</p>
+
+<p>而 3→4 是 100%（2/2），2→3 是 40%。<b>高度层反而在硬撑，宽度层在消失。</b>这是典型的崩塌中段结构：资金放弃撒网，只保留少数几只做高度，一旦这几只也断，就是最后一跌。</p>
+
+<section class="sec"><h2>八、明日（10/30 周五）操作指引</h2></section>
+
+<p>先说结论：<b>明天不是买点日，是观察日。总仓位上限 30%，单票不超过 15%，3 板以上一律不接。</b>理由不是"跌多了怕"，是下面三个前置条件没一个满足。</p>
+
+<h3>8.1　9:25 先看三个数，任何一个不达标就不动手</h3>
+
+<table>
+<thead><tr><th>观察项</th><th>达标线</th><th>不达标怎么办</th></tr></thead>
+<tbody>
+<tr><td><b>① 跌停家数（9:25 竞价后）</b></td><td>≤ 15 只</td><td>15~30 只 → 只做 A 池最强一只，仓位 15%；> 30 只 → <b>空仓，不看盘</b></td></tr>
+<tr><td><b>② 创业板竞价位置</b></td><td>≥ −1.0%</td><td>< −1.0% → 按 10/29 模式处理，任何档位都是负期望，不接高开</td></tr>
+<tr><td><b>③ 商业航天 10 只竞价</b></td><td>≥ 2 只落在 +2~+5%</td><td>全线低开或全线一字 → 抱团瓦解，A 池作废</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<b>为什么把跌停家数放在第一位？</b>今天跌停 42 只、且 150 只跌超 9.5% 里还有 108 只没跌透。<b>跌停家数是最灵敏的指标</b>——它比涨停家数早半天反应，比指数早一天。明日跌停若回到 15 只以下，说明抛压释放完毕；若继续在 30 只以上，任何反弹都是下跌中继。
+</div>
+
+<h3>8.2　四个池子</h3>
+
+<div class="plan">
+<h4>A 池 · 唯一可执行：上海沪工 603131（商业航天 2 板）</h4>
+<p><b>为什么是它：</b>商业航天 10 只里唯一 2 板，且是唯一"高开 + 封板质量好"的组合——竞价 +6.07%、首封 09:50、<b>炸板 0 次</b>、封单 1.34 亿、成交 5.75 亿。开买收益 +3.71%，今天在开盘价买入的人全部盈利。</p>
+<p><b>怎么买：</b>竞价落在 <b>+2%~+5%</b> 且开盘后不跌破均价 → 买 15%。竞价 <b>≥+7%</b> → 不追，等回落到均价再买一半（7.5%）。竞价 <b>≤0%</b> → 放弃，说明抱团已散。</p>
+<p><b>止损：</b>当日最低价下方 0.5%，或跌破均价 3% 且 10 分钟不收回。当日不封板则 14:50 前了结。</p>
+<p><b>不成立条件：</b>中国卫星（这条链的真龙头）若竞价低开超 3% 或直接跌停，A 池整体作废——龙头塌了，2 板撑不住。</p>
+</div>
+
+<div class="plan">
+<h4>B 池 · 只做温度计，不做标的：中国卫星 600118</h4>
+<p>31 亿成交、炸 16 次、封单 0.83 亿——<b>封板质量是今天涨停池里最差的之一，但它是这条链的定价锚</b>。它的竞价方向决定整个商业航天板块明天的方向。</p>
+<p><b>用法：</b>不买。只看它 9:25 的竞价：高开 ≥+3% 且 10:00 前不破均价 → 商业航天还有戏，A 池可做；低开或高开翻绿 → A 池降级到观察。</p>
+</div>
+
+<div class="plan">
+<h4>C 池 · 小仓试错：冰山冷热 000530（冰雪 + 液冷，首板）</h4>
+<p>成交 18.05 亿、封单 1.38 亿、炸 3 次、10:36 首封。冰雪产业今天只跌 1.17%，是抗跌层里唯一有涨停的方向。<b>但题材不纯</b>——它同时挂"数据中心液冷"，而液冷今天 −4.12%。</p>
+<p><b>怎么买：</b>只在竞价 ≤+3% 且指数不创新低时买 5%~8%。跌破今日涨停价（即 −10% 附近）无条件走。</p>
+<p><b>为什么仓位这么小：</b>冰雪是季节性题材，10 月底还没到旺季催化窗口；今天封板炸了 3 次，质量一般。它是"试"不是"押"。</p>
+</div>
+
+<div class="plan">
+<h4>D 池 · 明确不碰</h4>
+<p><b>光洋股份 002708（4 板）——明天最大的雷。</b>成交 28.87 亿、<b>炸板 29 次</b>、封单只剩 <b>0.09 亿</b>。它挂在"人形机器人 + PCB + 汽车零部件 + 羊字辈"四个标签上，而 PCB 链今天 13 只跌停。<b>28.9 亿天量 + 29 次炸板 + 封单 0.09 亿 = 明天一字开板概率极高，接盘即亏。</b>它今天能封住，靠的是尾盘最后一笔，不是承接。</p>
+<p><b>青岛食品 001219（4 板）</b>：一字板，成交仅 0.54 亿——形态最好，但买不到。观察池，不进可执行池。</p>
+<p><b>襄阳轴承 000678</b>：5 板断板。竞价 +9.99% 一字开，<b>全天最高价就是开盘价</b>，收 +6.47%，成交 36.9 亿天量，龙虎榜净买 1.57 亿。<b>一字开板当天的净买入是接盘方，不是护盘方</b>——这 1.57 亿明天大概率要卖。</p>
+<p><b>PCB / CPO / 存储 / 消费电子 / 液冷整条链</b>：13 只跌停 + 天孚通信 −19.77%，扩散段还没走完，明天可能有反抽，但反抽是给出货用的。不参与。</p>
+</div>
+
+<h3>8.3　三种情形对应的动作</h3>
+
+<table>
+<thead><tr><th>明日情形</th><th class="n">概率判断</th><th>动作</th></tr></thead>
+<tbody>
+<tr><td><b>修复</b>：跌停 ≤15、创业板平开或微跌、涨停回到 45+</td><td class="n">偏低</td><td>A 池买 15%，C 池 5%~8%，总仓位 25% 以内。若 10:30 前商业航天有 ≥3 只封板，可加到 30%</td></tr>
+<tr><td><b>分歧</b>：跌停 15~30、创业板 −1%~0</td><td class="n">中性</td><td>只做 A 池一只，仓位 15%。不做任何首板接力，不做 2 板以上</td></tr>
+<tr><td><b>继续崩塌</b>：跌停 &gt;30 或创业板低开 &gt;1%</td><td class="n">偏高</td><td><b>空仓。</b>不抢反弹，不抄跌停，等跌停家数连续两个半日下降再说</td></tr>
+</tbody>
+</table>
+
+<div class="warn">
+<b>为什么把"继续崩塌"的概率标为偏高？</b>三条理由：<br>
+① 今天 150 只跌超 9.5%，只有 42 只封死，<b>108 只没跌透</b>；<br>
+② 跌停从上午 10 只到收盘 42 只，<b>是扩散段不是探底段</b>，扩散段后通常还有一天确认；<br>
+③ PCB 链 13 只同日跌停对应具体产业利空，<b>利空的消化至少需要 2–3 个交易日</b>。
+</div>
+
+<section class="sec"><h2>九、风险清单</h2></section>
+
+<table>
+<thead><tr><th>风险</th><th>触发信号</th><th>应对</th></tr></thead>
+<tbody>
+<tr><td><b>跌停二次扩散</b></td><td>明日跌停 &gt; 42 只，或 PCB 链再出 5 只以上跌停</td><td>清仓，不做任何买入</td></tr>
+<tr><td><b>光洋股份一字开板</b></td><td>4 板炸 29 次 + 封单 0.09 亿，明日低开概率高</td><td>不参与；若它跌停，注意是否带崩机器人链</td></tr>
+<tr><td><b>商业航天抱团瓦解</b></td><td>中国卫星低开 &gt;3% 或上海沪工竞价 ≤0%</td><td>A 池作废，空仓</td></tr>
+<tr><td><b>权重护盘失效</b></td><td>上证 50 明日转跌，且上证跌破 3600</td><td>说明连避险资金也在撤，最坏情形，空仓等</td></tr>
+<tr><td><b>玄学抱团退潮</b></td><td>"羊"字辈（澳洋健康、东方海洋、海阳科技、阳光照明、盛洋科技）明日集体炸板</td><td>无主线确认，所有题材股降级</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<b>补一句关于"羊"字辈的：</b>今天涨停 39 只里还有 5 只挂"羊"字辈标签（澳洋健康 2 板、东方海洋、海阳科技、阳光照明、盛洋科技）。<b>玄学抱团还在，恰恰说明主线没确立</b>——有真主线的市场，资金不会去炒名字。这一条比任何板块数据都更能说明现在处于什么阶段。
+</div>
+
+<section class="sec"><h2>十、一句话记住今天</h2></section>
+
+<p style="font-size:16px;line-height:1.9;padding:18px 22px;background:var(--soft);border-left:3px solid var(--up);border-radius:8px;margin:16px 0">
+<b>上午 10 只跌停、下午 42 只；CPO 跌 6%、PCB 13 只跌停；上证 50 红盘、创业板 −4.45%。<br>
+这不是"跌多了要反弹"，是资金从 AI 硬件叙事里成建制撤出，撤到煤炭、预制菜、白酒这些没人看的地方。<br>
+明天要等的不是反弹，是跌停家数回到 15 只以下——那个数字不出现，任何红盘都是给出货用的。</b>
+</p>
+
+<div class="disc">
+<b>数据来源与口径</b><br>
+· 涨跌停池、连板天梯、龙虎榜、指数与概念指数：同花顺官方数据（hithink-finance CLI），2026-10-29 收盘快照。<br>
+· 全市场涨跌幅分布：同花顺 market snapshot 全量 5,579 只，剔除停牌与零成交后有效样本 5,569 只，中位数实算。<br>
+· 「开买收益」= 收盘价 ÷ 当日开盘价 − 1，即假设以开盘价买入、以收盘价卖出的当日收益，不含交易成本。<br>
+· 「剔封板」= 从昨涨停股中剔除今日再次封板的样本，用于观察未封板部分的真实分布。<br>
+· 晋级率分母取前一交易日各层家数，成功数取当日连板天梯；样本量小于 10 的档位仅作方向参考。<br>
+· 概念指数为同花顺 390 个概念指数中的 24 个代表样本，非全样本。<br><br>
+<b>免责声明</b><br>
+本报告所载信息均来源于公开渠道，我们力求准确但不保证其完整性与时效性。报告中的数据分析、统计结论及操作建议仅代表基于历史数据的概率推演，不构成任何投资建议或买卖要约。文中提及的具体证券仅用于说明市场结构与统计特征，不代表推荐。证券市场存在不确定性，历史规律可能失效，任何依据本报告作出的投资决策及其后果由投资者自行承担。投资者应结合自身风险承受能力、资金状况与投资目标独立判断，并自行承担投资风险。股市有风险，入市需谨慎。
+</div>
+
+</div>
+<script src="echarts.min.js"></script>
+<script>window.echarts || document.write('<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"><\/script>');</script>
+<script>
+var C={up:'#d92b2b',dn:'#1a9c5b',ink:'#0F1319',sub:'#5F6875',line:'#E7EBF1',
+       pur:'#7a4fd0',org:'#c8841a',gray:'#8b919a',teal:'#0e8a8a',soft:'#F6F8FB'};
+function mk(id,opt){var el=document.getElementById(id);if(!el)return;
+  var ch=echarts.init(el);ch.setOption(opt);
+  window.addEventListener('resize',function(){ch.resize();});return ch;}
+
+// 图1 指数：竞价 vs 收盘
+mk('c1',{
+  animation:false,
+  grid:{left:52,right:24,top:44,bottom:40},
+  legend:{top:6,textStyle:{color:C.sub,fontSize:11.5},itemWidth:12,itemHeight:9},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+           valueFormatter:function(v){return v.toFixed(2)+'%';}},
+  xAxis:{type:'category',data:["上证指数", "深证成指", "创业板指", "科创50", "中证500", "上证50"],
+         axisLine:{lineStyle:{color:C.line}},axisTick:{show:false},
+         axisLabel:{color:C.sub,fontSize:11.5}},
+  yAxis:{type:'value',name:'%',nameTextStyle:{color:C.sub,fontSize:11},
+         min:-5.2,max:1.2,
+         axisLabel:{color:C.sub,fontSize:11,formatter:'{value}%'},
+         splitLine:{lineStyle:{color:C.line}},axisLine:{show:false}},
+  series:[
+    {name:'竞价涨幅',type:'bar',barWidth:15,data:[-0.13, -0.82, -1.46, -0.87, -0.55, 0.61],
+     itemStyle:{color:C.gray,borderRadius:[3,3,0,0]},
+     label:{show:true,position:'top',color:C.sub,fontSize:10,formatter:'{c}%'}},
+    {name:'收盘涨幅',type:'bar',barWidth:15,data:[-0.82, -2.92, -4.45, -4.27, -2.82, 0.36],
+     itemStyle:{color:function(p){return p.value>=0?C.up:C.dn;},borderRadius:[3,3,0,0]},
+     label:{show:true,position:'bottom',color:C.ink,fontSize:10.5,formatter:'{c}%'}}
+  ]
+});
+
+// 图2 全市场分布
+mk('c2',{
+  animation:false,
+  grid:{left:56,right:24,top:30,bottom:58},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+           valueFormatter:function(v){return v+' 只';}},
+  xAxis:{type:'category',data:["≤−9.5%", "−9.5~−7%", "−7~−5%", "−5~−3%", "−3~−1%", "−1~0%", "0~+1%", "+1~+3%", "+3~+5%", "+5~+7%", "+7~+9.5%", "≥+9.5%"],
+         axisLine:{lineStyle:{color:C.line}},axisTick:{show:false},
+         axisLabel:{color:C.sub,fontSize:10.5,interval:0,rotate:38}},
+  yAxis:{type:'value',name:'只数',nameTextStyle:{color:C.sub,fontSize:11},
+         axisLabel:{color:C.sub,fontSize:11},
+         splitLine:{lineStyle:{color:C.line}},axisLine:{show:false}},
+  series:[{
+    type:'bar',barWidth:'62%',data:[150, 299, 540, 1419, 1793, 526, 355, 289, 94, 42, 14, 47],
+    itemStyle:{color:function(p){return p.dataIndex<=5?C.dn:(p.dataIndex>=11?C.up:'#a9b4c4');},
+               borderRadius:[3,3,0,0]},
+    label:{show:true,position:'top',color:C.ink,fontSize:10.5,formatter:'{c}'}
+  }]
+});
+
+// 图3 概念指数
+mk('c3',{
+  animation:false,
+  grid:{left:118,right:64,top:16,bottom:34},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+           valueFormatter:function(v){return v.toFixed(2)+'%';}},
+  xAxis:{type:'value',name:'%',nameTextStyle:{color:C.sub,fontSize:11},
+         min:-7,max:0.4,
+         axisLabel:{color:C.sub,fontSize:11,formatter:'{value}%'},
+         splitLine:{lineStyle:{color:C.line}},axisLine:{show:false}},
+  yAxis:{type:'category',data:["共封装光学(CPO)", "PCB概念", "存储芯片", "消费电子概念", "液冷服务器", "人形机器人", "第三代半导体", "固态电池", "减速器", "机器人概念", "算力租赁", "光伏概念", "稀土永磁", "低空经济", "军工", "商业航天", "卫星导航", "创新药", "白酒概念", "旅游概念", "网络游戏", "冰雪产业", "预制菜", "煤炭概念"],inverse:true,
+         axisLine:{lineStyle:{color:C.line}},axisTick:{show:false},
+         axisLabel:{color:C.ink,fontSize:11}},
+  series:[{
+    type:'bar',barWidth:'64%',data:[-6.16, -5.36, -5.28, -4.64, -4.12, -4.09, -4.01, -3.74, -3.65, -3.46, -3.29, -3.08, -2.89, -2.66, -2.29, -2.21, -2.13, -1.87, -1.48, -1.3, -1.17, -1.17, -1.07, -0.81],
+    itemStyle:{color:function(p){return p.value<=-3?C.dn:(p.value<=-2?'#5fb98a':'#a9b4c4');},
+               borderRadius:[0,3,3,0]},
+    label:{show:true,position:'right',color:C.sub,fontSize:10,
+           formatter:function(p){return p.value.toFixed(2)+'%';}}
+  }]
+});
+
+// 图4 竞价分档（上下双 grid，各自单系列，避免标签重叠）
+mk('c4',{
+  animation:false,
+  legend:{top:2,textStyle:{color:C.sub,fontSize:11.5},itemWidth:12,itemHeight:9,
+          data:['开买收益中位','收盘中位']},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+           valueFormatter:function(v){return v.toFixed(2)+'%';}},
+  grid:[{left:60,right:26,top:42,height:130},
+        {left:60,right:26,top:258,height:130}],
+  xAxis:[
+    {type:'category',gridIndex:0,data:["≤0%", "0~+2%", "+2~+5%", "+5~+9%", "≥+9%"],axisTick:{show:false},
+     axisLine:{lineStyle:{color:C.line}},axisLabel:{show:false}},
+    {type:'category',gridIndex:1,data:["≤0%", "0~+2%", "+2~+5%", "+5~+9%", "≥+9%"],axisTick:{show:false},
+     axisLine:{lineStyle:{color:C.line}},axisLabel:{color:C.ink,fontSize:11.5}}
+  ],
+  yAxis:[
+    {type:'value',gridIndex:0,name:'开买 %',nameTextStyle:{color:C.sub,fontSize:10.5},
+     min:-7.5,max:4.6,
+     axisLabel:{color:C.sub,fontSize:10.5,formatter:'{value}%'},
+     splitLine:{lineStyle:{color:C.line}},axisLine:{show:false}},
+    {type:'value',gridIndex:1,name:'收盘 %',nameTextStyle:{color:C.sub,fontSize:10.5},
+     min:-7.5,max:12.5,
+     axisLabel:{color:C.sub,fontSize:10.5,formatter:'{value}%'},
+     splitLine:{lineStyle:{color:C.line}},axisLine:{show:false}}
+  ],
+  series:[
+    {name:'开买收益中位',type:'bar',xAxisIndex:0,yAxisIndex:0,barWidth:32,
+     data:[-3.24, -3.46, -5.1, 3.18, 0.0],
+     itemStyle:{color:function(p){return p.value>=0?C.up:C.dn;},borderRadius:[3,3,0,0]},
+     label:{show:true,position:'top',color:C.ink,fontSize:11,formatter:'{c}%'}},
+    {name:'收盘中位',type:'bar',xAxisIndex:1,yAxisIndex:1,barWidth:32,
+     data:[-5.12, -2.4, -1.65, 10.0, 10.01],
+     itemStyle:{color:'#b8c2d0',borderRadius:[3,3,0,0]},
+     label:{show:true,position:'top',color:C.sub,fontSize:11,formatter:'{c}%'}}
+  ]
+});
+
+// 图5 连板梯队
+mk('c5',{
+  animation:false,
+  grid:{left:48,right:24,top:44,bottom:40},
+  legend:{top:6,textStyle:{color:C.sub,fontSize:11.5},itemWidth:12,itemHeight:9},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+           valueFormatter:function(v){return v+' 只';}},
+  xAxis:{type:'category',data:["10/26", "10/27", "10/28", "10/29"],
+         axisLine:{lineStyle:{color:C.line}},axisTick:{show:false},
+         axisLabel:{color:C.ink,fontSize:11.5}},
+  yAxis:{type:'value',name:'家数',nameTextStyle:{color:C.sub,fontSize:11},
+         axisLabel:{color:C.sub,fontSize:11},
+         splitLine:{lineStyle:{color:C.line}},axisLine:{show:false}},
+  series:[
+    {name:'2 板',type:'bar',barWidth:14,data:[8, 8, 5, 6],itemStyle:{color:'#c3cbd6',borderRadius:[3,3,0,0]},
+     label:{show:true,position:'top',color:C.sub,fontSize:10}},
+    {name:'3 板',type:'bar',barWidth:14,data:[6, 0, 2, 2],itemStyle:{color:'#8fa0b8',borderRadius:[3,3,0,0]},
+     label:{show:true,position:'top',color:C.sub,fontSize:10}},
+    {name:'4 板',type:'bar',barWidth:14,data:[1, 3, 0, 2],itemStyle:{color:C.org,borderRadius:[3,3,0,0]},
+     label:{show:true,position:'top',color:C.org,fontSize:10}},
+    {name:'5 板',type:'bar',barWidth:14,data:[0, 1, 1, 0],itemStyle:{color:C.pur,borderRadius:[3,3,0,0]},
+     label:{show:true,position:'top',color:C.pur,fontSize:10}}
+  ]
+});
+
+// 图6 跌停链别
+mk('c6',{
+  animation:false,
+  grid:{left:110,right:56,top:16,bottom:34},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+           valueFormatter:function(v){return v+' 只';}},
+  xAxis:{type:'value',name:'只',nameTextStyle:{color:C.sub,fontSize:11},
+         axisLabel:{color:C.sub,fontSize:11},
+         splitLine:{lineStyle:{color:C.line}},axisLine:{show:false}},
+  yAxis:{type:'category',data:["PCB/覆铜板/电子", "其他", "汽车零部件", "机械/设备", "化工", "商业零售", "锂电"],inverse:true,
+         axisLine:{lineStyle:{color:C.line}},axisTick:{show:false},
+         axisLabel:{color:C.ink,fontSize:11.5}},
+  series:[{
+    type:'bar',barWidth:'58%',data:[13, 8, 7, 5, 4, 4, 1],
+    itemStyle:{color:function(p){return p.dataIndex===0?C.dn:'#7fb89b';},borderRadius:[0,3,3,0]},
+    label:{show:true,position:'right',color:C.ink,fontSize:11,formatter:'{c} 只'}
+  }]
+});
+</script>
+</body>
+</html>
