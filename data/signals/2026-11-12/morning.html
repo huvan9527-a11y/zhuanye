@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026年11月12日 A股盘前早报、隔夜外盘分叉及今日操作指引</title>
+<style>
+:root{--up:#d92b2b;--down:#1a9c5b;--ink:#0F1319;--sub:#5F6875;--line:#E7EBF1;--soft:#F6F8FB;--warn:#c8841a;--blue:#2f6fd0;--purple:#7a4fd0}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font:15px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;font-variant-numeric:tabular-nums}
+.wrap{max-width:1120px;margin:0 auto;padding:26px 20px 60px}
+.hero{background:#fff;border-top:3px solid var(--up);border-bottom:1px solid var(--line);padding:28px 0 22px;margin-bottom:22px}
+.eyebrow{font-size:12px;letter-spacing:1.2px;color:var(--sub);text-transform:uppercase}
+h1{font-size:27px;line-height:1.35;margin:10px 0 8px;font-weight:700;letter-spacing:-.4px}
+.hero .sub{font-size:16px;color:var(--sub);margin:0 0 12px}
+.meta{font-size:12.5px;color:var(--sub)}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.tag{background:#fdecec;color:#b02020;border:1px solid #f5c9c9;border-radius:20px;padding:3px 11px;font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 26px}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .k{font-size:12px;color:var(--sub)}
+.kpi .v{font-size:25px;font-weight:700;letter-spacing:-.5px;margin:3px 0}
+.kpi .s{font-size:12px;color:var(--sub)}
+.kpi em{font-style:normal;color:var(--ink)}
+.kpi em.up,.kpi .v.up,.kpi .v.up.small,.kpi em.dn,.kpi .v.dn,.up,b.up,li b.up,td.up,.up.small,.up.small b{color:#d92b2b!important}
+.kpi em.down,.kpi .v.down,.kpi .v.down.small,.kpi em.dn,.kpi .v.dn,.dn,.down,b.dn,td.dn,td.down,.dn.small,.down.small,.down.small b{color:#1a9c5b!important}
+section.sec{margin:30px 0}
+h2{font-size:21px;font-weight:650;letter-spacing:-.3px;margin:0 0 14px;padding:0 0 10px;border-bottom:1px solid var(--line)}
+h3{font-size:16px;margin:22px 0 10px;font-weight:650}
+p{margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0 16px}
+th{background:var(--soft);color:var(--sub);font-weight:600;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:#fcfdff}
+.code{color:var(--sub);font-size:12px}
+.note{color:var(--sub);font-size:12.5px;line-height:1.6}
+.verdict{color:var(--ink)!important;font-weight:700}
+.chart{width:100%;height:340px;margin:10px 0 6px}
+.chart.mid{height:400px}.chart.tall{height:460px}
+.cap{font-size:12px;color:var(--sub);margin:0 0 18px}
+.box{border:1px solid var(--line);border-left:3px solid var(--purple);background:var(--soft);border-radius:8px;padding:14px 18px;margin:16px 0}
+.box.warn{border-left-color:var(--warn)}.box.red{border-left-color:var(--up)}.box.blue{border-left-color:var(--blue)}
+.concl{counter-reset:c;list-style:none;padding:0;margin:0}
+.concl li{counter-increment:c;position:relative;padding:12px 0 12px 46px;border-bottom:1px solid var(--line)}
+.concl li:before{content:counter(c);position:absolute;left:0;top:12px;width:28px;height:28px;border-radius:50%;background:#fdecec;color:#b02020;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+b{font-weight:650}
+ul{margin:8px 0 12px;padding-left:22px}li{margin:5px 0}
+.pill{display:inline-block;border-radius:4px;padding:1px 7px;font-size:12px;font-weight:650;background:var(--soft);border:1px solid var(--line)}
+.pill.ok{background:#fdecec;color:#b02020;border-color:#f5c9c9}
+.pill.bad{background:#e8f6ee;color:#137a48;border-color:#bfe6cf}
+.pill.mid{background:#fff5e6;color:#9a6410;border-color:#f0dcb8}
+.tw{overflow-x:auto}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:14px 0}
+.chain .node{flex:1 1 150px;min-width:140px;background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:11px 12px;font-size:13px}
+.chain .node b{display:block;font-size:13px;margin-bottom:4px}
+.chain .arrow{align-self:center;color:var(--purple);font-weight:700;font-size:17px}
+.disc{font-size:12.5px;color:var(--sub);border-top:1px solid var(--line);margin-top:36px;padding-top:18px}
+@media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:22px}.chart{height:300px}table{font-size:12px}.tw table{min-width:600px}.chain .node{flex:1 1 100%}}
+</style>
+<script src="echarts.min.js"></script>
+<script>window.echarts || document.write('<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"><\/script>');</script>
+<!--site-skin--><style>
+:root{
+ /* —— 品牌与强调（JLC 主按钮红）—— */
+ --red:#E42313;--red-d:#8B150C;--red-l:#FEF2F2;--red-b:#FBD5D5;
+ /* —— 涨跌（A股惯例：红涨绿跌）—— 红绿只留给涨跌 —— */
+ --up:#D92B2B;--down:#0E9F6E;
+ /* —— 中性阶（cool slate，2026-10-22 换掉 zinc：zinc 偏绿，与红绿涨跌色打架显脏）——
+    全部收敛到同一色相族（hue≈220），避免十几种灰各自偏色造成「蒙了一层灰」。 */
+ --ink:#0F1319;--ink2:#333A45;--sub:#5F6875;--faint:#98A1AF;
+ --line:#E7EBF1;--line2:#D6DCE5;--soft:#F6F8FB;
+ --bg:#FFFFFF;--bg2:#F5F7FA;
+ /* —— 字体（2026-10-22 重做）——
+    ★ 旧的 --serif 在本机回落到 "Source Han Serif SC"（本机只装了 Heavy 那一个字重），
+      400 正文被渲染成粗宋，全站又黑又糊，是「字体丑」的根因。
+      现改为全站统一无衬线，中文优先 HarmonyOS Sans SC / Noto Sans SC（本机均有），
+      西文与数字优先 Segoe UI 的 tabular 数字，保证表格竖排对齐。 */
+ --sans:"HarmonyOS Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei UI","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+ --num:"Segoe UI","HarmonyOS Sans SC","Noto Sans SC",sans-serif;
+ --serif:"Noto Serif SC","Songti SC",Georgia,serif;
+ /* —— 柔和阴影：比 JLC 原版轻一档，避免白卡在白底上出现脏边 —— */
+ --sh:0 1px 2px rgba(15,23,42,.05),0 6px 20px rgba(15,23,42,.06);
+ --sh-s:0 1px 2px rgba(15,23,42,.04);
+ --wrap:1200px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.72;letter-spacing:.012em;
+ -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+ text-rendering:optimizeLegibility;font-feature-settings:"kern" 1}
+a{color:var(--red);text-decoration:none;transition:color .15s}
+a:hover{color:var(--red-d);text-decoration:underline;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
+::selection{background:var(--red-l);color:var(--red-d)}
+
+/* ---- 标题层级（JLC 的字号/字重/字距；中文负字距收窄到 -0.4px，否则汉字会贴在一起）---- */
+h1{font-size:37px;font-weight:700;letter-spacing:-.4px;line-height:1.28;margin:0}
+h2{font-size:27px;font-weight:700;letter-spacing:-.4px;line-height:1.35;margin:0;
+ border-left:0;padding-left:0}
+h3{font-size:20px;font-weight:600;letter-spacing:-.2px;line-height:1.45;margin:0}
+h4{font-size:17px;font-weight:600;letter-spacing:0;line-height:1.5;margin:0}
+
+nav.top{background:rgba(255,255,255,.93);-webkit-backdrop-filter:saturate(180%) blur(8px);
+ backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line);
+ position:sticky;top:0;z-index:50}
+nav.top .wrap{max-width:var(--wrap);margin:0 auto;padding:18px 24px;
+ display:flex;align-items:center;gap:22px}
+nav.top .brand{display:inline-flex;align-items:center;gap:11px;flex:none;
+ color:var(--red);font-weight:700;letter-spacing:-.2px;font-size:17px}
+nav.top .brand img{width:36px;height:36px;display:block;border-radius:9px;background:#fff;border:1px solid var(--line)}
+nav.top .brand .b-text{color:var(--red)}
+nav.top .nlinks{margin-left:auto;display:flex;align-items:center;gap:24px;min-width:0}
+nav.top .nlinks a{position:relative;color:var(--ink);font-size:14px;font-weight:500;
+ padding:4px 0;white-space:nowrap}
+nav.top .nlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;
+ background:var(--red);transform:scaleX(0);transform-origin:center;
+ transition:transform .3s ease-in-out}
+nav.top .nlinks a:hover{color:var(--red);text-decoration:none}
+nav.top .nlinks a:hover::after{transform:scaleX(1)}
+nav.top .nlinks a.on{color:var(--red);font-weight:600}
+nav.top .nlinks a.on::after{transform:scaleX(1)}
+nav.top .sp{color:var(--faint);font-size:12.5px;white-space:nowrap;flex:none}
+@media(max-width:1150px){
+ nav.top .sp{display:none}
+ nav.top .nlinks{gap:18px}
+ nav.top .nlinks a{font-size:13.5px}
+}
+@media(max-width:900px){
+ nav.top .wrap{padding:10px 14px;gap:8px;flex-wrap:wrap}
+ nav.top .brand{font-size:15px}
+ nav.top .brand img{width:28px;height:28px;border-radius:7px}
+ /* 窄屏：11 个频道横向滚动时，后半段（各方观点 / 明天跟谁）完全落在视口外，
+    用户会以为频道被删了（2026-10-20 实际发生）。改为整行铺满 + 自动换行，
+    保证每个入口都在首屏可见，不再依赖横向滑动。 */
+ nav.top .nlinks{margin-left:0;flex:1 1 100%;overflow:visible;flex-wrap:wrap;
+  gap:2px 12px;-webkit-overflow-scrolling:auto;scrollbar-width:none}
+ nav.top .nlinks a{font-size:12.5px;padding:2px 0}
+ nav.top .nlinks::-webkit-scrollbar{display:none}
+}
+
+/* ---- 页面底色：浅冷灰画布 + 纯白卡片（2026-10-22）----
+   旧版把 html/body 强刷纯白，卡片与页面同色、只剩 1px 灰边框做分隔，
+   在 1280px 宽屏上看就是「一整片灰白糊在一起」= 用户说的「颜色脏」。
+   现在恢复浅灰画布，卡片用白底 + 极轻投影，层次靠明度差而不是边框。 */
+html{background:var(--bg2) !important}
+body{background:var(--bg2) !important;color:var(--ink2);font-family:var(--sans);
+ font-size:15.5px;line-height:1.78;letter-spacing:.012em;
+ -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ---- 页头：白底 + 顶部品牌细线 + 发丝线收口（浅底深字，不用深色块）---- */
+header,header.top,.hd,.hero{background:#fff;background-image:none;color:var(--ink);
+ border:0;border-top:3px solid var(--up);border-bottom:1px solid var(--line);
+ border-radius:0;box-shadow:none;padding:30px 0 26px;margin:0 0 24px}
+header h1,header.top h1,.hd h1,.hero h1,h1{font-size:30px;font-weight:700;
+ letter-spacing:-.3px;line-height:1.32;color:var(--ink)}
+header .sub,header .sub2,.hero .sub,.hd .sub,.tagline{color:var(--sub);opacity:1;font-size:13.5px}
+.tagline,header .tags .tag{background:var(--soft);border:0;color:var(--ink2)}
+
+/* ---- 区块标题：去掉左侧色条，统一字号字重 ----
+   ★ 必须用 `h2,h2` 这种「重复自身选择器」的写法把权重抬到 (0,0,0,2)，
+     否则压不过各页自带的 `section h2{...border-left:4px solid var(--accent)}`
+     —— 那是 (0,0,1,2)，同权重时后写的胜出，但我们排在 <head> 末尾所以本该胜出，
+     唯独权重更低时必输。2026-09-28 实测 9/22 复盘页 7 个 section 标题就是栽在这。 */
+h2,h2,h2{padding-left:0;border-left:0;font-size:21px;font-weight:700;
+ letter-spacing:-.2px;color:var(--ink)}
+/* 部分页把区块标题写成 `.sec h2{...border-left}`（权重 0,0,1,1），比上面的 h2,h2,h2 高一级，
+   单靠 h2 压不住 → 这里补同权重选择器。2026-10-22 巡检抓到 morning-2026-10-20.html 就是这种。 */
+.sec h2,.sec>h2,.sec>h2>span{padding-left:0;border-left:0}
+h3,h3{font-weight:600;letter-spacing:0}
+h4,h4{font-weight:600}
+/* ★ 2026-10-22：删掉旧的 `p{font-family:var(--serif)}`。
+   本机 --serif 只有思源宋 Heavy 一个字重，400 正文被渲染成粗宋，
+   全页又黑又糊 —— 这是「字体丑」的真正来源。正文一律无衬线。 */
+p{font-family:var(--sans);font-size:15.5px;line-height:1.78}
+li{font-family:var(--sans)}
+
+/* ---- 数字：等宽表格数字，表格竖排才对得齐 ---- */
+.num,.kpi .v,.stat .v,.kpis .v{font-family:var(--num);
+ font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* ---- 语义提示块：把灰底/粉底的「脏块」提亮成近白，靠左侧细条区分语义 ---- */
+.note{background:#F8FAFC;border:1px solid var(--line);color:var(--sub);border-radius:10px}
+.warn{background:#FFFDF6;border:1px solid #F1E4C9;color:#7A5310;border-radius:10px}
+.danger{background:#FFF9F9;border:1px solid #F5DCDC;color:#8F2626;border-radius:10px}
+.ok{background:#F7FCF9;border:1px solid #D6EBDD;color:#116B42;border-radius:10px}
+/* ★ 结论块：各页写法是 `.hero .verdict`（权重 0,0,2,0），皮肤里必须用同权重或更高才压得住，
+   否则粉底 #fdf6f6 会留下来 —— 那正是「颜色脏」的主要来源之一。 */
+.verdict,.concl,.summary,.hero .verdict,.hd .verdict,.sec .verdict{
+ background:#FCFDFE;border-left:3px solid var(--up);border-radius:0 10px 10px 0;
+ padding:16px 18px}
+/* 频道首页（涨停/研究/日报/观点）的 .tag 是 div，默认 display:block 会把粉底拉成一整条长条，
+   看起来像一条脏色带。强制收成胶囊。 */
+.hero>.tag,.hd>.tag,.hero>div.tag{display:inline-block;width:auto;border-radius:20px;
+ padding:3px 11px;font-size:12.5px;font-weight:600;background:#FDEDED;color:#B32424}
+/* 结论块里的强调文字改用近黑加粗，不再整段刷红 ——
+   满屏红字既和「涨=红」的语义打架，也是页面显脏的原因（2026-10-22）。 */
+.hero .verdict b,.verdict b,.concl b{color:var(--ink);font-weight:700}
+
+/* ---- section 卡片：白底 + 发丝线 + 极轻投影，与画布拉开层次 ---- */
+section{background:#fff;border-color:var(--line);box-shadow:none}
+section h2{border-left:0;padding-left:0;font-size:21px;font-weight:700;letter-spacing:-.2px}
+
+/* ---- 卡片 / 表格外壳 ----
+   .chartbox 各页写法不一（9/22 是无边框的纯尺寸盒，9/24 是带边框的卡），
+   所以只归一化圆角，不强行加边框/内边距 —— 加了会把 9/22 的定高图表盒撑变形。 */
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-s)}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-s)}
+.chartbox{border-radius:12px}
+
+/* ---- 表格：表头浅底细线，行分隔降到最轻 ---- */
+th{background:#FAFBFD;color:var(--sub);font-weight:600;border-bottom:1px solid var(--line);
+ font-size:13.5px;letter-spacing:.02em}
+td{border-bottom:1px solid #F1F4F8;color:var(--ink2)}
+tbody tr:nth-child(even){background:#FBFCFE}
+tbody tr:hover{background:var(--soft)}
+
+/* ---- 标签胶囊：降饱和，避免一堆彩色小方块把版面弄花 ---- */
+.hero .tag,.hd .tag,.tag-pill{background:#FDEDED;color:#B32424}
+.chip{border-radius:6px;font-weight:600}
+.chip-r{background:#FDEDED;color:#B32424}
+.chip-g{background:#EAF7F0;color:#12784A}
+.chip-y{background:#FDF6E8;color:#96620A}
+.chip-b{background:#EEF3FD;color:#2F5FB3}
+.chip-n{background:#F3F5F8;color:#5A6472}
+
+/* ---- 数据源 / 免责 / 页脚 ---- */
+.src{color:var(--faint)}
+.srcbox,.disc,.foot{background:var(--soft);border:1px solid var(--line);
+ border-radius:10px;color:var(--sub)}
+footer{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);
+ color:var(--faint);font-size:12.5px;background:transparent;text-align:left}
+
+/* ---- 页内按钮统一胶囊形 ----
+   各报告页/模板页里的「下载 PDF / Markdown / 返回首页」按钮写法不一：
+   有的是 <a class="btn solid">，有的是 <a class="btn">，还有的裸写内联样式。
+   这里统一成与站点模板一致的胶囊形（radius 50px），主按钮取品牌红实心。
+   ★ 只覆盖圆角/内边距/字号与主按钮配色，不动布局宽度，避免把工具栏挤变形。 */
+.btn,.btns a,.btns button,.tools a,.tools button,header .btns a,header .btns button{
+ border-radius:50px;padding:10px 22px;font-size:14px;font-weight:500;display:inline-block;
+ transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+.btn.solid,.btns a.solid,.btns a.primary,.btns a:first-child,
+.tools a.solid,.tools a:first-child{background:var(--red);color:#fff;border-color:var(--red);font-weight:600}
+.btn.solid:hover,.btns a.solid:hover,.btns a:first-child:hover{background:var(--red-d);
+ border-color:var(--red-d);color:#fff;text-decoration:none;box-shadow:var(--sh)}
+.btn:not(.solid),.btns a:not(.solid):not(:first-child),.tools a:not(.solid){
+ border:1px solid var(--line2);background:#fff;color:var(--ink)}
+.btn:not(.solid):hover,.btns a:not(.solid):not(:first-child):hover,.tools a:not(.solid):hover{
+ background:var(--soft);border-color:var(--ink);color:var(--ink);text-decoration:none}
+
+/* 窄屏：这些报告页的数据表列多（实测 9/23 表宽 618px、9/24 表宽 539px、龙头思路 542px），
+   原本直接把整页撑出横向滚动。改成表格自己横向滚动，页面宽度不再被撑破。
+   注：display:block 会让表格按内容宽收缩（窄表不再铺满）——移动端这正是想要的效果。 */
+@media(max-width:820px){
+ header h1,header.top h1,.hd h1,.hero h1,h1{font-size:23px}
+ h2{font-size:18px}
+ table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ /* 9/24 早报页的 KPI 网格写死 repeat(4,1fr) 且该页没有任何媒体查询，
+    `1fr` 的最小内容宽在窄屏下把网格撑出 16px。其中一处还带内联
+    style="grid-template-columns:repeat(4,1fr)" —— 内联样式压过样式表，
+    只能上 !important 才能在窄屏接管。 */
+ .kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr)) !important}
+}
+@media(max-width:640px){
+ header,.hd,.hero{padding:18px 0 16px;margin-bottom:20px}
+ .card{border-radius:8px}
+}
+</style>
+</head><body>
+<nav class="top"><div class="wrap"><a class="brand" href="index.html" title="返回首页"><img src="logo-icon.png" alt="明阳量化"><span class="b-text">明阳量化</span></a><div class="nlinks"><a href="index.html">首页</a><a href="daily.html" class="on">日报</a><a href="limitup.html">涨停</a><a href="lhb.html">龙虎榜</a><a href="research.html">研究</a><a href="guandian.html">观点</a></div></div></nav><div class="wrap">
+<header class="hero"><div class="eyebrow">MORNING BRIEF · 明阳量化 · 盘前</div>
+<h1>2026年11月12日 A股盘前早报、隔夜外盘分叉及今日操作指引</h1>
+<p class="sub">正式盘半导体全线暴涨，盘后总龙头被单独砍了一刀 —— 今天定价的是一个尚未被任何正式盘交易的消息</p>
+<div class="meta">发稿 2026-11-12 08:52 +0800 · 距集合竞价 9:15 还有 23 分钟 · 数据截点：11-11 美东收盘 / 11-12 08:49 亚洲早盘 / 11-11 A 股收盘 15:00</div>
+<div class="tags"><span class="tag">指引回看</span><span class="tag">隔夜外盘</span><span class="tag">去英伟达化</span><span class="tag">昨日结构</span><span class="tag">竞价分档</span><span class="tag">今日候选池</span><span class="tag">9:25定方向</span><span class="tag">免责声明</span></div></header>
+<div class="kpis">
+<div class="kpi"><div class="k">费城半导体｜11-11 美东</div><div class="v up">+5.66%</div><div class="s">10,564.11 · 存储/设备/光通信全线大涨</div></div>
+<div class="kpi"><div class="k">英伟达｜盘后</div><div class="v down">−8%</div><div class="s">正式盘 +2.87% → 盘后 CEO 人事传闻</div></div>
+<div class="kpi"><div class="k">美债 10Y / 美元</div><div class="v ">4.998% / 102.862</div><div class="s">逼近 5% / 19 个月高位</div></div>
+<div class="kpi"><div class="k">11-11 全市场开买中位</div><div class="v up">+0.87%</div><div class="s">胜 69.12% · 62.44% 个股低开 · 1.69 万亿</div></div>
+<div class="kpi"><div class="k">11-11 涨停 / 跌停</div><div class="v ">84 / 1</div><div class="s">炸板 19 · 炸板率 18.4% · 官方池口径</div></div>
+<div class="kpi"><div class="k">今日总仓上限</div><div class="v ">三成</div><div class="s">单只 ≤10% · 最多 3 只 · 高开且缩量不做</div></div>
+</div>
+<section class="sec"><h2>首屏结论 · 先给判断</h2>
+<ol class="concl">
+<li><b>昨夜不是一个外盘，是两个截面。</b>正式盘（11-11 美东收盘）纳指 <b class="up">+1.60%</b>、费半 <b class="up">+5.66%</b>、VIX 回落至 17.49，存储 / 设备 / 光通信 / 定制芯片全线暴涨；但收盘后英伟达因 CEO 人事变动传闻盘后一度跌超 <b class="dn">8%</b>，同时 AMD、博通盘后 <b class="up">+3%</b>。<b>正式盘那一半已经被 11-11 A 股午后抢跑过了，今天真正的新增信息只有盘后那一刀。</b></li>
+<li><b>今天大概率高开，而高开是赔率最差的一端。</b>11-11 全市场 62.44% 个股低开、竞价中位 −0.21%，开买中位 <b class="up">+0.87%</b> / 胜 69.12%；七档里高开 &gt;5% 档开买中位 <b>0.00%</b>、均值 <b class="dn">−1.23%</b>、胜 30.77%，≥+9% 档在昨涨停股里胜率仅 20.0%。<b>9:25 若昨涨停 84 只高开占比 &gt;80%，或池 A 三只竞价全部 &gt;+2%，按昨晚已写死的失效条件全天不做 —— 不临时改名单、不新开池。</b></li>
+<li><b>指数层面不支持全面追高。</b>隔夜中概与美股背离：KWEB <b class="dn">−1.62%</b>、FXI <b class="dn">−1.42%</b>；美债 10Y 4.998% 逼近 5%、美元 102.862 攀上 19 个月高位、黄金 <b class="dn">−0.96%</b>。今晨 08:01 日经高开 +0.37%、韩综 +0.20%，但这是 <b>08:01 快照，不是收盘</b>。利率 + 汇率双双偏紧时，外盘给的是结构性高开，不是指数级做多信号。</li>
+<li><b>操作仍落在昨晚那三只，不重新洗牌。</b>池 A：光迅科技 002281 / 景旺电子 603228 / 天安新材 603725，按各自 9:25 竞价档位对号入座，挂单一律用「竞价档位 + 分时均价」条件、<b>禁用绝对价</b>；池 B 不设买单、池 C 观察不接；总仓 ≤三成、单只 ≤10%、最多 3 只。11/12 买入的筹码 11/13 才能处置，中间隔今晚美股。</li>
+</ol>
+<div class="box red"><b>一句话执行 · 9:25定方向：</b>9:25 先数昨涨停 84 只的各档家数和量能预估，再决定买不买；数完发现是「集体高开」，今天就是空仓日，空仓也是决策，不是漏做。只有在低开或平开档出现时，池 A 三只才按第七节的仓位表挂单。</div>
+</section>
+<section class="sec"><h2>一、昨日指引回看 · 逐条对账</h2>
+<p>按固定纪律，第一节先把上一份收盘复盘（11-11 17:57）与 11-11 早报的原文指引摆出来，对照隔夜实测打「对 / 半 / 错 / 反 / 未触发」。<b>判定列一律中性色</b>，只有涨跌幅用涨红跌绿。</p>
+<div class="tw"><table><thead><tr><th style="width:30%">原文指引（摘录）</th><th style="width:34%">隔夜实测</th><th style="width:8%">判定</th><th>说明</th></tr></thead><tbody>
+<tr><td>11-11 早报：「今天压力最大的是昨日已兑现过的光模块 / 存储 / 铜缆」</td><td>11-11 收盘 CPO 概念 <b class="up">+4.62%</b>、PCB <b class="up">+3.34%</b>、存储芯片 <b class="up">+3.13%</b>，三条链是全市场最强</td><td><b class="verdict">反</b></td><td class="note">已在 11-11 收盘复盘认过：09:36 剑桥科技扩产快讯 + 12:05 半导体夜盘反弹是当日独立催化，外盘映射漏了第四道校验</td></tr>
+<tr><td>11-11 收盘复盘 8.1：「今晚外盘是明日最大的未知量；正式盘若证伪，整条链降级」</td><td>正式盘费半 <b class="up">+5.66%</b>、美光 <b class="up">+11.89%</b>、Lumentum <b class="up">+10.67%</b>、Coherent <b class="up">+9.25%</b>，全线走强</td><td><b class="verdict">未证伪</b></td><td class="note">不是「证伪」，是「强化」。但强化发生在正式盘，盘后又出现反向分叉，不能算完整命中</td></tr>
+<tr><td>11-11 收盘复盘 8.1：「若存储与光通信继续强于总龙头，则只是去英伟达化延续，链内仍可做」</td><td>存储 / 光通信 <b class="up">+8%~+12%</b> 远强于英伟达 <b class="up">+2.87%</b>；微软 <b class="dn">−2.26%</b> 是大型科技里唯一大跌</td><td><b class="verdict">半</b></td><td class="note">链内相对强弱判对了；但「总龙头只是偏弱」低估了尾部 —— 盘后英伟达 <b class="dn">−8%</b> 把偏弱变成事件</td></tr>
+<tr><td>11-11 收盘复盘 8.1：「有没有第二根独立催化」列为 9:25 前必看</td><td>有且不止一根：CoreWeave 财报与上调指引、NAND 合约价单月涨 50%、国产 1.6T 光传输纪录、MSCI 纳入中际旭创 H 股、11-12 中国国际半导体博览会</td><td><b class="verdict">对</b></td><td class="note">「没有当日催化的外盘映射不得单独作为买入理由」这条今天反过来用：催化密集时，外盘只配当背景</td></tr>
+<tr><td>11-11 收盘复盘 8.7 反向声音：「若今晚美股存储 / 光通信夜盘涨幅回吐、正式盘转跌，第二节自动失效」</td><td>正式盘同链条集体大涨，未回吐</td><td><b class="verdict">未触发</b></td><td class="note">反向声音没有兑现，不等于可以删 —— 今天换成新的反向声音写在第九节</td></tr>
+<tr><td>11-11 早报池 A（嘉立创 / 引力传媒 / 襄阳轴承）</td><td>开买中位 <b class="up">+2.02%</b> / 胜 66.7% / 1 只涨停</td><td><b class="verdict">对</b></td><td class="note">池 A 分档执行有效，仍是今天沿用的框架</td></tr>
+<tr><td>11-11 早报池 B 四只（形态好但买不到）</td><td>开买中位 0.00% / 胜 25.0% / 3 只涨停；能买到的两只中位 <b class="dn">−1.13%</b></td><td><b class="verdict">对</b></td><td class="note">第 8 次验证「形态好与能买到互斥」；一字买不到是保护，能买到才是风险</td></tr>
+<tr><td>11-11 早报新增情景④「利率冲击型平开 / 微低开」</td><td>11-11 八大指数竞价 −0.17%~−0.39%、10Y 4.983%、算力总龙头隔夜大跌，三条全中</td><td><b class="verdict">对</b></td><td class="note">第四态首次命中，今天 10Y 仍在 4.998%，该情景继续保留但排序下调</td></tr>
+</tbody></table></div>
+<p class="note">来源：11-11 早报与收盘复盘原文（`_d1111/txt_morning_1111.txt`、`_d1112/txt_review_1111.txt`）；11-11 A 股结构 = 同花顺官方池 + 全市场快照 5,573 行（17:08–17:11 取数）；隔夜外盘 = 雅虎财经日线（11-12 08:52 取数，已逐序列打印末三条核日期连续性）与同花顺 / 东财 11-12 早间快讯。n&lt;50 的分组仅作方向参考。</p>
+<div class="box"><b>回看结论：</b>连续两天的判反都出在同一个地方 —— 把「隔夜外盘方向」当成「今日收盘方向」。11-11 收盘复盘已把它修成「隔夜外盘只定竞价，不定收盘」，今天再补一句：<b>盘后事件连竞价都不一定定得准，因为它还没被任何正式盘交易过</b>。所以今天的定性权仍然完全交给 9:25 各档家数，而不是交给任何一条新闻。</div>
+</section>
+<section class="sec"><h2>二、隔夜外盘 · 正式盘与盘后是两个截面</h2>
+<h3>2.1 正式盘（11-11 美东收盘）：半导体是唯一主角</h3>
+<div class="tw"><table><thead><tr><th>指数 / ETF</th><th>11-11 收盘</th><th>较 11-10</th><th>读法</th></tr></thead><tbody>
+<tr><td>费城半导体 ^SOX</td><td>10,564.11</td><td class="up">+5.66%</td><td class="note">本轮最强单日，11-10 还是 −0.35%</td></tr>
+<tr><td>纳斯达克 ^IXIC</td><td>25,466.19</td><td class="up">+1.60%</td><td class="note">四大指数全涨，但涨幅远小于费半 → 结构性行情</td></tr>
+<tr><td>标普500 ^GSPC</td><td>7,619.38</td><td class="up">+1.31%</td><td class="note">—</td></tr>
+<tr><td>道琼斯 ^DJI</td><td>52,486.49</td><td class="up">+0.49%</td><td class="note">—</td></tr>
+<tr><td>罗素2000 ^RUT</td><td>2,846.26</td><td class="up">+0.88%</td><td class="note">小盘同步，不是单极拉指数</td></tr>
+<tr><td>VIX ^VIX</td><td>17.49</td><td class="down">−10.12%</td><td class="note">19.46 → 17.49，恐慌回落</td></tr>
+<tr><td>半导体ETF SMH</td><td>506.96</td><td class="up">+4.82%</td><td class="note">—</td></tr>
+<tr><td>中概互联网 KWEB</td><td>23.67</td><td class="down">−1.62%</td><td class="note"><b>与美股半导体背离</b></td></tr>
+<tr><td>中国大盘股 FXI</td><td>33.92</td><td class="down">−1.42%</td><td class="note"><b>连续第二日走弱</b></td></tr>
+</tbody></table></div>
+<div id="c1" class="chart mid"></div><p class="cap">图 1｜隔夜正式盘指数与 ETF 涨跌幅。来源：雅虎财经日线，11-11 美东收盘，2026-11-12 08:52 取数；已打印各序列末三条核日期连续性。家数与比率为中性量，柱色只表达涨跌。</p>
+<h3>2.2 拆到个股：涨的是设备 / 存储 / 光通信 / 定制芯片，不是算力总龙头</h3>
+<p>按长期判据，费半 +5.66% 这个总指数完全掩盖了链内分化。逐股看（11-11 美东收盘）：</p>
+<div class="tw"><table><thead><tr><th>子链条</th><th>个股与涨跌</th><th>对 A 股的映射</th></tr></thead><tbody>
+<tr><td><b>存储 / NAND</b></td><td>美光 <b class="up">+11.89%</b>、希捷 <b class="up">+9.99%</b>、西部数据 <b class="up">+8.34%</b></td><td class="note">叠加 11-10 闪迪 NAND 合约价上调 50%（年内第三次），是<b>有独立产业催化</b>的一档</td></tr>
+<tr><td><b>定制芯片 / ASIC</b></td><td>ARM <b class="up">+12.05%</b>、迈威尔 <b class="up">+9.33%</b>、AMD <b class="up">+7.32%</b>、博通 <b class="up">+3.99%</b></td><td class="note">「去英伟达化」最硬的一段，盘后 AMD / 博通再 <b class="up">+3%</b></td></tr>
+<tr><td><b>光通信 / 光模块</b></td><td>Lumentum <b class="up">+10.67%</b>、Coherent <b class="up">+9.25%</b></td><td class="note">直接对应 11-11 A 股 CPO 链，但须与「砍单传闻」并列校验</td></tr>
+<tr><td><b>半导体设备</b></td><td>泛林 <b class="up">+6.07%</b>、应用材料 <b class="up">+6.05%</b>、阿斯麦 <b class="up">+1.76%</b></td><td class="note">设备弱于存储但强于总龙头</td></tr>
+<tr><td><b>代工 / IDM</b></td><td>台积电 <b class="up">+4.25%</b>、英特尔 <b class="up">+7.52%</b></td><td class="note">—</td></tr>
+<tr><td><b>算力总龙头</b></td><td>英伟达 <b class="up">+2.87%</b>（173.73）</td><td class="note"><b>正式盘全链最弱的大型芯片股之一</b>，盘后再跌超 8%</td></tr>
+<tr><td><b>大型软件</b></td><td>微软 <b class="dn">−2.26%</b>（521.125）</td><td class="note">唯一下跌的科技巨头；谷歌 <b class="up">+2.11%</b>、苹果 <b class="up">+2.04%</b> 仍红</td></tr>
+</tbody></table></div>
+<div id="c2" class="chart tall"></div><p class="cap">图 2｜11-11 美东正式盘半导体子链条个股涨跌幅，末根为盘后事件单独标注。来源同上；盘后数值来自财联社 / 新浪 / 东财 11-12 06:00–08:05 快讯，非交易所正式收盘价，标注为「盘后·待正式盘定价」。</p>
+<h3>2.3 盘后黑天鹅：一个尚未被正式盘定价的 CEO 人事传闻</h3>
+<p>时间线（北京时间 11-12 早间，同花顺 / 东财快讯）：</p>
+<div class="tw"><table><thead><tr><th>时点</th><th>事件</th></tr></thead><tbody>
+<tr><td class="code">06:00</td><td>英伟达盘后一度跌 3.1%；随后《华尔街日报》报道董事会正准备罢免 CEO 黄仁勋（每经 / 新浪转引）</td></tr>
+<tr><td class="code">06:24–06:29</td><td>盘后跌幅由 4% 扩大至 8%</td></tr>
+<tr><td class="code">06:30</td><td>董事会准备最快于今日召开会议决定 CEO 去留（新浪财经）</td></tr>
+<tr><td class="code">06:34</td><td><b>AMD 和博通盘后涨幅扩大至 3%</b> —— 资金在盘后明确做「链内换仓」，不是无差别抛售</td></tr>
+<tr><td class="code">07:32</td><td>CBS 记者在 X 平台称特朗普政府已获悉董事会准备罢免（新浪财经转引）</td></tr>
+<tr><td class="code">07:41</td><td>英伟达正考虑任命临时 CEO，并与外部公司合作物色人选（财联社）</td></tr>
+<tr><td class="code">08:05</td><td>东财：英伟达盘后暴跌逾 8%</td></tr>
+</tbody></table></div>
+<div class="box warn"><b>三条必须说清的边界：</b>① 这是<b>媒体报道口径</b>，截至 08:52 未见英伟达官方对今晚这版报道的确认或否认；11-09 公司发言人曾公开表示黄仁勋继续担任 CEO、履职不中断（媒体转引），两条信息在时间上并不互相推翻，但也不能据此判定今晚消息为假。② 报告只讨论<b>公司管理层变动对产业链定价的影响</b>，不采信、不转述任何涉及个人隐私的内容。③ <b>美股正式盘要等今晚 22:30 才定价这条消息</b>，A 股 9:30 是第一个交易它的现货市场 —— 今天买进去的筹码，要同时扛今晚美股和 11-13 的二次反应。</div>
+<p><b>映射推论（可证伪）：</b>若今日 A 股出现「英伟达链（算力租赁 / NVDA 服务器整机 / 跟随 GB 系列的液冷）低开，而存储 / 设备 / 光模块 / PCB 相对抗跌甚至翻红」，说明市场在读「链内换仓」，去英伟达化仍是有效框架；若出现<b>全链条齐跌且无分叉</b>，说明市场读的是「AI 资本开支总量下修」，此时第五节的所有链内排序全部作废，直接按竞价低开档处理，不再谈题材。</p>
+<div class="chain"><div class="node"><b>正式盘（已定价）</b>费半 +5.66%<br>存储 / 设备 / 光通信齐涨</div><div class="arrow">→</div><div class="node"><b>盘后（未定价）</b>英伟达 −8%<br>AMD / 博通 +3%</div><div class="arrow">→</div><div class="node"><b>A 股 9:25</b>先数竞价各档家数<br>分叉 or 齐跌，二选一</div><div class="arrow">→</div><div class="node"><b>今晚 22:30</b>美股正式盘定价<br>决定 11-13 的二次反应</div></div>
+</section>
+<section class="sec"><h2>三、利率、汇率、商品与今晨亚太</h2>
+<div class="tw"><table><thead><tr><th>变量</th><th>最新</th><th>变化</th><th>口径与含义</th></tr></thead><tbody>
+<tr><td><b>美债 10Y ^TNX</b></td><td>4.998%</td><td>4.983% → 4.998%</td><td class="note">11-11 美东收盘；连续第二日逼近 5%，高估值成长的贴现压力没有解除</td></tr>
+<tr><td><b>美元指数 DX-Y.NYB</b></td><td>102.862</td><td>+0.62%</td><td class="note">11-12 亚洲早盘实时；东财 08:40 快讯称攀上 19 个月高位</td></tr>
+<tr><td><b>COMEX 黄金 GC=F</b></td><td>3,991.7</td><td>−0.96%</td><td class="note">连续合约 11-12 早盘实时；11-10 为 4,030.2</td></tr>
+<tr><td><b>WTI 原油 CL=F</b></td><td>86.17</td><td>+0.15%</td><td class="note">连续合约 11-12 早盘实时</td></tr>
+<tr><td><b>COMEX 铜 HG=F</b></td><td>6.2535</td><td>+0.55%</td><td class="note">连续合约 11-12 早盘实时</td></tr>
+<tr><td><b>比特币 BTC-USD</b></td><td>74,033.61</td><td>+0.43%</td><td class="note">11-12 早盘实时</td></tr>
+<tr><td><b>日经225</b></td><td>61,475.11（08:01 开盘）</td><td>+0.37% 高开</td><td class="note">同花顺 08:01 快讯；雅虎 ^N225 序列缺 11-11，末条 11-12 为 61,311.38，<b>不可与 11-10 直接算当日涨幅</b></td></tr>
+<tr><td><b>韩国综指</b></td><td>5,385.94（08:01 开盘）</td><td>+0.20% 高开</td><td class="note">同花顺 08:01 快讯</td></tr>
+</tbody></table></div>
+<div class="box blue"><b>加息预期这条要单列：</b>东财 06:16 快讯给出「美联储到 12 月累计加息 25bp 的概率 89.6%」。这是<b>市场利率期货定价口径</b>，不是美联储官方表态，本报告只把它当背景变量，不据此推断货币政策路径。可以确定的只有价格事实：10Y 逼近 5%、美元 19 个月高位、黄金跌破 4,000 —— 三者同向，说明分母端仍紧。这与 11-11 早报的「利率冲击型平开 / 微低开」情景同源，今天该情景的触发条件仍然成立，但排序要让位给盘后事件。</div>
+<p class="note">未覆盖（显式声明）：富时 A50 期指（新浪 <code>CHA50CFD</code> 接口返回空）、恒生指数 11-11 完整收盘（雅虎序列末条 11-10）、欧洲 CAC40 / DAX 11-11 收盘（雅虎序列末条 11-10）、两市两融明细（东财报表接口返回「报表配置不存在」，仅由同花顺 08:46 快讯取得 11-11 融资余额合计 22,656.44 亿元、较上日 +74.92 亿元）、北向净买入（2024-08 起停止实时披露）。</p>
+</section>
+<section class="sec"><h2>四、消息面 · 催化与反向证据并列</h2>
+<p>11-11 收盘复盘要求 9:25 前确认「有没有第二根独立催化」。答案是<strong>有，而且密集</strong>；但同一批快讯里也出现了两条明确的反向证据，必须并列摆出，不能只挑顺眼的。</p>
+<h3>4.1 支持链内延续的催化</h3>
+<div class="tw"><table><thead><tr><th style="width:12%">时点</th><th style="width:44%">消息</th><th>映射到今日</th></tr></thead><tbody>
+<tr><td class="code">06:25</td><td>NAND 合约价单月涨 50%（闪迪 11-10 年内第三次提价），机构称 DRAM / NAND 供需缺口延续至 2028</td><td class="note"><b>存储链最硬的一根独立催化</b>，与美股美光 +11.89% 同向；不是外盘映射，是产业价格</td></tr>
+<tr><td class="code">07:44</td><td>国产 1.6T 光传输创新纪录</td><td class="note">光通信 / CPO 的国内侧催化，可独立于英伟达事件</td></tr>
+<tr><td class="code">07:10</td><td>CoreWeave 财报并上调全年营收指引，AI 算力产业链集体飙升；另计划通过投资级贷款筹资至少 40 亿美元</td><td class="note">11-11 A 股午后抢跑的源头，正式盘被验证；但注意这是「云厂商资本开支」，与总龙头人事变动是两件事</td></tr>
+<tr><td class="code">08:12</td><td>中信证券：国产算力边际向上，聚焦 IDC、连接器、交换机低估龙头</td><td class="note">卖方观点，仅作方向参考，不构成买入依据</td></tr>
+<tr><td class="code">06:28</td><td>MSCI 将中际旭创 H 股纳入 MSCI 新兴市场指数</td><td class="note">被动资金事件，对 A 股同标的情绪有外溢，不改竞价赔率</td></tr>
+<tr><td class="code">07:48</td><td>北京印发具身智能机器人产业三年行动方案</td><td class="note">机器人链的政策催化；11-11 涨停池机器人家数最多（30 只），但龙虎榜的钱不在这条链</td></tr>
+<tr><td class="code">08:31</td><td>杭州园林控股子公司签署 3 万片 GPU 采购合同（含 2 万片 NVIDIA RTX PRO5500 Blackwell 及配件）</td><td class="note"><b>个股事件</b>，且恰属英伟达链；今日若被当作「英伟达链利好」炒作，是典型的错配端，不参与</td></tr>
+<tr><td class="code">08:05</td><td>11-12 投资日历：中国国际半导体博览会（北京）、24 时成品油调价窗口、美国至 11-07 当周初请失业金</td><td class="note">博览会是当日催化窗口；初请数据在北京时间晚间，不影响 9:25</td></tr>
+</tbody></table></div>
+<h3>4.2 反向证据（今天最容易踩的两条）</h3>
+<div class="tw"><table><thead><tr><th style="width:12%">时点</th><th style="width:44%">消息</th><th>含义</th></tr></thead><tbody>
+<tr><td class="code">07:24</td><td><b>光通信行业「砍单」传闻不断</b>，有上市公司高管对记者表示「近期市场并没有不利变化」；11-11 包括「易中天」、剑桥科技、源杰科技等多只光通信龙头涨停或涨超 10%</td><td class="note">公司回应是<b>口头澄清而非订单数据</b>。池 A 三只里两只（光迅科技、天安新材）带光通信标签，这条必须写进风险栏：若 9:25 该链集体高开 &gt;3% 且量能不足，按「高开＋缩量＝空仓」处理</td></tr>
+<tr><td class="code">08:07</td><td>11-11 ETF 资金整体净流出 86.73 亿元，股票型净流出 49.76 亿、宽基型净流出 35.12 亿（同花顺 iFinD）</td><td class="note">11-11 指数放量大涨的同时 ETF 在净流出，说明增量资金结构不纯；这是今天「量能预估」必须实看而不能沿用 1.69 万亿的原因</td></tr>
+<tr><td class="code">06:00–08:05</td><td>英伟达 CEO 人事变动传闻 + 盘后跌超 8%</td><td class="note">见第二节：未定价事件，A 股今天第一个交易它</td></tr>
+</tbody></table></div>
+<div class="box"><b>四道验证今天怎么过：</b>① 该线 A 股昨天是否已涨过 —— <b>是</b>，CPO +4.62%、PCB +3.34%；② 涨停池有无该链条 —— <b>有</b>，光通信·CPO 13 只、PCB 7 只；③ 承接标的昨日日内形态 —— 池 A 三只均为午后封板、非一字，开买可成交；④ <b>该线当日有无独立产业催化 —— 有</b>（NAND 提价、1.6T 纪录）。四道全过，但第 ① 条同时意味着<b>赔率已经被消耗过一次</b>。结论：链可以留，档位不能让。</div>
+</section>
+<section class="sec"><h2>五、昨日结构 · 竞价分档仍是唯一自变量</h2>
+<p>11-11 全市场（同花顺全市场快照 12 页循环，n=5,573，17:09 取数）：红盘率 <b>63.47%</b>、涨跌中位 <b class="up">+0.59%</b>、竞价中位 <b class="dn">−0.21%</b>、开买中位 <b class="up">+0.87%</b>、开买胜率 <b>69.12%</b>、成交 <b>16,886.99 亿</b>。<b>62.44% 个股低开、仅 22.16% 高开</b>，八大指数竞价全部小幅低开（−0.17%~−0.39%），随后七正一微负收红 —— 又是一次「低开给赔率、日内给收益」。</p>
+<div class="tw"><table><thead><tr><th>全市场竞价档（11-11）</th><th>n</th><th>开买中位</th><th>开买均值</th><th>开买胜率</th></tr></thead><tbody>
+<tr><td>低开 &gt;3%</td><td>36</td><td class="up">+0.71%</td><td class="up">+1.49%</td><td>61.11%</td></tr>
+<tr><td>低开 1~3%</td><td>390</td><td class="up">+1.39%</td><td class="up">+1.88%</td><td>73.85%</td></tr>
+<tr><td>低开 0~1%</td><td>3055</td><td class="up">+0.93%</td><td class="up">+1.37%</td><td>72.67%</td></tr>
+<tr><td>高开 0~1%</td><td>1882</td><td class="up">+0.64%</td><td class="up">+1.23%</td><td>63.50%</td></tr>
+<tr><td>高开 1~3%</td><td>158</td><td class="up">+1.02%</td><td class="up">+1.75%</td><td>65.19%</td></tr>
+<tr><td>高开 3~5%</td><td>26</td><td class="up">+1.61%</td><td class="up">+1.32%</td><td>61.54%</td></tr>
+<tr><td>高开 &gt;5%</td><td>26</td><td class="">0.00%</td><td class="dn">−1.23%</td><td>30.77%</td></tr>
+</tbody></table></div>
+<div id="c3" class="chart mid"></div><p class="cap">图 3｜11-11 全市场竞价七档「开买中位」与「开买胜率」（n=5,573）。柱色只表达开买涨跌；胜率折线用中性青色，不参与涨跌配色。</p>
+<p>把样本换成<b>昨涨停 95 只</b>（11-10 官方池 × 11-11 快照 join），形状更陡：≤0% 档 +0.78% / 胜 57.14%，0~+2% 档 <b class="up">+2.27%</b> / 胜 68.18% 最优，+2~+5% 档降到 +0.50% / 胜 57.89%，+5~+9% 档中位 +0.80% 但均值 <b class="dn">−1.15%</b>（少数票拉动），≥+9% 档 <b>0.00% / 胜 20.0%</b> 全场最差。</p>
+<div id="c4" class="chart mid"></div><p class="cap">图 4｜昨涨停 95 只按 11-11 竞价五档的开买中位与胜率。来源：同花顺官方涨停池（11-10 收盘）+ 全市场快照（11-11 收盘），n=95。</p>
+<div class="box red"><b>今天最该记住的一条：</b>11-11 是「62% 低开 → 开买 +0.87%」；如果隔夜外盘正式盘大涨把今天推成「80% 高开」，自变量就翻到了赔率最差的另一端。<b>同样一条利好链，竞价位置不同，期望值符号相反。</b>这就是 9:25 数家数比争涨跌有用的全部理由。</div>
+<h3>5.1 情绪序列：修复在高位横住，没有加速</h3>
+<div id="c5" class="chart mid"></div><p class="cap">图 5｜同花顺官方三池口径的 9 个交易日情绪序列（11-02 ~ 11-11）。涨停、炸板、跌停均为家数，一律中性色；仅用于判读状态，不作为买卖信号。</p>
+<p>11-11 涨停 <b>84</b> / 炸板 <b>19</b> / 跌停 <b>1</b>（ST三木），炸板率 18.4%，板数 {1:65, 2:12, 3:5, 4:2}，一进二基准 17.57%，最高 4 板，13:00 后首封 28 只占 33.3%。按四状态表落在<b>「②分歧」偏上沿</b>：涨停 84 但连板高度只有 4 板、一进二长期低于 20%，是宽度有水、高度没水的结构。<b>这种结构最怕高开</b> —— 高开会把仅有的低开赔率一次性抹掉，而高度层又接不住资金。</p>
+<p class="note">口径：开买收益 = 收盘 ÷ 开盘 − 1；胜率 = 开买收益 &gt; 0 的样本占比；炸板率 = 炸板 ÷（涨停 + 炸板）；一进二 = 当日 2 板数 ÷ 前日首板数。11-11 数据为同花顺官方池 15:00 收盘口径（与悟道 ladder 85 / 情绪快照 86 有小幅分歧，以官方池为准）。</p>
+</section>
+<section class="sec"><h2>六、9:25 情景表 · 五态定性（新增第五态）</h2>
+<p>前四态沿用 11-11 收盘复盘 8.2，阈值按 11-11 实测校准；<b>第五态是今天新增的</b>，对应「正式盘大涨 + 盘后总龙头单独挨刀」这个从未出现过的组合。情景只负责 9:25 定性，<b>不附带任何整链降级</b>。</p>
+<div class="tw"><table><thead><tr><th style="width:15%">情景</th><th style="width:40%">触发条件（9:25 可观测）</th><th>动作</th></tr></thead><tbody>
+<tr><td><b>① 温和高开</b></td><td>昨涨停 84 只高开 40%–70%；指数竞价 −0.3%~+0.8%；成交额预估 ≥1.45 万亿</td><td>正常执行池 A：竞价 ≤0% 优先，0~+2% 可挂，+2~+5% 减半，+5~+9% 只做 1/3 仓，≥+9% 不挂；总仓 ≤三成、单只 ≤10%、最多 3 只</td></tr>
+<tr><td><b>② 极端高开</b></td><td>昨涨停高开 &gt;80%，或指数竞价 &gt;+1%</td><td>只做竞价 ≤0% 的池 A 1 只、仓位 ≤半成；<b>池 A 三只全部 &gt;+2% → 全天不做</b>；若同时缩量（预估 &lt;1.45 万亿）→ 按「高开＋缩量＝空仓」直接不做</td></tr>
+<tr><td><b>③ 低开 / 外盘杀跌</b></td><td>昨涨停低开 &gt;50%；或 CPO / 存储 / 光通信竞价涨幅全部回吐并转跌</td><td>低开档最强（11-11 全市场低开 1~3% 档 +1.39% / 胜 73.85%）。池 A 里低开最深的一只优先，仓位可到两成、单只 8%；仍须 09:31–10:00 完整窗口连续站上均价 ≥5 分钟</td></tr>
+<tr><td><b>④ 利率冲击型平开 / 微低开</b></td><td>指数竞价 −0.3%~+0.3%；10Y ≥4.95%；美元 ≥102.5；昨涨停高开 50%–80%</td><td>先看量能：≥1.45 万亿且低开占比 &gt;50% → 转③；≥1.45 万亿且高开 40%–70% → 转①；&lt;1.45 万亿 → 全天不做</td></tr>
+<tr><td><b>⑤ <b>盘后龙头冲击型分化</b>（新增）</b></td><td>指数平开 / 微高开，但英伟达链与去英伟达链竞价涨幅差 &gt;3pct；同时 KWEB / FXI 隔夜为负、10Y ≥4.95%</td><td>只做<b>非英伟达链</b>（存储 / 设备 / 光模块 / PCB）且必须是 ≤0% 或 0~+2% 档；纯 NVDA 供应链映射标的一律不挂；若分叉没有出现、变成全链齐跌 → 直接转③，不再谈题材归属</td></tr>
+</tbody></table></div>
+<div class="box warn"><b>今晚事件的权重怎么摆：</b>英伟达盘后跌 8% 是<b>未定价事件</b>，A 股今天是第一个交易它的现货市场。它既可能只砸英伟达链（情景⑤），也可能被读成 AI 资本开支总量下修、砸全链（情景③）。<b>盘前不许二选一</b>：9:25 用「链间分叉 vs 全链齐跌」这一个观测量判，别的都是猜测。今晨日韩高开发生在 08:01，早于 A 股但同样早于任何正式盘定价，参考价值有限。</div>
+</section>
+<section class="sec"><h2>七、今日候选池 · 买哪只、挂什么条件、止损、仓位</h2>
+<h3>7.1 时点与 T+1 四问（先过一遍再谈价位）</h3>
+<div class="tw"><table><thead><tr><th style="width:24%">检查项</th><th>今日答案</th></tr></thead><tbody>
+<tr><td><b>动作在哪个时点执行</b></td><td>11-12 <b>09:25</b> 集合竞价定性 → <b>09:31–10:00</b> 完整观察窗内挂单，10:00–10:30 复核</td></tr>
+<tr><td><b>那一刻筹码自由吗</b></td><td><b>不自由。</b>11-12 买入的筹码最早 <b>11-13 09:25</b> 才能处置，中间隔今晚 22:30 美股正式盘与 11-13 21:30 美国 10 月 PPI</td></tr>
+<tr><td><b>需要的信息在那一刻已知吗</b></td><td>9:25 已知：昨夜正式盘、盘后事件、竞价档位、量能预估。<b>未知：今日封板质量、炸板率、英伟达官方回应</b> —— 所以本报告不写「看封板质量再决定」这类不存在的动作</td></tr>
+<tr><td><b>观察到 X 就做 Y，时间兼容吗</b></td><td>兼容：X = 09:31–10:00 站上均价 ≥5 分钟，Y = 10:00 前后限价挂单；否决层在 10:00 / 10:30 各有终点，均早于挂单执行</td></tr>
+</tbody></table></div>
+<h3>7.2 池 A · 可挂单三只（沿用昨晚名单，不重新洗牌）</h3>
+<div class="tw"><table><thead><tr><th>序 / 池</th><th>标的</th><th>板数</th><th>11-11 收盘</th><th>今日涨停 / 跌停</th><th>首封</th><th>封单(亿)</th><th>成交(亿)</th><th>入选理由与风险</th></tr></thead><tbody>
+<tr><td>1 / A</td><td><b>光迅科技<br><span class="code">002281</span></b></td><td>首板</td><td>103.93</td><td>114.32 / 93.54</td><td class="code">13:46</td><td>2.233</td><td>39.53</td><td class="note">光模块 + CPO + 三季报增长；龙虎榜净买 +2.46 亿，但机构专用席位 −0.96 亿属<b>游资主导，仓位取同档下限</b>。隔夜 Lumentum +10.67% / Coherent +9.25% 同线；<b>风险：光通信「砍单」传闻</b></td></tr>
+<tr><td>2 / A</td><td><b>景旺电子<br><span class="code">603228</span></b></td><td>首板</td><td>64.46</td><td>70.91 / 58.01</td><td class="code">13:44</td><td>2.215</td><td>25.79</td><td class="note">AI 算力 PCB + 光模块 + 业绩增长 + 回购，<b>三链交集、同线标的最多</b>，优先给档位上限；隔夜 AMD / 博通盘后 +3% 对定制芯片 PCB 链是正向</td></tr>
+<tr><td>3 / A</td><td><b>天安新材<br><span class="code">603725</span></b></td><td>首板</td><td>11.96</td><td>13.16 / 10.76</td><td class="code">09:50</td><td>0.511</td><td>2.40</td><td class="note">光通信 + 拟收购嘉万光 + 机器人皮肤；09:50 早封、留存 39.8%。<b>成交仅 2.40 亿、流动性折价，只给最小仓</b>；同为光通信标签，砍单传闻同样适用</td></tr>
+</tbody></table></div>
+<p class="note">封单、首封时间、涨停原因来自同花顺官方涨停池（11-11 15:00）；成交额由全市场快照补齐；龙虎榜净买来自 11-11 同花顺龙虎榜。<b>涨停价 / 跌停价 = 11-11 收盘 × 1.10 / 0.90，只用于算风险边界，不是挂单价。</b>三只均为主板首板。</p>
+<h3>7.3 竞价五档 → 挂单条件、仓位、止损（禁用绝对价）</h3>
+<div class="tw"><table><thead><tr><th style="width:14%">竞价档</th><th style="width:38%">挂单条件</th><th style="width:12%">仓位</th><th style="width:20%">止损</th><th>处置</th></tr></thead><tbody>
+<tr><td><b>≤0%（低开）</b></td><td><b>最优档。</b>09:31–10:00 完整窗口内连续站上分时均价 ≥5 分钟后，以均价上方 0.3% 以内限价挂单；<b>不等回踩均价</b>（无量日回踩＝永不成交）</td><td>单只 8%–10%</td><td>当日最低点下方 0.5%，或跌破均价持续 10 分钟</td><td class="note">封板则留下；14:30 前未封板减半，收盘前清理</td></tr>
+<tr><td><b>0~+2%</b></td><td>可挂，同样需站上均价 ≥5 分钟；11-11 该档在昨涨停股中最强（+2.27% / 68.18%）</td><td>单只 6%–8%</td><td>同上</td><td class="note">同上</td></tr>
+<tr><td><b>+2~+5%</b></td><td>减半仓，必须同时满足「所属概念指数开买为正」（<b>11-12 实时看，不用 11-11 数值代替</b>）</td><td>单只 4%</td><td>跌破开盘价即走</td><td class="note">当日了结为主</td></tr>
+<tr><td><b>+5~+9%</b></td><td>只做 1/3 仓，且须是池 A 里唯一满足 09:31–10:00 站上均价的一只</td><td>单只 3%</td><td>跌破均价立即走</td><td class="note">当日了结</td></tr>
+<tr><td><b>≥+9%</b></td><td><b>不挂。</b>11-11 该档 n=10、开买中位 0.00% / 胜 20.0%，五档最差，多数为一字买不到</td><td>0</td><td>—</td><td class="note">—</td></tr>
+</tbody></table></div>
+<div id="c6" class="chart"></div><p class="cap">图 6｜竞价五档对应的单只仓位上限（占总资金比例）。仓位是中性量，柱色按档位赔率用中性灰 / 青，不用涨跌红绿。</p>
+<div class="box red"><b>今天最可能触发的一条：池 A 三只全部落在高开档。</b>三只都属光通信 / PCB，隔夜同链正式盘暴涨，9:25 集体高开是大概率。<b>若三只竞价全部 &gt;+2%，昨晚已写死的失效条件生效 —— 全天不做，不临时换名单、不追「新面孔」来凑交易。</b>这条不是筛到没得做的形式纪律，是「高开＋缩量＝空仓」这条被 11/09、11/10 两天实测校准过的判据。</div>
+<h3>7.4 低开情形下的替代路径（只在情景③ / ⑤里适用）</h3>
+<p>若 9:25 出现全链低开，池 A 按 7.3 的 ≤0% 档执行即可，<b>不需要另找标的</b>。若同时观察到「昨未涨停、今日 09:30–10:00 放量首封」的新面孔，筛选条件写死如下，但<b>盘前不列具体代码</b>：</p>
+<ul><li>非 CPO / PCB 高位链，避开 11-11 已大涨的同一批承接标的；</li><li>首板、主板 10cm、成交额 5–30 亿、封单 ÷ 成交 &gt;5%；</li><li>有<b>当日独立催化</b>（半导体博览会 / 机器人三年方案 / NAND 提价），而不是靠隔夜外盘映射；</li><li>不在 9:25 挂单，只在 10:00 后按当日分时均价条件执行，且仍受总仓三成、单只 ≤10% 约束。</li></ul>
+<p class="note"><b>为什么盘前不给代码：</b>「谁在 10:00 首封」这件事在 9:25 尚不存在，写出来就是编名单。这不是把决策推后，而是主方案（池 A 三只 + 五档挂单）在 9:25 已完全可执行；替代路径只是给低开日多一条观察口径，不构成今天的必做动作。</p>
+<h3>7.5 池 B / 池 C（沿用昨晚，不设买单）</h3>
+<p><b>池 B（形态好但买不到）：</b>日出东方 603366（4 板）、达意隆 002209（2 板）、亚玛顿 002623（3 板）、金辰股份 603396、瀛通通讯 002861、惠发食品 603536 —— 封单 / 成交 67%~1291%，一字或准一字，<b>不设买单</b>。11-11 早报池 B 四只开买中位 0.00% / 胜 25%，能买到的两只中位 −1.13%，第 8 次验证「一字买不到是保护」。<b>池 C（高位层，观察不接）：</b>3 板以上最高仅 4 板、断层明显，2 板以上一律不接。</p>
+</section>
+<section class="sec"><h2>八、许可层、否决层、硬约束与失效条件</h2>
+<div class="tw"><table><thead><tr><th style="width:18%">层级</th><th>条件</th></tr></thead><tbody>
+<tr><td><b>许可层<br><span class="code">三条齐备只说明「可以挂单」，不说明「有赔率」</span></b></td><td>① 个股站上分时均价并保持 ≥5 分钟；② 竞价 ≤0%，或所属概念指数开买为正（11-12 实时看，不用 11-11 数值代替）；③ 10:00–10:30 复核不重新创新低，<b>带窗口终点，禁止滚动首次满足</b>（11-09 假信号教训）</td></tr>
+<tr><td><b>否决层<br><span class="code">任一成立即撤单，不补</span></b></td><td>① 指数 10:00 跌幅较 09:30 扩大 &gt;0.5pct；② 个股跌破均价 &gt;10 分钟；③ 10:30 前全市场炸板率 &gt;30%</td></tr>
+<tr><td><b>硬约束</b></td><td>2 板以上不接、≥+9% 一律不挂、池 B 不设买单、池 C 观察不接；<b>总仓上限三成、单只 ≤10%、最多 3 只</b>。11-11 一进二基准仅 17.57%，不许满仓单押任何一只</td></tr>
+<tr><td><b>失效条件<br><span class="code">写完就是写完，不事后放宽</span></b></td><td>① 9:25 出现情景②且池 A 三只全部 &gt;+2% → 全天不做；② 10:00 前指数跌幅扩大 &gt;0.5pct 或炸板率 &gt;30% → 撤单且不补；③ 买入后跌破当日最低点下方 0.5% 或跌破均价持续 10 分钟 → 按止损执行；④ 若链间分叉演变成全链齐跌，以竞价分档为准，不以题材归属为准</td></tr>
+</tbody></table></div>
+<div class="box warn"><b>反向声音（今天必须留的一条）：</b>把「昨夜半导体正式盘暴涨 → 今日 CPO / PCB 继续涨」当主线，可能是错的。11-11 A 股午后已抢跑过一次（CPO +4.62%），而英伟达盘后 −8% 尚未被任何正式盘定价；今日 A 股是<b>第一个定价这个消息的现货市场</b>，不是第二个。若 9:25 光通信 / PCB 链集体高开 &gt;3% 且成交额预估 &lt;1.45 万亿，说明是情绪惯性而非增量资金，按「高开＋缩量＝空仓」全天不做。反过来也要承认：若今晚报道被官方否认、盘后跌幅全部回补，今天的低开档反而是黄金坑；但<b>这个可能性不构成今天重仓的理由</b> —— 低开档仓位同样封顶两成，因为被证实时 11-13 还有第二只靴子。</div>
+</section>
+<section class="sec"><h2>九、数据来源、口径与未覆盖项</h2>
+<p><b>来源与时点：</b>隔夜外盘指数、ETF 与 26 只个股 = 雅虎财经日线（11-11 美东收盘；连续合约 CL/GC/HG/DXY/BTC 为 11-12 亚洲早盘实时），<b>2026-11-12 08:52 取数，已逐序列打印末三条核日期连续性</b>；盘后事件与早间消息 = 同花顺快讯 100 条 / 东财快讯 100 条 / 东财公告 100 条 / 东财解禁表（08:52 取数，条目时间 06:00–08:49）+ 华尔街日报 / 财联社 / 新浪财经转引（网络检索 08:53）；CEO 人事变动的官方回应状态 = 网络检索（08:53）；11-11 A 股结构 = 同花顺官方涨停 / 炸板 / 跌停三池、龙虎榜 77 条、全市场快照 5,573 行、8 大指数（2026-11-11 15:00 收盘，17:08–17:11 取数）；11-11 复盘与 11-11 早报原文 = 本站已发布页面（17:57 / 08:12 发稿）。本报告发稿 <b>2026-11-12 08:52 +0800</b>。</p>
+<p><b>口径：</b>开买收益 = 收盘 ÷ 开盘 − 1；胜率 = 开买收益 &gt; 0 的样本占比；炸板率 = 炸板 ÷（涨停 + 炸板）；一进二 = 当日 2 板数 ÷ 前日首板数；涨停 / 跌停价 = 当日收盘 × 1.10 / 0.90（主板 10cm 近似，只作风险边界）。题材为 <code>limit_up_reason</code> 多标签分类，同股可入多组，家数加总大于涨停总数；<b>炸板股无逐股涨停原因，是四源共同结构性缺口</b>。本文所有家数、比率、胜率、判定列一律中性色；仅涨跌幅、开买收益与红盘率用涨红跌绿。</p>
+<p><b>未覆盖项（显式声明，不做推断）：</b>① <b>11-12 集合竞价</b>（发稿 08:52，9:15 尚未开始，所有竞价档位均为条件式，不是实测）；② 富时 A50 期指（新浪接口返回空）；③ 恒生 / 日经 / CAC40 / DAX 的 11-11 完整收盘（雅虎序列缺 11-11，日韩仅有 08:01 开盘快照）；④ 英伟达官方对 11-12 这版报道的确认或否认、以及美股 11-12 正式盘定价；⑤ 分时逐笔 / tick / L2 与 QMT 1 分钟线（本期未取，许可层与否决层当日实测回看标为未覆盖）；⑥ 两融明细、北向净买入（2024-08 起停止实时披露）、龙虎榜逐席位完整净额；⑦ 炸板股逐股题材归因；⑧ 11-12 盘中封板质量与炸板率（时点未到）。</p>
+<p class="disc"><b>免责声明</b>：以上内容基于公开数据和量化分析，仅供参考，不构成投资建议。市场有风险，投资需谨慎。任何投资决策应结合个人风险承受能力、资金状况和投资目标独立判断，必要时咨询持牌专业机构。过往表现不预示未来收益。</p>
+</section>
+<p class="note" style="text-align:center;margin-top:28px">明阳量化 · 盘前早报 · 2026-11-12 · 数据截点 08:52 +0800</p>
+</div>
+<script>
+(function(){
+var D = {"idx_names": ["费城半导体", "半导体ETF", "纳斯达克", "标普500", "罗素2000", "道琼斯", "VIX", "中概互联网", "中国大盘股"], "idx_vals": [5.66, 4.82, 1.6, 1.31, 0.88, 0.49, -10.12, -1.62, -1.42], "stk_names": ["ARM", "美光", "Lumentum", "希捷", "迈威尔", "Coherent", "西部数据", "英特尔", "AMD", "泛林", "应材", "台积电", "博通", "特斯拉", "英伟达", "谷歌", "苹果", "阿斯麦", "微软", "英伟达(盘后·未定价)"], "stk_vals": [12.05, 11.89, 10.67, 9.99, 9.33, 9.25, 8.34, 7.52, 7.32, 6.07, 6.05, 4.25, 3.99, 2.91, 2.87, 2.11, 2.04, 1.76, -2.26, -8.0], "b7_names": ["低开>3%", "低开1~3%", "低开0~1%", "高开0~1%", "高开1~3%", "高开3~5%", "高开>5%"], "b7_med": [0.71, 1.39, 0.93, 0.64, 1.02, 1.61, 0.0], "b7_win": [61.11, 73.85, 72.67, 63.5, 65.19, 61.54, 30.77], "b5_names": ["≤0%", "0~+2%", "+2~+5%", "+5~+9%", "≥+9%"], "b5_med": [0.78, 2.27, 0.5, 0.8, 0.0], "b5_win": [57.14, 68.18, 57.89, 55.56, 20.0], "dates": ["11-02", "11-03", "11-04", "11-05", "11-06", "11-09", "11-10", "11-11"], "zt": [131, 52, 119, 85, 33, 57, 95, 84], "zb": [28, 33, 33, 47, 13, 44, 19, 19], "dt": [10, 17, 10, 0, 15, 2, 0, 1], "pos_names": ["≤0%（低开）", "0~+2%", "+2~+5%", "+5~+9%", "≥+9%"], "pos_vals": [10, 8, 4, 3, 0]};
+var UP='#d92b2b', DOWN='#1a9c5b', INK='#0F1319', SUB='#5F6875', LINE='#E7EBF1',
+    PUR='#7a4fd0', ORG='#c8841a', GRY='#8b919a', CYA='#0e8a8a';
+var AX = {axisLine:{lineStyle:{color:LINE}},axisTick:{show:false},axisLabel:{color:SUB,fontSize:11},splitLine:{lineStyle:{color:LINE}}};
+function mk(id,opt){try{var el=document.getElementById(id);if(!el||!window.echarts)return;
+ var ch=echarts.init(el);ch.setOption(opt);
+ if(window.addEventListener){window.addEventListener('resize',function(){try{ch.resize()}catch(e){}})}
+}catch(e){console.warn('chart '+id,e)}}
+function barColor(v){return v>0?UP:(v<0?DOWN:GRY)}
+function hbar(id,names,vals,fmt,colors){
+ mk(id,{grid:{left:118,right:52,top:14,bottom:26},
+  xAxis:Object.assign({},AX,{type:'value',axisLabel:{color:SUB,fontSize:11,formatter:function(v){return v+'%'}}}),
+  yAxis:Object.assign({},AX,{type:'category',data:names,inverse:true,splitLine:{show:false},axisLabel:{color:INK,fontSize:11}}),
+  series:[{type:'bar',barWidth:'58%',data:vals.map(function(v,i){return {value:v,itemStyle:{color:colors?colors[i]:barColor(v)}}}),
+   label:{show:true,position:'right',color:SUB,fontSize:10,formatter:function(p){return fmt(p.value)}}}]});
+}
+hbar('c1',D.idx_names,D.idx_vals,function(v){return (v>=0?'+':'')+v.toFixed(2)+'%'});
+var stkColors=D.stk_vals.map(function(v){return barColor(v)});
+hbar('c2',D.stk_names,D.stk_vals,function(v){return (v>=0?'+':'')+v.toFixed(2)+'%'},stkColors);
+mk('c3',{grid:{left:52,right:52,top:36,bottom:52},
+ legend:{data:['开买中位','开买胜率'],top:2,textStyle:{color:SUB,fontSize:11}},
+ tooltip:{trigger:'axis'},
+ xAxis:Object.assign({},AX,{type:'category',data:D.b7_names,axisLabel:{color:INK,fontSize:10,interval:0,rotate:20}}),
+ yAxis:[Object.assign({},AX,{type:'value',name:'开买中位 %',nameTextStyle:{color:SUB,fontSize:10},axisLabel:{color:SUB,fontSize:10}}),
+        Object.assign({},AX,{type:'value',name:'胜率 %',nameTextStyle:{color:SUB,fontSize:10},min:0,max:100,splitLine:{show:false},axisLabel:{color:SUB,fontSize:10}})],
+ series:[{name:'开买中位',type:'bar',barWidth:'46%',data:D.b7_med.map(function(v){return {value:v,itemStyle:{color:barColor(v)}}})},
+         {name:'开买胜率',type:'line',yAxisIndex:1,data:D.b7_win,smooth:false,symbolSize:7,lineStyle:{color:CYA,width:2},itemStyle:{color:CYA}}]});
+mk('c4',{grid:{left:52,right:52,top:36,bottom:40},
+ legend:{data:['开买中位','开买胜率'],top:2,textStyle:{color:SUB,fontSize:11}},
+ tooltip:{trigger:'axis'},
+ xAxis:Object.assign({},AX,{type:'category',data:D.b5_names,axisLabel:{color:INK,fontSize:11,interval:0}}),
+ yAxis:[Object.assign({},AX,{type:'value',name:'开买中位 %',nameTextStyle:{color:SUB,fontSize:10},axisLabel:{color:SUB,fontSize:10}}),
+        Object.assign({},AX,{type:'value',name:'胜率 %',nameTextStyle:{color:SUB,fontSize:10},min:0,max:100,splitLine:{show:false},axisLabel:{color:SUB,fontSize:10}})],
+ series:[{name:'开买中位',type:'bar',barWidth:'42%',data:D.b5_med.map(function(v){return {value:v,itemStyle:{color:barColor(v)}}})},
+         {name:'开买胜率',type:'line',yAxisIndex:1,data:D.b5_win,symbolSize:7,lineStyle:{color:PUR,width:2},itemStyle:{color:PUR}}]});
+mk('c5',{grid:{left:48,right:24,top:36,bottom:36},
+ legend:{data:['涨停','炸板','跌停'],top:2,textStyle:{color:SUB,fontSize:11}},
+ tooltip:{trigger:'axis'},
+ xAxis:Object.assign({},AX,{type:'category',data:D.dates,axisLabel:{color:INK,fontSize:10,interval:0}}),
+ yAxis:Object.assign({},AX,{type:'value',name:'家数',nameTextStyle:{color:SUB,fontSize:10}}),
+ series:[{name:'涨停',type:'bar',data:D.zt,itemStyle:{color:GRY},barGap:0},
+         {name:'炸板',type:'bar',data:D.zb,itemStyle:{color:PUR}},
+         {name:'跌停',type:'bar',data:D.dt,itemStyle:{color:CYA}}]});
+mk('c6',{grid:{left:100,right:52,top:16,bottom:30},
+ xAxis:Object.assign({},AX,{type:'value',max:12,axisLabel:{color:SUB,fontSize:11,formatter:function(v){return v+'%'}}}),
+ yAxis:Object.assign({},AX,{type:'category',data:D.pos_names,inverse:true,splitLine:{show:false},axisLabel:{color:INK,fontSize:11}}),
+ series:[{type:'bar',barWidth:'55%',data:D.pos_vals.map(function(v,i){return {value:v,itemStyle:{color:i<2?CYA:GRY}}}),
+  label:{show:true,position:'right',color:SUB,fontSize:11,formatter:function(p){return p.value+'%'}}}]});
+})();
+</script>
+</body></html>
