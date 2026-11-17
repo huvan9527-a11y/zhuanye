@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026年11月16日 A股收盘复盘 · 算力链第三日加速与退潮确认</title>
+<script src="echarts.min.js"></script>
+<script>if(!window.echarts){document.write('<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"><\/script>')}</script>
+<style>
+:root{
+  --ink:#1a1d21; --ink2:#3d434b; --muted:#7b838d; --line:#e3e6ea;
+  --bg:#f6f7f9; --card:#ffffff;
+  --up:#d92b2b; --down:#1a9c5b;
+  --warn:#c8841a; --blue:#2c6fb5; --purple:#7a4fd0; --teal:#0e8a8a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:26px 20px 70px}
+
+/* ===== 页头：浅底深字（铁律） ===== */
+.hero{background:#fff;color:var(--ink);border:1px solid var(--line);
+  border-top:3px solid var(--up);border-radius:14px;padding:28px 32px 24px;margin-bottom:20px}
+.hero .kicker{font-size:12px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.hero h1{margin:0 0 12px;font-size:27px;line-height:1.35;letter-spacing:-.01em;font-weight:700}
+.hero .sub{color:var(--ink2);font-size:14.5px;margin:0 0 18px}
+.hero .sub b{color:var(--ink)}
+.badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{font-size:12px;padding:3px 10px;border-radius:20px;background:#fdecec;color:#b02020;border:1px solid #f6d5d5}
+.badge.g{background:#e8f5ee;color:#14764a;border-color:#cbe8d8}
+.badge.n{background:#f1f3f5;color:#5b636d;border-color:#e3e6ea}
+
+/* ===== KPI ===== */
+.kpi{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:20px 0 4px}
+.kpi .k{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 14px}
+.kpi .k .l{font-size:11.5px;color:var(--muted);margin-bottom:5px;letter-spacing:.02em}
+.kpi .k .v{font-size:23px;font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.kpi .k .d{font-size:11.5px;color:var(--muted);margin-top:3px}
+
+/* ===== 卡片 ===== */
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 26px;margin:16px 0}
+h2{font-size:19px;margin:0 0 4px;letter-spacing:-.01em;font-weight:700}
+h2 .n{color:var(--up);font-size:13px;font-weight:700;margin-right:9px;letter-spacing:.06em}
+.lead{color:var(--ink2);font-size:14.5px;margin:10px 0 16px}
+h3{font-size:15.5px;margin:22px 0 8px;color:var(--ink);font-weight:700}
+h3:first-of-type{margin-top:14px}
+p{margin:9px 0}
+.small{font-size:13px;color:var(--muted)}
+
+/* ===== 表格 ===== */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+table.wrapok td{white-space:normal;line-height:1.7;vertical-align:top}
+table.wrapok td.nm{white-space:nowrap}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:11.5px;letter-spacing:.04em;
+  padding:7px 9px;border-bottom:1.5px solid var(--line);background:#fbfcfd}
+td{padding:6px 9px;border-bottom:1px solid #f0f2f4}
+tbody tr:hover{background:#fafbfc}
+td.num{text-align:right;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+td.nm{font-weight:600;color:var(--ink)}
+td.code{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12px}
+td.rs{color:var(--ink2);font-size:12px;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+.muted{color:var(--muted)}
+.up{color:var(--up)}
+.down{color:var(--down)}
+.tag{font-size:11px;padding:1px 7px;border-radius:4px;white-space:nowrap}
+.tag-up{background:#fdecec;color:#b02020}
+.tag-warn{background:#fdf3e2;color:#8f5c0a}
+.tag-mute{background:#f1f3f5;color:#5b636d}
+.bd{font-size:11.5px;padding:1px 7px;border-radius:4px;background:#f1f3f5;color:#3d434b}
+.bd3,.bd4{background:#fdecec;color:#b02020;font-weight:600}
+
+/* ===== 图 ===== */
+.chart{width:100%;height:330px;margin:6px 0 2px}
+.chart.tall{height:430px}
+
+/* ===== 引述 / 结论块 ===== */
+.call{border-left:3px solid var(--up);background:#fdf7f7;padding:13px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.call.b{border-left-color:var(--blue);background:#f5f8fc}
+.call.p{border-left-color:var(--purple);background:#f8f5fd}
+.call.w{border-left-color:var(--warn);background:#fdf9f1}
+.call .t{font-weight:700;font-size:14px;margin-bottom:5px}
+.call p{margin:5px 0;font-size:13.8px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.box{background:#fbfcfd;border:1px solid var(--line);border-radius:9px;padding:13px 15px}
+.box .t{font-size:12px;color:var(--muted);margin-bottom:4px}
+.box .v{font-size:19px;font-weight:700}
+.box .s{font-size:12px;color:var(--muted);margin-top:2px}
+
+ol,ul{margin:8px 0;padding-left:22px}
+li{margin:6px 0}
+hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+.foot{color:var(--muted);font-size:12px;line-height:1.9;margin-top:26px;padding-top:16px;border-top:1px solid var(--line)}
+.disclaim{background:#fbfcfd;border:1px solid var(--line);border-radius:9px;padding:15px 18px;
+  font-size:12.5px;color:var(--muted);line-height:1.85;margin-top:16px}
+@media(max-width:760px){
+  .kpi{grid-template-columns:repeat(2,1fr)}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .hero h1{font-size:21px}
+  .wrap{padding:16px 13px 50px}
+  .card{padding:17px 16px}
+  .chart{height:290px}
+}
+</style>
+<!--site-skin--><style>
+:root{
+ /* —— 品牌与强调（JLC 主按钮红）—— */
+ --red:#E42313;--red-d:#8B150C;--red-l:#FEF2F2;--red-b:#FBD5D5;
+ /* —— 涨跌（A股惯例：红涨绿跌）—— 红绿只留给涨跌 —— */
+ --up:#D92B2B;--down:#0E9F6E;
+ /* —— 中性阶（cool slate，2026-10-22 换掉 zinc：zinc 偏绿，与红绿涨跌色打架显脏）——
+    全部收敛到同一色相族（hue≈220），避免十几种灰各自偏色造成「蒙了一层灰」。 */
+ --ink:#0F1319;--ink2:#333A45;--sub:#5F6875;--faint:#98A1AF;
+ --line:#E7EBF1;--line2:#D6DCE5;--soft:#F6F8FB;
+ --bg:#FFFFFF;--bg2:#F5F7FA;
+ /* —— 字体（2026-10-22 重做）——
+    ★ 旧的 --serif 在本机回落到 "Source Han Serif SC"（本机只装了 Heavy 那一个字重），
+      400 正文被渲染成粗宋，全站又黑又糊，是「字体丑」的根因。
+      现改为全站统一无衬线，中文优先 HarmonyOS Sans SC / Noto Sans SC（本机均有），
+      西文与数字优先 Segoe UI 的 tabular 数字，保证表格竖排对齐。 */
+ --sans:"HarmonyOS Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei UI","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+ --num:"Segoe UI","HarmonyOS Sans SC","Noto Sans SC",sans-serif;
+ --serif:"Noto Serif SC","Songti SC",Georgia,serif;
+ /* —— 柔和阴影：比 JLC 原版轻一档，避免白卡在白底上出现脏边 —— */
+ --sh:0 1px 2px rgba(15,23,42,.05),0 6px 20px rgba(15,23,42,.06);
+ --sh-s:0 1px 2px rgba(15,23,42,.04);
+ --wrap:1200px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.72;letter-spacing:.012em;
+ -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+ text-rendering:optimizeLegibility;font-feature-settings:"kern" 1}
+a{color:var(--red);text-decoration:none;transition:color .15s}
+a:hover{color:var(--red-d);text-decoration:underline;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
+::selection{background:var(--red-l);color:var(--red-d)}
+
+/* ---- 标题层级（JLC 的字号/字重/字距；中文负字距收窄到 -0.4px，否则汉字会贴在一起）---- */
+h1{font-size:37px;font-weight:700;letter-spacing:-.4px;line-height:1.28;margin:0}
+h2{font-size:27px;font-weight:700;letter-spacing:-.4px;line-height:1.35;margin:0;
+ border-left:0;padding-left:0}
+h3{font-size:20px;font-weight:600;letter-spacing:-.2px;line-height:1.45;margin:0}
+h4{font-size:17px;font-weight:600;letter-spacing:0;line-height:1.5;margin:0}
+
+nav.top{background:rgba(255,255,255,.93);-webkit-backdrop-filter:saturate(180%) blur(8px);
+ backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line);
+ position:sticky;top:0;z-index:50}
+nav.top .wrap{max-width:var(--wrap);margin:0 auto;padding:18px 24px;
+ display:flex;align-items:center;gap:22px}
+nav.top .brand{display:inline-flex;align-items:center;gap:11px;flex:none;
+ color:var(--red);font-weight:700;letter-spacing:-.2px;font-size:17px}
+nav.top .brand img{width:36px;height:36px;display:block;border-radius:9px;background:#fff;border:1px solid var(--line)}
+nav.top .brand .b-text{color:var(--red)}
+nav.top .nlinks{margin-left:auto;display:flex;align-items:center;gap:24px;min-width:0}
+nav.top .nlinks a{position:relative;color:var(--ink);font-size:14px;font-weight:500;
+ padding:4px 0;white-space:nowrap}
+nav.top .nlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;
+ background:var(--red);transform:scaleX(0);transform-origin:center;
+ transition:transform .3s ease-in-out}
+nav.top .nlinks a:hover{color:var(--red);text-decoration:none}
+nav.top .nlinks a:hover::after{transform:scaleX(1)}
+nav.top .nlinks a.on{color:var(--red);font-weight:600}
+nav.top .nlinks a.on::after{transform:scaleX(1)}
+nav.top .sp{color:var(--faint);font-size:12.5px;white-space:nowrap;flex:none}
+@media(max-width:1150px){
+ nav.top .sp{display:none}
+ nav.top .nlinks{gap:18px}
+ nav.top .nlinks a{font-size:13.5px}
+}
+@media(max-width:900px){
+ nav.top .wrap{padding:10px 14px;gap:8px;flex-wrap:wrap}
+ nav.top .brand{font-size:15px}
+ nav.top .brand img{width:28px;height:28px;border-radius:7px}
+ /* 窄屏：11 个频道横向滚动时，后半段（各方观点 / 明天跟谁）完全落在视口外，
+    用户会以为频道被删了（2026-10-20 实际发生）。改为整行铺满 + 自动换行，
+    保证每个入口都在首屏可见，不再依赖横向滑动。 */
+ nav.top .nlinks{margin-left:0;flex:1 1 100%;overflow:visible;flex-wrap:wrap;
+  gap:2px 12px;-webkit-overflow-scrolling:auto;scrollbar-width:none}
+ nav.top .nlinks a{font-size:12.5px;padding:2px 0}
+ nav.top .nlinks::-webkit-scrollbar{display:none}
+}
+
+/* ---- 页面底色：浅冷灰画布 + 纯白卡片（2026-10-22）----
+   旧版把 html/body 强刷纯白，卡片与页面同色、只剩 1px 灰边框做分隔，
+   在 1280px 宽屏上看就是「一整片灰白糊在一起」= 用户说的「颜色脏」。
+   现在恢复浅灰画布，卡片用白底 + 极轻投影，层次靠明度差而不是边框。 */
+html{background:var(--bg2) !important}
+body{background:var(--bg2) !important;color:var(--ink2);font-family:var(--sans);
+ font-size:15.5px;line-height:1.78;letter-spacing:.012em;
+ -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ---- 页头：白底 + 顶部品牌细线 + 发丝线收口（浅底深字，不用深色块）---- */
+header,header.top,.hd,.hero{background:#fff;background-image:none;color:var(--ink);
+ border:0;border-top:3px solid var(--up);border-bottom:1px solid var(--line);
+ border-radius:0;box-shadow:none;padding:30px 0 26px;margin:0 0 24px}
+header h1,header.top h1,.hd h1,.hero h1,h1{font-size:30px;font-weight:700;
+ letter-spacing:-.3px;line-height:1.32;color:var(--ink)}
+header .sub,header .sub2,.hero .sub,.hd .sub,.tagline{color:var(--sub);opacity:1;font-size:13.5px}
+.tagline,header .tags .tag{background:var(--soft);border:0;color:var(--ink2)}
+
+/* ---- 区块标题：去掉左侧色条，统一字号字重 ----
+   ★ 必须用 `h2,h2` 这种「重复自身选择器」的写法把权重抬到 (0,0,0,2)，
+     否则压不过各页自带的 `section h2{...border-left:4px solid var(--accent)}`
+     —— 那是 (0,0,1,2)，同权重时后写的胜出，但我们排在 <head> 末尾所以本该胜出，
+     唯独权重更低时必输。2026-09-28 实测 9/22 复盘页 7 个 section 标题就是栽在这。 */
+h2,h2,h2{padding-left:0;border-left:0;font-size:21px;font-weight:700;
+ letter-spacing:-.2px;color:var(--ink)}
+/* 部分页把区块标题写成 `.sec h2{...border-left}`（权重 0,0,1,1），比上面的 h2,h2,h2 高一级，
+   单靠 h2 压不住 → 这里补同权重选择器。2026-10-22 巡检抓到 morning-2026-10-20.html 就是这种。 */
+.sec h2,.sec>h2,.sec>h2>span{padding-left:0;border-left:0}
+h3,h3{font-weight:600;letter-spacing:0}
+h4,h4{font-weight:600}
+/* ★ 2026-10-22：删掉旧的 `p{font-family:var(--serif)}`。
+   本机 --serif 只有思源宋 Heavy 一个字重，400 正文被渲染成粗宋，
+   全页又黑又糊 —— 这是「字体丑」的真正来源。正文一律无衬线。 */
+p{font-family:var(--sans);font-size:15.5px;line-height:1.78}
+li{font-family:var(--sans)}
+
+/* ---- 数字：等宽表格数字，表格竖排才对得齐 ---- */
+.num,.kpi .v,.stat .v,.kpis .v{font-family:var(--num);
+ font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* ---- 语义提示块：把灰底/粉底的「脏块」提亮成近白，靠左侧细条区分语义 ---- */
+.note{background:#F8FAFC;border:1px solid var(--line);color:var(--sub);border-radius:10px}
+.warn{background:#FFFDF6;border:1px solid #F1E4C9;color:#7A5310;border-radius:10px}
+.danger{background:#FFF9F9;border:1px solid #F5DCDC;color:#8F2626;border-radius:10px}
+.ok{background:#F7FCF9;border:1px solid #D6EBDD;color:#116B42;border-radius:10px}
+/* ★ 结论块：各页写法是 `.hero .verdict`（权重 0,0,2,0），皮肤里必须用同权重或更高才压得住，
+   否则粉底 #fdf6f6 会留下来 —— 那正是「颜色脏」的主要来源之一。 */
+.verdict,.concl,.summary,.hero .verdict,.hd .verdict,.sec .verdict{
+ background:#FCFDFE;border-left:3px solid var(--up);border-radius:0 10px 10px 0;
+ padding:16px 18px}
+/* 频道首页（涨停/研究/日报/观点）的 .tag 是 div，默认 display:block 会把粉底拉成一整条长条，
+   看起来像一条脏色带。强制收成胶囊。 */
+.hero>.tag,.hd>.tag,.hero>div.tag{display:inline-block;width:auto;border-radius:20px;
+ padding:3px 11px;font-size:12.5px;font-weight:600;background:#FDEDED;color:#B32424}
+/* 结论块里的强调文字改用近黑加粗，不再整段刷红 ——
+   满屏红字既和「涨=红」的语义打架，也是页面显脏的原因（2026-10-22）。 */
+.hero .verdict b,.verdict b,.concl b{color:var(--ink);font-weight:700}
+
+/* ---- section 卡片：白底 + 发丝线 + 极轻投影，与画布拉开层次 ---- */
+section{background:#fff;border-color:var(--line);box-shadow:none}
+section h2{border-left:0;padding-left:0;font-size:21px;font-weight:700;letter-spacing:-.2px}
+
+/* ---- 卡片 / 表格外壳 ----
+   .chartbox 各页写法不一（9/22 是无边框的纯尺寸盒，9/24 是带边框的卡），
+   所以只归一化圆角，不强行加边框/内边距 —— 加了会把 9/22 的定高图表盒撑变形。 */
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-s)}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-s)}
+.chartbox{border-radius:12px}
+
+/* ---- 表格：表头浅底细线，行分隔降到最轻 ---- */
+th{background:#FAFBFD;color:var(--sub);font-weight:600;border-bottom:1px solid var(--line);
+ font-size:13.5px;letter-spacing:.02em}
+td{border-bottom:1px solid #F1F4F8;color:var(--ink2)}
+tbody tr:nth-child(even){background:#FBFCFE}
+tbody tr:hover{background:var(--soft)}
+
+/* ---- 标签胶囊：降饱和，避免一堆彩色小方块把版面弄花 ---- */
+.hero .tag,.hd .tag,.tag-pill{background:#FDEDED;color:#B32424}
+.chip{border-radius:6px;font-weight:600}
+.chip-r{background:#FDEDED;color:#B32424}
+.chip-g{background:#EAF7F0;color:#12784A}
+.chip-y{background:#FDF6E8;color:#96620A}
+.chip-b{background:#EEF3FD;color:#2F5FB3}
+.chip-n{background:#F3F5F8;color:#5A6472}
+
+/* ---- 数据源 / 免责 / 页脚 ---- */
+.src{color:var(--faint)}
+.srcbox,.disc,.foot{background:var(--soft);border:1px solid var(--line);
+ border-radius:10px;color:var(--sub)}
+footer{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);
+ color:var(--faint);font-size:12.5px;background:transparent;text-align:left}
+
+/* ---- 页内按钮统一胶囊形 ----
+   各报告页/模板页里的「下载 PDF / Markdown / 返回首页」按钮写法不一：
+   有的是 <a class="btn solid">，有的是 <a class="btn">，还有的裸写内联样式。
+   这里统一成与站点模板一致的胶囊形（radius 50px），主按钮取品牌红实心。
+   ★ 只覆盖圆角/内边距/字号与主按钮配色，不动布局宽度，避免把工具栏挤变形。 */
+.btn,.btns a,.btns button,.tools a,.tools button,header .btns a,header .btns button{
+ border-radius:50px;padding:10px 22px;font-size:14px;font-weight:500;display:inline-block;
+ transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+.btn.solid,.btns a.solid,.btns a.primary,.btns a:first-child,
+.tools a.solid,.tools a:first-child{background:var(--red);color:#fff;border-color:var(--red);font-weight:600}
+.btn.solid:hover,.btns a.solid:hover,.btns a:first-child:hover{background:var(--red-d);
+ border-color:var(--red-d);color:#fff;text-decoration:none;box-shadow:var(--sh)}
+.btn:not(.solid),.btns a:not(.solid):not(:first-child),.tools a:not(.solid){
+ border:1px solid var(--line2);background:#fff;color:var(--ink)}
+.btn:not(.solid):hover,.btns a:not(.solid):not(:first-child):hover,.tools a:not(.solid):hover{
+ background:var(--soft);border-color:var(--ink);color:var(--ink);text-decoration:none}
+
+/* 窄屏：这些报告页的数据表列多（实测 9/23 表宽 618px、9/24 表宽 539px、龙头思路 542px），
+   原本直接把整页撑出横向滚动。改成表格自己横向滚动，页面宽度不再被撑破。
+   注：display:block 会让表格按内容宽收缩（窄表不再铺满）——移动端这正是想要的效果。 */
+@media(max-width:820px){
+ header h1,header.top h1,.hd h1,.hero h1,h1{font-size:23px}
+ h2{font-size:18px}
+ table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ /* 9/24 早报页的 KPI 网格写死 repeat(4,1fr) 且该页没有任何媒体查询，
+    `1fr` 的最小内容宽在窄屏下把网格撑出 16px。其中一处还带内联
+    style="grid-template-columns:repeat(4,1fr)" —— 内联样式压过样式表，
+    只能上 !important 才能在窄屏接管。 */
+ .kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr)) !important}
+}
+@media(max-width:640px){
+ header,.hd,.hero{padding:18px 0 16px;margin-bottom:20px}
+ .card{border-radius:8px}
+}
+</style>
+</head>
+<body>
+<nav class="top"><div class="wrap"><a class="brand" href="index.html" title="返回首页"><img src="logo-icon.png" alt="明阳量化"><span class="b-text">明阳量化</span></a><div class="nlinks"><a href="index.html">首页</a><a href="daily.html" class="on">日报</a><a href="limitup.html">涨停</a><a href="lhb.html">龙虎榜</a><a href="research.html">研究</a><a href="guandian.html">观点</a></div></div></nav>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">收盘复盘 · 2026年11月16日 周一</div>
+  <h1>算力链第三日加速，退潮从"分歧"走进"确认"</h1>
+  <p class="sub">沪指只跌 <b>0.87%</b>，但全市场中位 <b class="down">−2.12%</b>、跌停 <b class="down">63</b> 家、390 个概念板块只有 <b class="down">10</b> 个收红。这不是普跌，是<b>一条产业链在集中出清</b>——CPO −6.40%、存储 −5.81%、PCB −5.47%，而证金持股 +1.43%、高股息 +1.03% 逆势。今天最该纠正的一个直觉是：跌停的 63 只<b>不是"高位股崩塌"</b>，前 5 日涨幅中位已是 <b class="down">−9.2%</b>、71% 的票此前就在跌——这是<b>下跌中继的加速段</b>，不是顶部第一跌。</p>
+  <div class="badges">
+    <span class="badge">情绪状态 ③退潮 → ④崩塌边界</span>
+    <span class="badge">涨停 33 · 跌停 63</span>
+    <span class="badge n">成交 1.49 万亿</span>
+    <span class="badge g">防御资金：高股息 / 中特估 / 证金</span>
+  </div>
+
+  <div class="kpi">
+    <div class="k"><div class="l">涨停 / 跌停</div><div class="v"><span class="up">33</span> <span class="muted" style="font-size:15px">/</span> <span class="down">63</span></div><div class="d">跌停是涨停的 1.9 倍</div></div>
+    <div class="k"><div class="l">个股涨跌中位</div><div class="v down">-2.12%</div><div class="d">上涨 1136 / 下跌 4344</div></div>
+    <div class="k"><div class="l">竞价高开 / 低开</div><div class="v" style="font-size:19px"><span class="up">1047</span> <span class="muted">/</span> <span class="down">3834</span></div><div class="d">竞价中位 -0.38%</div></div>
+    <div class="k"><div class="l">开盘→收盘 中位</div><div class="v down">-1.73%</div><div class="d">正收益仅 23.3%</div></div>
+    <div class="k"><div class="l">概念板块收红</div><div class="v down">10<span class="muted" style="font-size:14px">/390</span></div><div class="d">中位 -2.35%</div></div>
+  </div>
+</header>
+
+<!-- ============ 一 ============ -->
+<section class="card">
+  <h2><span class="n">01</span>一句话定性：今天是"指数骗人、结构杀人"的第二天</h2>
+  <p class="lead">11-13 的复盘里写过"今天不是跌，是换"——上证 50 涨 0.11%、科创 50 跌 2.97%。今天这个"换"走到了第二阶段：<b>换出去的钱没有再回来，而换进来的钱只够托住权重。</b></p>
+
+  <div class="grid3">
+    <div class="box"><div class="t">权重端</div><div class="v up">上证50 −0.30%</div><div class="s">证金持股 +1.43% / 高股息 +1.03%</div></div>
+    <div class="box"><div class="t">成长端</div><div class="v down">科创50 −5.16%</div><div class="s">创业板指 −4.37% / 北证50 −4.54%</div></div>
+    <div class="box"><div class="t">宽度</div><div class="v down">跌 4344 家</div><div class="s">跌超 5% 的有 1021 家（18.3%）</div></div>
+  </div>
+
+  <p>指数层面的 −0.87% 严重低估了今天的杀伤。真实的情况是：<b>390 个概念板块里 380 个下跌，中位 −2.35%</b>；个股涨跌中位 −2.12%；<b>创业板 1410 只里 1235 只下跌（87.6%），科创板 615 只里 573 只下跌（93.2%）</b>。这是全面性的，不是个别板块的问题。</p>
+
+  <div class="call w">
+    <div class="t">为什么指数"只"跌 0.87%</div>
+    <p>上证 50 里银行、保险、石油、煤炭权重合计占比高，今天这些方向恰好是资金唯一的避风港。沪市成交 7062 亿里，高股息精选一个概念就吃掉 1144 亿、同花顺漂亮 100 吃掉 1466 亿——<b>钱没有离场，是在场内做了一次极端的方向切换</b>。这也意味着：指数明天若靠权重"稳住"，不代表个股止跌。</p>
+  </div>
+</section>
+
+<!-- ============ 二 ============ -->
+<section class="card">
+  <h2><span class="n">02</span>大盘分析：三大指数同创 73 日新低，沪指贴在 3599 生死线上</h2>
+  <p class="lead">把今天放进位置里看，比看单日涨跌重要得多。区间取近 73 个交易日（2026-08-05 ~ 11-16）。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>指数</th><th class="num">收盘</th><th class="num">今日</th><th class="num">成交(亿)</th><th class="num">距区间低点</th><th class="num">距区间高点</th><th>状态</th></tr></thead>
+    <tbody><tr><td class="nm">上证指数</td><td class="num">3602.57</td><td class="num down">-0.87%</td><td class="num muted">7062</td><td class="num up">+0.10%</td><td class="num muted">-9.72%</td><td><span class="tag tag-warn">贴前低</span></td></tr>
+<tr><td class="nm">深证成指</td><td class="num">10690.78</td><td class="num down">-2.53%</td><td class="num muted">7783</td><td class="num ">—%</td><td class="num muted">—%</td><td></td></tr>
+<tr><td class="nm">创业板指</td><td class="num">2320.02</td><td class="num down">-4.37%</td><td class="num muted">3734</td><td class="num ">+0.00%</td><td class="num muted">-37.97%</td><td><span class="tag tag-warn">73日新低</span></td></tr>
+<tr><td class="nm">科创50</td><td class="num">1213.68</td><td class="num down">-5.16%</td><td class="num muted">851</td><td class="num up">+5.42%</td><td class="num muted">-32.23%</td><td></td></tr>
+<tr><td class="nm">北证50</td><td class="num">836.57</td><td class="num down">-4.54%</td><td class="num muted">98</td><td class="num ">+0.00%</td><td class="num muted">-26.48%</td><td><span class="tag tag-warn">73日新低</span></td></tr>
+<tr><td class="nm">中证1000</td><td class="num">6164.62</td><td class="num down">-3.03%</td><td class="num muted">2793</td><td class="num ">—%</td><td class="num muted">—%</td><td></td></tr>
+<tr><td class="nm">上证50</td><td class="num">2766.57</td><td class="num down">-0.30%</td><td class="num muted">1264</td><td class="num ">—%</td><td class="num muted">—%</td><td></td></tr>
+<tr><td class="nm">中证500</td><td class="num">6297.18</td><td class="num down">-2.60%</td><td class="num muted">2582</td><td class="num ">—%</td><td class="num muted">—%</td><td></td></tr>
+<tr><td class="nm">沪深300</td><td class="num">3979.80</td><td class="num down">-0.91%</td><td class="num muted">4306</td><td class="num ">+0.00%</td><td class="num muted">-16.06%</td><td><span class="tag tag-warn">73日新低</span></td></tr>
+<tr><td class="nm">国证2000</td><td class="num">8198.50</td><td class="num down">-3.11%</td><td class="num muted">4201</td><td class="num ">—%</td><td class="num muted">—%</td><td></td></tr></tbody>
+  </table>
+  </div>
+
+  <h3>三个必须记住的位置事实</h3>
+  <ol>
+    <li><b>创业板指 2320.02 是 73 个交易日最低点</b>，距 8-17 高点 3740.16 已回撤 <b class="down">38.0%</b>。这不是"回调"，是趋势级别的下行。</li>
+    <li><b>沪深 300 3979.80、北证 50 836.57 同日创 73 日新低</b>。三个不同风格的指数同时破位，说明抛压是系统性的，不是某个板块的估值问题。</li>
+    <li><b>沪指 3602.57，距 10-30 的低点 3599.02 只剩 3.55 点（0.1%）</b>。这个位置明天开盘就会被测试。守住，是双底预期；破了，8-18 以来 3990 → 3599 的箱体下沿失守，下一个参考位要往 3500 找。</li>
+  </ol>
+
+  <div class="call">
+    <div class="t">量能：1.49 万亿，跌得不"轻"</div>
+    <p>沪 7062 亿 + 深 7783 亿 = <b>1.49 万亿</b>，比 11-13 的 1.35 万亿还放大。放量下跌 + 宽度极差 = 出货而非洗盘。真正要警惕的是相反的情形：<b>明天如果缩量到 1.2 万亿以下而指数继续跌，说明买盘彻底消失</b>，那时才谈得上"地量见底"。</p>
+  </div>
+
+  <h3>分板块：科创板的跌幅是主板的 3 倍</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>板块</th><th class="num">家数</th><th class="num">上涨</th><th class="num">下跌</th><th class="num">下跌占比</th><th class="num">平均涨幅</th><th class="num">成交(亿)</th></tr></thead>
+    <tbody><tr><td class="nm">主板</td><td class="num muted">3192</td><td class="num up">908</td><td class="num down">2211</td><td class="num down">69.3%</td><td class="num down">-1.58%</td><td class="num muted">8795</td></tr>
+<tr><td class="nm">创业板</td><td class="num muted">1410</td><td class="num up">163</td><td class="num down">1235</td><td class="num down">87.6%</td><td class="num down">-3.08%</td><td class="num muted">3726</td></tr>
+<tr><td class="nm">科创板</td><td class="num muted">615</td><td class="num up">38</td><td class="num down">573</td><td class="num down">93.2%</td><td class="num down">-4.84%</td><td class="num muted">2322</td></tr>
+<tr><td class="nm">北交所</td><td class="num muted">355</td><td class="num up">27</td><td class="num down">325</td><td class="num down">91.5%</td><td class="num down">-2.35%</td><td class="num muted">98</td></tr></tbody>
+  </table>
+  </div>
+  <p class="small">读法：科创板 93.2% 的股票下跌、平均 −4.84%，这是"整个板块被重新定价"，不是"个股分化"。在这种环境下做个股选择，胜率会被系统性拖低——<b>不是选股问题，是暴露问题</b>。</p>
+</section>
+
+<!-- ============ 三 ============ -->
+<section class="card">
+  <h2><span class="n">03</span>涨跌归因：一条产业链的三段式崩塌，和一次防御性大搬家</h2>
+  <p class="lead">今天跌的不是"市场"，是<b>一条特定的产业链</b>。把 390 个概念板块按涨跌幅排序，头部和尾部之间的差距超过 7 个百分点，而尾部 15 名里 13 个属于同一族。</p>
+
+  <h3>3.1 板块红黑榜：上涨的 15 个和下跌的 15 个，是两套完全不同的资产</h3>
+  <div class="grid2">
+    <div>
+      <div class="small" style="margin-bottom:4px"><b class="up">上涨前 15</b>（防御 / 低估值 / 消费）</div>
+      <div class="tw"><table><thead><tr><th>板块</th><th class="num">涨跌</th><th class="num">成交(亿)</th></tr></thead><tbody><tr><td class="nm">证金持股</td><td class="num up">+1.43%</td><td class="num muted">407</td></tr>
+<tr><td class="nm">高股息精选</td><td class="num up">+1.03%</td><td class="num muted">1144</td></tr>
+<tr><td class="nm">啤酒概念</td><td class="num up">+0.74%</td><td class="num muted">58</td></tr>
+<tr><td class="nm">猪肉</td><td class="num up">+0.63%</td><td class="num muted">97</td></tr>
+<tr><td class="nm">芬太尼</td><td class="num up">+0.62%</td><td class="num muted">12</td></tr>
+<tr><td class="nm">同花顺中特估100</td><td class="num up">+0.56%</td><td class="num muted">884</td></tr>
+<tr><td class="nm">超级品牌</td><td class="num up">+0.40%</td><td class="num muted">323</td></tr>
+<tr><td class="nm">免税店</td><td class="num up">+0.27%</td><td class="num muted">54</td></tr>
+<tr><td class="nm">冰雪产业</td><td class="num up">+0.07%</td><td class="num muted">160</td></tr>
+<tr><td class="nm">航运概念</td><td class="num up">+0.03%</td><td class="num muted">165</td></tr>
+<tr><td class="nm">自由贸易港</td><td class="num up">-0.12%</td><td class="num muted">60</td></tr>
+<tr><td class="nm">白酒概念</td><td class="num up">-0.18%</td><td class="num muted">187</td></tr>
+<tr><td class="nm">参股保险</td><td class="num up">-0.20%</td><td class="num muted">117</td></tr>
+<tr><td class="nm">煤炭概念</td><td class="num up">-0.20%</td><td class="num muted">219</td></tr>
+<tr><td class="nm">统一大市场</td><td class="num up">-0.22%</td><td class="num muted">173</td></tr></tbody></table></div>
+    </div>
+    <div>
+      <div class="small" style="margin-bottom:4px"><b class="down">下跌前 15</b>（几乎全是 AI 硬件链）</div>
+      <div class="tw"><table><thead><tr><th>板块</th><th class="num">涨跌</th><th class="num">成交(亿)</th></tr></thead><tbody><tr><td class="nm">共封装光学(CPO)</td><td class="num down">-6.40%</td><td class="num muted">2473</td></tr>
+<tr><td class="nm">科创次新股</td><td class="num down">-6.06%</td><td class="num muted">284</td></tr>
+<tr><td class="nm">富士康概念</td><td class="num down">-5.82%</td><td class="num muted">566</td></tr>
+<tr><td class="nm">存储芯片</td><td class="num down">-5.81%</td><td class="num muted">1896</td></tr>
+<tr><td class="nm">同花顺果指数</td><td class="num down">-5.79%</td><td class="num muted">410</td></tr>
+<tr><td class="nm">先进封装</td><td class="num down">-5.64%</td><td class="num muted">1620</td></tr>
+<tr><td class="nm">光刻机</td><td class="num down">-5.54%</td><td class="num muted">268</td></tr>
+<tr><td class="nm">英伟达概念</td><td class="num down">-5.52%</td><td class="num muted">690</td></tr>
+<tr><td class="nm">PCB概念</td><td class="num down">-5.47%</td><td class="num muted">1337</td></tr>
+<tr><td class="nm">玻璃基板</td><td class="num down">-5.46%</td><td class="num muted">414</td></tr>
+<tr><td class="nm">MLCC概念</td><td class="num down">-5.39%</td><td class="num muted">233</td></tr>
+<tr><td class="nm">铜缆高速连接</td><td class="num down">-5.33%</td><td class="num muted">290</td></tr>
+<tr><td class="nm">国家大基金持股</td><td class="num down">-5.31%</td><td class="num muted">856</td></tr>
+<tr><td class="nm">光纤概念</td><td class="num down">-5.30%</td><td class="num muted">995</td></tr>
+<tr><td class="nm">培育钻石</td><td class="num down">-5.14%</td><td class="num muted">61</td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="call b">
+    <div class="t">归因一：不是"AI 跌了"，是"AI 硬件链"整条线在出清</div>
+    <p>下跌榜的构成极有规律：<b>CPO（−6.40%）→ 光纤（−5.30%）→ 铜缆高速连接（−5.33%）</b> 是传输层；<b>PCB（−5.47%）→ 玻璃基板（−5.46%）→ MLCC（−5.39%）→ PET 铜箔（−4.78%）</b> 是载板与材料层；<b>存储芯片（−5.81%）→ 先进封装（−5.64%）→ 光刻机（−5.54%）→ 第三代半导体（−5.08%）→ 中芯国际概念（−4.76%）</b> 是制造层；<b>英伟达概念（−5.52%）→ 富士康（−5.82%）→ 苹果概念（−4.97%）→ AI 手机（−4.97%）→ AIPC（−5.06%）</b> 是终端层。</p>
+    <p>四层同时跌，且跌幅高度接近（−4.8% ~ −6.4%），这不是各自的基本面事件，<b>是同一个资金池在按顺序减仓</b>。而成交额说明了力度：CPO 2473 亿、存储 1896 亿、先进封装 1620 亿、PCB 1337 亿——<b>天量换手砸盘，是大资金在出货，不是散户恐慌</b>。</p>
+  </div>
+
+  <h3>3.2 三段式：11-11 见顶 → 11-12 放量滞涨 → 11-13 破位 → 11-16 加速</h3>
+  <div id="c_trend" class="chart tall"></div>
+  <p class="small">图中为归一化走势（11-11 = 0），取近 13 个交易日。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>板块</th><th class="num">今日</th><th class="num">近 5 日</th><th class="num">近 10 日</th><th class="num">近 20 日</th><th class="num">今日成交(亿)</th></tr></thead>
+    <tbody><tr><td class="nm">CPO</td><td class="num down">-6.40%</td><td class="num down">-5.41%</td><td class="num down">-5.14%</td><td class="num down">-16.83%</td><td class="num muted">2473</td></tr>
+<tr><td class="nm">存储芯片</td><td class="num down">-5.81%</td><td class="num down">-4.92%</td><td class="num down">-1.57%</td><td class="num down">-11.53%</td><td class="num muted">1896</td></tr>
+<tr><td class="nm">PCB</td><td class="num down">-5.47%</td><td class="num down">-5.81%</td><td class="num down">-5.05%</td><td class="num down">-15.65%</td><td class="num muted">1337</td></tr>
+<tr><td class="nm">机器人</td><td class="num down">-2.98%</td><td class="num down">-3.27%</td><td class="num down">-0.92%</td><td class="num down">-3.40%</td><td class="num muted">3916</td></tr>
+<tr><td class="nm">短剧游戏</td><td class="num down">-1.36%</td><td class="num up">+1.48%</td><td class="num up">+7.32%</td><td class="num up">+7.45%</td><td class="num muted">704</td></tr>
+<tr><td class="nm">绿色电力</td><td class="num down">-1.22%</td><td class="num down">-2.73%</td><td class="num up">+0.25%</td><td class="num down">-5.14%</td><td class="num muted">1014</td></tr>
+<tr><td class="nm">军工</td><td class="num down">-3.69%</td><td class="num down">-4.81%</td><td class="num down">-2.43%</td><td class="num down">-8.48%</td><td class="num muted">1445</td></tr>
+<tr><td class="nm">固态电池</td><td class="num down">-2.75%</td><td class="num down">-5.04%</td><td class="num down">-1.60%</td><td class="num down">-7.97%</td><td class="num muted">975</td></tr></tbody>
+  </table>
+  </div>
+
+  <p>CPO 板块的日线节奏值得逐日读一遍：</p>
+  <ul>
+    <li><b>11-11</b>：+4.62%，收 4760（区间最高），成交 3243 亿</li>
+    <li><b>11-12</b>：<b>−1.78%，但成交放大到 3853 亿（阶段峰值）</b>——价格跌、量创新高，这是最典型的"放量滞涨"</li>
+    <li><b>11-13</b>：−4.40%，成交 3102 亿，跌破 11-06 的 4353 支撑</li>
+    <li><b>11-16</b>：<b>−6.40%，成交 2473 亿（缩量下跌）</b>——卖方不再需要放量就能打下去，说明承接盘撤了</li>
+  </ul>
+  <p>存储芯片、PCB 的节奏完全同步（都在 11-11 见顶、11-12 放量、11-13 破位、11-16 加速）。<b>三个板块同日同节奏，只能解释为同一个资金在同时减仓。</b></p>
+
+  <div class="call w">
+    <div class="t">这条时间线里，今天已经是第 3 个下跌日，不是第 1 个</div>
+    <p>区别很重要：<b>顶部第一跌</b>，次日往往有反抽（超跌 + 抢反弹）；<b>趋势第 3-4 日的加速段</b>，反抽通常是<b>逃命窗口</b>而不是买点。近 20 日 CPO −16.83%、PCB −15.65%、存储 −11.53%，说明这是中期级别的调整，不是单日情绪。</p>
+  </div>
+
+  <h3>3.3 归因二：钱去了哪里——不是离场，是搬到了"不需要想象空间"的地方</h3>
+  <p>上涨的 15 个板块全部具备同一个特征：<b>现金流确定、估值低、不需要业绩增速故事</b>。证金持股 +1.43%（1144 亿）、高股息精选 +1.03%（407 亿）、同花顺中特估 100 +0.56%（884 亿）、超级品牌 +0.40%（323 亿），再加上啤酒、猪肉、免税、白酒——这是一条完整的"从成长到价值"的迁移路径。</p>
+  <p>对照 11-13 的复盘：那天上证 50 涨 0.11%、16 只银行权重全部低开收红。今天这个动作<b>延续了，但强度下降了</b>（上证 50 从 +0.11% 变成 −0.30%）。含义是：<b>防御方向的钱也在趋于饱和，能接的增量在减少</b>。如果明天 AI 硬件继续跌而防御方向也开始跌，那就是无差别抛售——那时才真正危险。</p>
+
+  <h3>3.4 归因三（反直觉，但最重要）：跌停的 63 只，不是"高位股杀跌"</h3>
+  <p>这是今天我做的最有价值的一次交叉验证。把 63 只跌停股逐一拉出 60 日历史，算它们在<b>今天之前</b>的 5 日 / 10 日 / 20 日涨幅：</p>
+
+  <div class="grid3">
+    <div class="box"><div class="t">前 5 日涨幅中位</div><div class="v down">-9.2%</div><div class="s">71.4% 的票今天之前就在跌</div></div>
+    <div class="box"><div class="t">前 5 日已跌超 10%</div><div class="v down">31 只</div><div class="s">占 63 只的 49.2%</div></div>
+    <div class="box"><div class="t">前 5 日涨超 15%</div><div class="v">6 只</div><div class="s">仅 9.5%，且无一只涨超 30%</div></div>
+  </div>
+
+  <p>如果今天是"高位股崩塌日"，那么跌停股的前 5 日涨幅应该普遍是 +20%、+30% 的大阳线。实际完全相反：<b>31 只（49%）在今天之前 5 个交易日已经跌了 10% 以上</b>，前 5 日涨幅中位 <b class="down">−9.2%</b>，<b>没有一只前 5 日涨幅超过 30%</b>。同时，全部 63 只的收盘价都在 20 日高点下方，中位回撤 <b class="down">−20.4%</b>。</p>
+
+  <div class="call">
+    <div class="t">这个发现的操作含义，和"高位杀跌"完全相反</div>
+    <p><b>高位崩塌的第一天</b> → 次日往往有情绪修复，超跌反抽可做；<br>
+    <b>下跌中继的加速段</b> → 反抽是减仓窗口，接刀子的位置还会更低。</p>
+    <p>今天属于后者。跌停股里前 5 日涨幅最大的只有 6 只（日出东方 +26.5%、东方环宇 +23.7%、亚玛顿 +22.6%、金辰股份 +21.6%、锋龙股份 +19.2%、返利科技 +15.6%），它们的共同点是 10 日 / 20 日涨幅仍然很高（日出东方 20 日 +75.5%、东方环宇 +44.8%）——<b>是"从很高处回落的中段"，不是"从平地起跳的顶"</b>。</p>
+  </div>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>代码</th><th>名称</th><th class="num">首封</th><th class="num">前5日</th><th class="num">前10日</th><th class="num">前20日</th><th class="num">距20日高点</th><th class="num">换手</th></tr></thead>
+    <tbody><tr><td class="code">300779</td><td class="nm">惠城环保</td><td class="num muted">09:25</td><td class="num down">-28.6%</td><td class="num down">-23.3%</td><td class="num down">-39.3%</td><td class="num down">-39.3%</td><td class="num muted">0.7%</td></tr>
+<tr><td class="code">001219</td><td class="nm">青岛食品</td><td class="num muted">09:34</td><td class="num down">-22.2%</td><td class="num down">-14.6%</td><td class="num up">+50.7%</td><td class="num down">-25.5%</td><td class="num muted">18.8%</td></tr>
+<tr><td class="code">001233</td><td class="nm">海安集团</td><td class="num muted">09:43</td><td class="num down">-21.4%</td><td class="num down">-5.3%</td><td class="num up">+0.6%</td><td class="num down">-24.5%</td><td class="num muted">16.3%</td></tr>
+<tr><td class="code">001400</td><td class="nm">江顺科技</td><td class="num muted">13:58</td><td class="num down">-20.8%</td><td class="num down">-16.9%</td><td class="num up">+9.1%</td><td class="num down">-22.2%</td><td class="num muted">6.9%</td></tr>
+<tr><td class="code">002865</td><td class="nm">钧达股份</td><td class="num muted">13:55</td><td class="num down">-18.9%</td><td class="num down">-8.9%</td><td class="num up">+8.6%</td><td class="num down">-26.3%</td><td class="num muted">10.7%</td></tr>
+<tr><td class="code">002943</td><td class="nm">宇晶股份</td><td class="num muted">13:01</td><td class="num down">-18.2%</td><td class="num down">-7.4%</td><td class="num up">+5.9%</td><td class="num down">-20.6%</td><td class="num muted">5.9%</td></tr>
+<tr><td class="code">000056</td><td class="nm">*ST皇庭</td><td class="num muted">13:57</td><td class="num down">-18.1%</td><td class="num down">-22.8%</td><td class="num down">-35.8%</td><td class="num down">-36.6%</td><td class="num muted">3.3%</td></tr>
+<tr><td class="code">603048</td><td class="nm">浙江黎明</td><td class="num muted">14:26</td><td class="num down">-17.2%</td><td class="num down">-6.3%</td><td class="num down">-11.9%</td><td class="num down">-17.2%</td><td class="num muted">2.3%</td></tr>
+<tr><td class="code">600180</td><td class="nm">*ST瑞茂</td><td class="num muted">14:07</td><td class="num down">-17.0%</td><td class="num down">-14.4%</td><td class="num down">-34.1%</td><td class="num down">-34.1%</td><td class="num muted">2.6%</td></tr>
+<tr><td class="code">605100</td><td class="nm">华丰股份</td><td class="num muted">14:12</td><td class="num down">-16.4%</td><td class="num down">-40.0%</td><td class="num down">-49.0%</td><td class="num down">-51.3%</td><td class="num muted">4.2%</td></tr>
+<tr><td class="code">603880</td><td class="nm">南卫股份</td><td class="num muted">09:43</td><td class="num down">-16.3%</td><td class="num down">-23.7%</td><td class="num down">-20.1%</td><td class="num down">-23.7%</td><td class="num muted">8.9%</td></tr>
+<tr><td class="code">002696</td><td class="nm">百洋股份</td><td class="num muted">09:32</td><td class="num down">-16.3%</td><td class="num down">-15.8%</td><td class="num up">+8.9%</td><td class="num down">-23.5%</td><td class="num muted">13.4%</td></tr>
+<tr><td class="code">002851</td><td class="nm">麦格米特</td><td class="num muted">13:50</td><td class="num down">-16.0%</td><td class="num down">-19.3%</td><td class="num down">-31.1%</td><td class="num down">-34.0%</td><td class="num muted">6.6%</td></tr>
+<tr><td class="code">000011</td><td class="nm">深物业A</td><td class="num muted">09:37</td><td class="num down">-15.5%</td><td class="num down">-20.9%</td><td class="num down">-33.6%</td><td class="num down">-33.6%</td><td class="num muted">3.3%</td></tr>
+<tr><td class="code">603269</td><td class="nm">海鸥股份</td><td class="num muted">14:38</td><td class="num down">-15.3%</td><td class="num down">-16.4%</td><td class="num down">-34.2%</td><td class="num down">-35.0%</td><td class="num muted">6.2%</td></tr>
+<tr><td class="code">603516</td><td class="nm">淳中科技</td><td class="num muted">13:51</td><td class="num down">-15.1%</td><td class="num down">-14.0%</td><td class="num down">-25.4%</td><td class="num down">-27.8%</td><td class="num muted">4.1%</td></tr>
+<tr><td class="code">002046</td><td class="nm">国机精工</td><td class="num muted">10:22</td><td class="num down">-15.0%</td><td class="num down">-31.2%</td><td class="num down">-25.1%</td><td class="num down">-34.7%</td><td class="num muted">2.7%</td></tr>
+<tr><td class="code">002029</td><td class="nm">七匹狼</td><td class="num muted">14:23</td><td class="num down">-14.7%</td><td class="num down">-17.8%</td><td class="num down">-8.6%</td><td class="num down">-25.3%</td><td class="num muted">9.4%</td></tr>
+<tr><td class="code">600825</td><td class="nm">新华传媒</td><td class="num muted">09:35</td><td class="num down">-13.6%</td><td class="num down">-5.4%</td><td class="num down">-24.3%</td><td class="num down">-27.0%</td><td class="num muted">12.3%</td></tr>
+<tr><td class="code">603124</td><td class="nm">江南新材</td><td class="num muted">14:34</td><td class="num down">-13.3%</td><td class="num down">-19.2%</td><td class="num down">-29.5%</td><td class="num down">-31.3%</td><td class="num muted">6.2%</td></tr>
+<tr><td class="code">000962</td><td class="nm">东方钽业</td><td class="num muted">14:07</td><td class="num down">-13.2%</td><td class="num down">-8.8%</td><td class="num down">-21.4%</td><td class="num down">-21.6%</td><td class="num muted">4.5%</td></tr>
+<tr><td class="code">600183</td><td class="nm">生益科技</td><td class="num muted">14:40</td><td class="num down">-13.2%</td><td class="num down">-25.3%</td><td class="num down">-47.9%</td><td class="num down">-48.4%</td><td class="num muted">3.8%</td></tr>
+<tr><td class="code">001270</td><td class="nm">铖昌科技</td><td class="num muted">14:17</td><td class="num down">-13.1%</td><td class="num down">-5.5%</td><td class="num down">-7.0%</td><td class="num down">-15.8%</td><td class="num muted">3.5%</td></tr>
+<tr><td class="code">002172</td><td class="nm">澳洋健康</td><td class="num muted">13:32</td><td class="num down">-12.8%</td><td class="num down">-17.1%</td><td class="num down">-6.6%</td><td class="num down">-20.7%</td><td class="num muted">17.8%</td></tr>
+<tr><td class="code">003033</td><td class="nm">征和工业</td><td class="num muted">09:43</td><td class="num down">-12.1%</td><td class="num down">-6.4%</td><td class="num down">-4.9%</td><td class="num down">-19.6%</td><td class="num muted">6.3%</td></tr>
+<tr><td class="code">605118</td><td class="nm">力鼎光电</td><td class="num muted">14:36</td><td class="num down">-11.8%</td><td class="num down">-17.7%</td><td class="num up">+11.9%</td><td class="num down">-17.7%</td><td class="num muted">1.8%</td></tr>
+<tr><td class="code">605376</td><td class="nm">博迁新材</td><td class="num muted">14:10</td><td class="num down">-11.7%</td><td class="num down">-6.2%</td><td class="num down">-23.6%</td><td class="num down">-25.0%</td><td class="num muted">4.0%</td></tr>
+<tr><td class="code">002929</td><td class="nm">润建股份</td><td class="num muted">13:37</td><td class="num down">-11.3%</td><td class="num down">-4.0%</td><td class="num up">+12.9%</td><td class="num down">-17.0%</td><td class="num muted">10.8%</td></tr>
+<tr><td class="code">603256</td><td class="nm">宏和科技</td><td class="num muted">14:37</td><td class="num down">-11.1%</td><td class="num down">-13.1%</td><td class="num down">-31.4%</td><td class="num down">-35.0%</td><td class="num muted">1.8%</td></tr>
+<tr><td class="code">002578</td><td class="nm">闽发铝业</td><td class="num muted">09:34</td><td class="num down">-11.1%</td><td class="num up">+43.3%</td><td class="num up">+32.1%</td><td class="num down">-19.4%</td><td class="num muted">16.0%</td></tr>
+<tr><td class="code">603738</td><td class="nm">泰晶科技</td><td class="num muted">14:35</td><td class="num down">-10.3%</td><td class="num down">-11.7%</td><td class="num down">-16.0%</td><td class="num down">-22.5%</td><td class="num muted">5.6%</td></tr>
+<tr><td class="code">002724</td><td class="nm">海洋王</td><td class="num muted">14:43</td><td class="num down">-9.2%</td><td class="num down">-11.6%</td><td class="num up">+39.1%</td><td class="num down">-20.4%</td><td class="num muted">17.6%</td></tr>
+<tr><td class="code">600259</td><td class="nm">中稀有色</td><td class="num muted">09:36</td><td class="num down">-9.1%</td><td class="num up">+3.5%</td><td class="num down">-1.4%</td><td class="num down">-19.0%</td><td class="num muted">2.8%</td></tr>
+<tr><td class="code">002536</td><td class="nm">飞龙股份</td><td class="num muted">14:42</td><td class="num down">-9.0%</td><td class="num down">-13.2%</td><td class="num down">-32.5%</td><td class="num down">-35.2%</td><td class="num muted">7.2%</td></tr>
+<tr><td class="code">603061</td><td class="nm">金海通</td><td class="num muted">14:06</td><td class="num down">-8.8%</td><td class="num down">-7.9%</td><td class="num down">-20.6%</td><td class="num down">-21.3%</td><td class="num muted">3.8%</td></tr>
+<tr><td class="code">605598</td><td class="nm">上海港湾</td><td class="num muted">13:53</td><td class="num down">-8.6%</td><td class="num down">-8.3%</td><td class="num up">+4.0%</td><td class="num down">-21.1%</td><td class="num muted">4.6%</td></tr>
+<tr><td class="code">603381</td><td class="nm">永臻股份</td><td class="num muted">09:25</td><td class="num down">-8.1%</td><td class="num up">+29.1%</td><td class="num up">+30.8%</td><td class="num down">-19.0%</td><td class="num muted">4.1%</td></tr>
+<tr><td class="code">601566</td><td class="nm">九牧王</td><td class="num muted">14:21</td><td class="num down">-7.2%</td><td class="num down">-0.6%</td><td class="num up">+15.2%</td><td class="num down">-16.3%</td><td class="num muted">8.7%</td></tr>
+<tr><td class="code">603228</td><td class="nm">景旺电子</td><td class="num muted">14:22</td><td class="num down">-6.0%</td><td class="num down">-15.4%</td><td class="num down">-37.7%</td><td class="num down">-39.8%</td><td class="num muted">4.6%</td></tr>
+<tr><td class="code">000826</td><td class="nm">*ST启环</td><td class="num muted">13:09</td><td class="num down">-5.9%</td><td class="num down">-8.6%</td><td class="num down">-12.6%</td><td class="num down">-14.0%</td><td class="num muted">3.6%</td></tr>
+<tr><td class="code">600802</td><td class="nm">福建水泥</td><td class="num muted">09:48</td><td class="num down">-4.9%</td><td class="num up">+1.9%</td><td class="num up">+0.1%</td><td class="num down">-19.0%</td><td class="num muted">12.4%</td></tr>
+<tr><td class="code">002463</td><td class="nm">沪电股份</td><td class="num muted">14:37</td><td class="num down">-4.0%</td><td class="num down">-14.0%</td><td class="num down">-33.8%</td><td class="num down">-35.7%</td><td class="num muted">4.3%</td></tr>
+<tr><td class="code">605168</td><td class="nm">三人行</td><td class="num muted">09:59</td><td class="num down">-3.2%</td><td class="num down">-0.5%</td><td class="num down">-10.3%</td><td class="num down">-13.5%</td><td class="num muted">2.2%</td></tr>
+<tr><td class="code">603725</td><td class="nm">天安新材</td><td class="num muted">09:41</td><td class="num down">-1.1%</td><td class="num up">+8.5%</td><td class="num down">-4.8%</td><td class="num down">-15.3%</td><td class="num muted">11.7%</td></tr>
+<tr><td class="code">002086</td><td class="nm">东方海洋</td><td class="num muted">14:43</td><td class="num down">-0.7%</td><td class="num up">+39.5%</td><td class="num up">+103.8%</td><td class="num down">-15.9%</td><td class="num muted">32.4%</td></tr>
+<tr><td class="code">000678</td><td class="nm">襄阳轴承</td><td class="num muted">14:49</td><td class="num up">+1.5%</td><td class="num down">-10.6%</td><td class="num up">+61.2%</td><td class="num down">-19.0%</td><td class="num muted">22.3%</td></tr>
+<tr><td class="code">603083</td><td class="nm">剑桥科技</td><td class="num muted">14:20</td><td class="num up">+1.7%</td><td class="num down">-17.0%</td><td class="num down">-35.8%</td><td class="num down">-39.5%</td><td class="num muted">10.1%</td></tr>
+<tr><td class="code">603389</td><td class="nm">亚振家居</td><td class="num muted">13:55</td><td class="num up">+3.3%</td><td class="num up">+28.0%</td><td class="num up">+42.3%</td><td class="num down">-10.0%</td><td class="num muted">2.7%</td></tr>
+<tr><td class="code">002647</td><td class="nm">仁东控股</td><td class="num muted">13:29</td><td class="num up">+3.6%</td><td class="num up">+2.0%</td><td class="num down">-15.2%</td><td class="num down">-15.2%</td><td class="num muted">5.1%</td></tr>
+<tr><td class="code">603353</td><td class="nm">和顺石油</td><td class="num muted">09:45</td><td class="num up">+4.3%</td><td class="num up">+5.8%</td><td class="num down">-10.9%</td><td class="num down">-12.3%</td><td class="num muted">4.2%</td></tr>
+<tr><td class="code">000766</td><td class="nm">通化金马</td><td class="num muted">11:02</td><td class="num up">+4.6%</td><td class="num up">+2.3%</td><td class="num up">+2.4%</td><td class="num down">-10.0%</td><td class="num muted">5.8%</td></tr>
+<tr><td class="code">603637</td><td class="nm">镇海股份</td><td class="num muted">14:05</td><td class="num up">+5.2%</td><td class="num up">+13.6%</td><td class="num down">-0.5%</td><td class="num down">-10.0%</td><td class="num muted">4.8%</td></tr>
+<tr><td class="code">600327</td><td class="nm">大东方</td><td class="num muted">09:33</td><td class="num up">+7.6%</td><td class="num up">+47.1%</td><td class="num up">+56.6%</td><td class="num down">-19.1%</td><td class="num muted">14.4%</td></tr>
+<tr><td class="code">603536</td><td class="nm">惠发食品</td><td class="num muted">13:41</td><td class="num up">+8.0%</td><td class="num up">+7.7%</td><td class="num up">+13.2%</td><td class="num down">-18.9%</td><td class="num muted">17.4%</td></tr>
+<tr><td class="code">605169</td><td class="nm">洪通燃气</td><td class="num muted">09:35</td><td class="num up">+8.5%</td><td class="num up">+3.8%</td><td class="num up">+4.7%</td><td class="num down">-10.0%</td><td class="num muted">4.6%</td></tr>
+<tr><td class="code">601091</td><td class="nm">沈鼓集团</td><td class="num muted">10:31</td><td class="num up">+8.7%</td><td class="num up">+15.6%</td><td class="num up">+7.3%</td><td class="num down">-10.0%</td><td class="num muted">29.4%</td></tr>
+<tr><td class="code">600857</td><td class="nm">宁波中百</td><td class="num muted">14:13</td><td class="num up">+12.2%</td><td class="num up">+6.7%</td><td class="num down">-3.7%</td><td class="num down">-10.0%</td><td class="num muted">6.9%</td></tr>
+<tr><td class="code">600228</td><td class="nm">返利科技</td><td class="num muted">09:57</td><td class="num up">+15.6%</td><td class="num up">+16.7%</td><td class="num up">+1.8%</td><td class="num down">-10.0%</td><td class="num muted">13.4%</td></tr>
+<tr><td class="code">002931</td><td class="nm">锋龙股份</td><td class="num muted">09:33</td><td class="num up">+19.2%</td><td class="num up">+34.0%</td><td class="num up">+45.4%</td><td class="num down">-10.0%</td><td class="num muted">16.1%</td></tr>
+<tr><td class="code">603396</td><td class="nm">金辰股份</td><td class="num muted">09:30</td><td class="num up">+21.6%</td><td class="num up">+29.0%</td><td class="num up">+17.7%</td><td class="num down">-10.0%</td><td class="num muted">3.2%</td></tr>
+<tr><td class="code">002623</td><td class="nm">亚玛顿</td><td class="num muted">09:53</td><td class="num up">+22.6%</td><td class="num up">+38.4%</td><td class="num up">+35.2%</td><td class="num down">-10.0%</td><td class="num muted">10.1%</td></tr>
+<tr><td class="code">603706</td><td class="nm">东方环宇</td><td class="num muted">09:33</td><td class="num up">+23.7%</td><td class="num up">+43.7%</td><td class="num up">+44.8%</td><td class="num down">-10.0%</td><td class="num muted">2.7%</td></tr>
+<tr><td class="code">603366</td><td class="nm">日出东方</td><td class="num muted">14:43</td><td class="num up">+26.5%</td><td class="num up">+50.0%</td><td class="num up">+75.5%</td><td class="num down">-10.0%</td><td class="num muted">19.5%</td></tr></tbody>
+  </table>
+  </div>
+  <p class="small">按"今日之前 5 日涨幅"升序排列——最上面的是跌得最久最狠的。可以看到前 20 行几乎全是 PCB / 覆铜板 / 电子布 / 光模块，这些是 AI 硬件链的中游，从 11-11 就开始跌。</p>
+
+  <h3>3.5 归因四：跌停的时间分布，藏着"两波抛压"</h3>
+  <div class="grid3">
+    <div class="box"><div class="t">早盘 09:25–09:59</div><div class="v down">22 只</div><div class="s">竞价直接砸到跌停</div></div>
+    <div class="box"><div class="t">午后 13:00–13:59</div><div class="v down">13 只</div><div class="s">午后开盘补跌</div></div>
+    <div class="box"><div class="t">尾盘 14:00–15:00</div><div class="v down">25 只</div><div class="s">全天最集中的一波</div></div>
+  </div>
+  <p>63 只跌停里，<b>22 只在 10 点前就封死</b>（隔夜情绪延续），<b>38 只在 13:00 之后封死</b>（盘中持续出货）。中间 10:00–11:30 只有 3 只——说明上午 10 点后到中午有一段"虚假的平静"，而<b>真正的杀跌是午后打开的</b>。这种"早盘杀一批、午后杀更大一批"的结构，比单边下杀更能说明是机构在按计划减仓，而不是情绪一次性释放。</p>
+
+  <h3>3.6 杠杆资金：一个月减了 2681 亿，今天只是这条线的最后一段</h3>
+  <p>融资余额（沪深北三所合计）从 10-12 的 <b>25253 亿</b>降到 11-13 的 <b>22572 亿</b>，25 个交易日减少 <b class="down">2681 亿（−10.6%）</b>。25 天里<b>只有 6 天净买入，19 天净卖出</b>。</p>
+
+  <div id="c_margin" class="chart tall"></div>
+  <p class="small">柱 = 单日融资净买入（买入额 − 偿还额），线 = 融资余额。融资余额数据 T+1 更新，最新截至 11-13，<b>11-16 当日数据尚未发布</b>。</p>
+
+  <div class="grid3">
+    <div class="box"><div class="t">区间融资余额变化</div><div class="v down">−2681 亿</div><div class="s">25253 → 22572 亿 · −10.6%</div></div>
+    <div class="box"><div class="t">净卖出天数</div><div class="v down">19 / 25</div><div class="s">最大单日 10-30：−413 亿</div></div>
+    <div class="box"><div class="t">11-12 净买入</div><div class="v">+7.32 亿</div><div class="s">买入额 1734 亿（第二高）</div></div>
+  </div>
+
+  <div class="call b">
+    <div class="t">11-12 是这条线上最关键的一天，也是和 CPO 互证的一天</div>
+    <p>11-12 融资买入额 <b>1733.8 亿</b>（近一月第二高，仅次于 11-05 的 1870.8 亿），融资换手率 <b>7.63%</b>（第二高），融资买入占两市成交额 <b>8.97%</b>——所有"活跃度"指标都在高位。<b>但当天净买入只有 +7.32 亿。</b></p>
+    <p>买入 1734 亿、净增 7 亿，意味着同一天偿还了 1726 亿。<b>这不是增量资金进场，是存量杠杆在高位对倒换手。</b>次日 11-13 立刻转为净卖出 <b>−165.71 亿</b>。</p>
+    <p>把这件事和 3.2 节并排放：CPO 板块 11-12 成交 3853 亿创阶段峰值、指数却收跌 1.78%。<b>两个完全独立的数据源——同花顺的板块成交额、交易所的融资买入额——在 11-12 同一天给出了同一个信号：量能放大，但没有净增量资金。</b>第二天开始，两条线一起往下走。</p>
+  </div>
+
+  <p>还有一个细节值得注意：<b>11-05 融资买入 1870.8 亿是近一月峰值，那天涨停 85 家、跌停 0 家</b>，情绪处于最热的位置。但融资余额当天只从 22718 涨到 22785（+67 亿），此后一路下行再没回到 22800 上方。<b>情绪最热的时候，杠杆资金已经在撤了</b>——这和今天跌停股"不是高位崩塌、而是下跌中继"的结论完全一致：杠杆从 10 月中就在降，不是今天才跑。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>日期</th><th class="num">融资余额(亿)</th><th class="num">单日净买入(亿)</th><th class="num">环比(亿)</th><th class="num">融资换手率</th></tr></thead>
+    <tbody><tr><td class="nm">10-12</td><td class="num">25253</td><td class="num down">-47.22</td><td class="num ">—</td><td class="num muted">4.82%</td></tr>
+<tr><td class="nm">10-13</td><td class="num">25163</td><td class="num down">-90.90</td><td class="num down">-90.2</td><td class="num muted">5.40%</td></tr>
+<tr><td class="nm">10-14</td><td class="num">25056</td><td class="num down">-106.78</td><td class="num down">-107.2</td><td class="num muted">4.50%</td></tr>
+<tr><td class="nm">10-15</td><td class="num">24742</td><td class="num down">-316.93</td><td class="num down">-313.6</td><td class="num muted">5.02%</td></tr>
+<tr><td class="nm">10-16</td><td class="num">24597</td><td class="num down">-144.49</td><td class="num down">-144.9</td><td class="num muted">4.95%</td></tr>
+<tr><td class="nm">10-19</td><td class="num">24534</td><td class="num down">-92.64</td><td class="num down">-63.3</td><td class="num muted">4.82%</td></tr>
+<tr><td class="nm">10-20</td><td class="num">24512</td><td class="num down">-22.74</td><td class="num down">-21.3</td><td class="num muted">4.94%</td></tr>
+<tr><td class="nm">10-21</td><td class="num">24503</td><td class="num down">-9.33</td><td class="num down">-9.7</td><td class="num muted">4.79%</td></tr>
+<tr><td class="nm">10-22</td><td class="num">24269</td><td class="num down">-235.01</td><td class="num down">-233.6</td><td class="num muted">4.88%</td></tr>
+<tr><td class="nm">10-23</td><td class="num">24027</td><td class="num down">-241.54</td><td class="num down">-242.5</td><td class="num muted">6.48%</td></tr>
+<tr><td class="nm">10-26</td><td class="num">23971</td><td class="num down">-55.51</td><td class="num down">-55.9</td><td class="num muted">5.29%</td></tr>
+<tr><td class="nm">10-27</td><td class="num">23810</td><td class="num down">-160.27</td><td class="num down">-160.8</td><td class="num muted">4.78%</td></tr>
+<tr><td class="nm">10-28</td><td class="num">23830</td><td class="num up">+20.78</td><td class="num up">+20.3</td><td class="num muted">5.85%</td></tr>
+<tr><td class="nm">10-29</td><td class="num">23567</td><td class="num down">-261.87</td><td class="num down">-262.8</td><td class="num muted">5.03%</td></tr>
+<tr><td class="nm">10-30</td><td class="num">23153</td><td class="num down">-413.22</td><td class="num down">-414.4</td><td class="num muted">5.49%</td></tr>
+<tr><td class="nm">11-02</td><td class="num">23027</td><td class="num down">-125.76</td><td class="num down">-126.4</td><td class="num muted">5.79%</td></tr>
+<tr><td class="nm">11-03</td><td class="num">22705</td><td class="num down">-320.12</td><td class="num down">-321.6</td><td class="num muted">5.38%</td></tr>
+<tr><td class="nm">11-04</td><td class="num">22718</td><td class="num up">+13.69</td><td class="num up">+13.2</td><td class="num muted">7.42%</td></tr>
+<tr><td class="nm">11-05</td><td class="num">22785</td><td class="num up">+67.52</td><td class="num up">+67.0</td><td class="num muted">8.21%</td></tr>
+<tr><td class="nm">11-06</td><td class="num">22549</td><td class="num down">-235.30</td><td class="num down">-235.8</td><td class="num muted">5.71%</td></tr>
+<tr><td class="nm">11-09</td><td class="num">22670</td><td class="num up">+121.03</td><td class="num up">+120.9</td><td class="num muted">5.33%</td></tr>
+<tr><td class="nm">11-10</td><td class="num">22657</td><td class="num down">-13.52</td><td class="num down">-13.7</td><td class="num muted">5.82%</td></tr>
+<tr><td class="nm">11-11</td><td class="num">22731</td><td class="num up">+74.94</td><td class="num up">+74.8</td><td class="num muted">6.66%</td></tr>
+<tr><td class="nm">11-12</td><td class="num">22738</td><td class="num up">+7.32</td><td class="num up">+6.9</td><td class="num muted">7.63%</td></tr>
+<tr><td class="nm">11-13</td><td class="num">22572</td><td class="num down">-165.71</td><td class="num down">-166.3</td><td class="num muted">6.04%</td></tr></tbody>
+  </table>
+  </div>
+  <p class="small">融资换手率 = 当日融资买入额 ÷ 融资余额，衡量杠杆资金的周转速度。近一月区间 4.50%~8.21%，中位约 5.4%。</p>
+</section>
+
+<!-- ============ 四 ============ -->
+<section class="card">
+  <h2><span class="n">04</span>超短圈焦点：33 个涨停里，7 个能买的全都涨停了——但只有一个买得到</h2>
+  <p class="lead">今天超短圈最该被讨论的不是"跌了多少"，而是<b>竞价强度这条线，今天干净得像教科书</b>。</p>
+
+  <h3>4.1 昨日 38 只涨停股的今日结局：按竞价强度分层，单调到没有例外</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>今日竞价</th><th class="num">样本</th><th class="num">晋级</th><th class="num">晋级率</th><th class="num">当日平均收益</th></tr></thead>
+    <tbody><tr><td class="nm">A 竞价≥+7%</td><td class="num muted">7</td><td class="num up">7 / 7</td><td class="num up"><b>100%</b></td><td class="num up">+10.02%</td></tr>
+<tr><td class="nm">B +3~7%</td><td class="num muted">6</td><td class="num down">2 / 6</td><td class="num down"><b>33%</b></td><td class="num up">+1.80%</td></tr>
+<tr><td class="nm">C 0~+3%</td><td class="num muted">13</td><td class="num down">2 / 13</td><td class="num down"><b>15%</b></td><td class="num up">+0.12%</td></tr>
+<tr><td class="nm">D -3~0%</td><td class="num muted">11</td><td class="num down">0 / 11</td><td class="num down"><b>0%</b></td><td class="num down">-3.66%</td></tr>
+<tr><td class="nm">E ≤-3%</td><td class="num muted">1</td><td class="num down">0 / 1</td><td class="num down"><b>0%</b></td><td class="num down">-9.99%</td></tr></tbody>
+  </table>
+  </div>
+
+  <div id="c_gap" class="chart"></div>
+
+  <div class="call">
+    <div class="t">A 组 7 只全部晋级、全部收在涨停（+10.02%）；D 组 11 只全部断板（−3.66%）</div>
+    <p>11-13 的 38 只涨停股，今天按竞价强度分五组：<b>竞价 ≥ +7% 的 7 只，7 只全部涨停</b>；竞价 +3~7% 的 6 只晋级 2 只；0~+3% 的 13 只晋级 2 只；<b>竞价 ≤ 0 的 12 只，一只都没晋级</b>。</p>
+    <p>样本只有 38 只，单日结论不能当规律用。但方向上它和"把判断前移到 9:25"这件事完全一致：<b>今天开盘那一秒，已经把这 38 只票的命运分完了</b>。全天从 09:30 到 15:00 做的所有努力，基本只是在确认竞价给出的答案。</p>
+  </div>
+
+  <h3>4.2 但"能晋级"和"能买到"是两件事——今天的分池</h3>
+  <p>A 组的 7 只里，竞价就已经接近或等于涨停价的有 4 只：岳阳兴长 +9.98%、金逸影视 +10.00%、凯撒文化 +10.10%、北纬科技 +10.06%。<b>这四只从竞价结束那一刻起就买不到了</b>。剩下 3 只竞价在 +7.35% ~ +9.04% 之间，理论上开盘有几秒到几分钟的窗口：</p>
+
+  <div class="grid3">
+    <div class="box"><div class="t">广百股份 600715… 002187</div><div class="v up">竞价 +9.04%</div><div class="s">09:30 首封，<b>全天 0 次开板</b>，留存率 44.6% → 实际买不到</div></div>
+    <div class="box"><div class="t">金新农 002548</div><div class="v up">竞价 +8.36%</div><div class="s">09:30 首封，<b>0 次开板</b>，留存率 15.0% → 实际买不到</div></div>
+    <div class="box"><div class="t">文投控股 600715</div><div class="v up">竞价 +7.35%</div><div class="s">09:30 首封但<b>开板 12 次</b>，留存率 10.1% → <b>买得到，代价是全天被反复折腾</b></div></div>
+  </div>
+
+  <div class="call p">
+    <div class="t">这就是"形态好"与"能买到"互斥的活样本</div>
+    <p>今天能确定性赚钱的 7 只票里，<b>6 只实际上买不到</b>（竞价就封死或开盘秒封不开板），唯一"买得到"的文投控股，全天开板 12 次、收盘封单只剩峰值的 10.1%——<b>你付出的代价是持有一整天的不确定性</b>。</p>
+    <p>任何一张把"晋级率"和"可买性"混在一起打分的表，今天都会得出错误结论：A 组晋级率 100%，但真实可执行收益接近 0。<b>分池不是精细化的讲究，是收益率算不算得出来的前提。</b></p>
+  </div>
+
+  <h3>4.3 涨停梯队：33 只，高度压到 4 板，最高标的封单只剩峰值 5.2%</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>代码</th><th>名称</th><th>连板</th><th class="num">首封</th><th class="num">竞价</th><th class="num">封单(亿)</th><th class="num">峰值(亿)</th><th class="num">留存率</th><th class="num">开板</th><th>涨停原因</th></tr></thead>
+    <tbody><tr><td class="code">002148</td><td class="nm">北纬科技</td><td><span class="bd bd4">4连板</span></td><td class="num muted">09:25</td><td class="num up">+10.06%</td><td class="num">0.26</td><td class="num">5.12</td><td class="num down">5.2%</td><td class="num muted">7</td><td class="rs">四足机器人+物联网+手机游戏</td></tr>
+<tr><td class="code">002187</td><td class="nm">广百股份</td><td><span class="bd bd3">3连板</span></td><td class="num muted">09:30</td><td class="num up">+9.04%</td><td class="num">1.99</td><td class="num">4.48</td><td class="num ">44.6%</td><td class="num muted">0</td><td class="rs">百货零售+免税退税+广州国资</td></tr>
+<tr><td class="code">002205</td><td class="nm">国统股份</td><td><span class="bd bd3">3连板</span></td><td class="num muted">09:34</td><td class="num up">+1.24%</td><td class="num">0.12</td><td class="num">1.27</td><td class="num down">9.7%</td><td class="num muted">5</td><td class="rs">PCCP管道+风电混塔+央企控股</td></tr>
+<tr><td class="code">000819</td><td class="nm">岳阳兴长</td><td><span class="bd bd2">2连板</span></td><td class="num muted">09:25</td><td class="num up">+9.98%</td><td class="num">0.20</td><td class="num">1.51</td><td class="num down">13.4%</td><td class="num muted">10</td><td class="rs">MOFs材料+茂金属聚烯烃+三季报扭亏</td></tr>
+<tr><td class="code">002905</td><td class="nm">金逸影视</td><td><span class="bd bd2">2连板</span></td><td class="num muted">09:25</td><td class="num up">+10.00%</td><td class="num">1.16</td><td class="num">1.58</td><td class="num up">73.2%</td><td class="num muted">0</td><td class="rs">电影院线+特色影厅</td></tr>
+<tr><td class="code">002425</td><td class="nm">凯撒文化</td><td><span class="bd bd2">2连板</span></td><td class="num muted">09:30</td><td class="num up">+10.10%</td><td class="num">1.09</td><td class="num">3.70</td><td class="num ">29.4%</td><td class="num muted">1</td><td class="rs">AI游戏+手游IP储备+腾讯代理</td></tr>
+<tr><td class="code">002548</td><td class="nm">金新农</td><td><span class="bd bd2">2连板</span></td><td class="num muted">09:30</td><td class="num up">+8.36%</td><td class="num">0.28</td><td class="num">1.84</td><td class="num ">15.0%</td><td class="num muted">0</td><td class="rs">生猪养殖+猪饲料+养殖机器人</td></tr>
+<tr><td class="code">600715</td><td class="nm">文投控股</td><td><span class="bd bd2">2连板</span></td><td class="num muted">09:30</td><td class="num up">+7.35%</td><td class="num">0.29</td><td class="num">2.86</td><td class="num down">10.1%</td><td class="num muted">12</td><td class="rs">AI漫剧+剧集发行+北京国资</td></tr>
+<tr><td class="code">002685</td><td class="nm">华东重机</td><td><span class="bd bd2">2连板</span></td><td class="num muted">09:33</td><td class="num up">+2.89%</td><td class="num">1.64</td><td class="num">5.39</td><td class="num ">30.4%</td><td class="num muted">2</td><td class="rs">GPU芯片+港口装卸设备+三季报增长</td></tr>
+<tr><td class="code">002748</td><td class="nm">世龙实业</td><td><span class="bd bd2">2连板</span></td><td class="num muted">10:23</td><td class="num up">+6.62%</td><td class="num">0.39</td><td class="num">1.88</td><td class="num ">20.5%</td><td class="num muted">2</td><td class="rs">氯化亚砜+扩产+业绩增长</td></tr>
+<tr><td class="code">000595</td><td class="nm">新能股份</td><td><span class="bd bd2">2连板</span></td><td class="num muted">11:14</td><td class="num up">+4.52%</td><td class="num">0.18</td><td class="num">4.82</td><td class="num down">3.8%</td><td class="num muted">5</td><td class="rs">储能并网+风光储一体化+宁夏国资</td></tr>
+<tr><td class="code">002419</td><td class="nm">天虹股份</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:32</td><td class="num down">-0.41%</td><td class="num">0.57</td><td class="num">2.81</td><td class="num ">20.4%</td><td class="num muted">3</td><td class="rs">“AI+零售”+超市调改+央企</td></tr>
+<tr><td class="code">605378</td><td class="nm">野马电池</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:36</td><td class="num up">+0.28%</td><td class="num">0.41</td><td class="num">2.25</td><td class="num ">18.3%</td><td class="num muted">0</td><td class="rs">董事会换届+锌锰电池+海外基地</td></tr>
+<tr><td class="code">002356</td><td class="nm">鹏飞绿能</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:36</td><td class="num ">+0.00%</td><td class="num">0.19</td><td class="num">1.55</td><td class="num down">12.3%</td><td class="num muted">3</td><td class="rs">综合能源站+风光制氢+商贸零售</td></tr>
+<tr><td class="code">601188</td><td class="nm">龙江交通</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:38</td><td class="num up">+2.09%</td><td class="num">0.82</td><td class="num">2.92</td><td class="num ">28.3%</td><td class="num muted">3</td><td class="rs">冰雪旅游保障+高速公路运营+黑龙江国资</td></tr>
+<tr><td class="code">600822</td><td class="nm">上海物贸</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:46</td><td class="num down">-1.05%</td><td class="num">0.41</td><td class="num">1.60</td><td class="num ">25.8%</td><td class="num muted">0</td><td class="rs">汽车贸易+有色金属交易平台+上海国资</td></tr>
+<tr><td class="code">000521</td><td class="nm">长虹美菱</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:47</td><td class="num up">+0.26%</td><td class="num">0.13</td><td class="num">3.34</td><td class="num down">4.0%</td><td class="num muted">0</td><td class="rs">B股估值提升+家电+国企</td></tr>
+<tr><td class="code">600936</td><td class="nm">北投科技</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:47</td><td class="num up">+2.19%</td><td class="num">0.64</td><td class="num">4.71</td><td class="num down">13.7%</td><td class="num muted">0</td><td class="rs">AI应用+平陆运河+广西国资</td></tr>
+<tr><td class="code">002035</td><td class="nm">华帝股份</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:48</td><td class="num ">+0.00%</td><td class="num">0.23</td><td class="num">1.84</td><td class="num down">12.6%</td><td class="num muted">3</td><td class="rs">厨电+高股息</td></tr>
+<tr><td class="code">600386</td><td class="nm">北巴传媒</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:51</td><td class="num ">+0.00%</td><td class="num">0.17</td><td class="num">2.33</td><td class="num down">7.2%</td><td class="num muted">0</td><td class="rs">广告传媒+汽车服务+北京国资</td></tr>
+<tr><td class="code">001318</td><td class="nm">阳光乳业</td><td><span class="bd bd1">首板</span></td><td class="num muted">09:57</td><td class="num up">+0.68%</td><td class="num">0.13</td><td class="num">3.69</td><td class="num down">3.5%</td><td class="num muted">3</td><td class="rs">“羊”字辈+低温乳制品+送奶上户</td></tr>
+<tr><td class="code">601929</td><td class="nm">吉视传媒</td><td><span class="bd bd1">首板</span></td><td class="num muted">10:12</td><td class="num ">+0.00%</td><td class="num">1.37</td><td class="num">10.51</td><td class="num down">13.0%</td><td class="num muted">0</td><td class="rs">AI微短剧+AI应用+智慧广电</td></tr>
+<tr><td class="code">002058</td><td class="nm">紫竹高科</td><td><span class="bd bd1">首板</span></td><td class="num muted">10:18</td><td class="num up">+3.19%</td><td class="num">0.52</td><td class="num">3.55</td><td class="num down">14.5%</td><td class="num muted">0</td><td class="rs">固态电池+铝塑膜+汽车检具</td></tr>
+<tr><td class="code">300530</td><td class="nm">领湃科技</td><td><span class="bd bd1">首板</span></td><td class="num muted">10:35</td><td class="num up">+0.39%</td><td class="num">0.98</td><td class="num">5.38</td><td class="num ">18.3%</td><td class="num muted">0</td><td class="rs">储能电池+钠离子电池+国企</td></tr>
+<tr><td class="code">603983</td><td class="nm">丸美生物</td><td><span class="bd bd1">首板</span></td><td class="num muted">10:36</td><td class="num down">-0.08%</td><td class="num">0.63</td><td class="num">1.47</td><td class="num ">42.9%</td><td class="num muted">2</td><td class="rs">重组胶原蛋白+眼部护理+大消费</td></tr>
+<tr><td class="code">002959</td><td class="nm">小熊电器</td><td><span class="bd bd1">首板</span></td><td class="num muted">10:42</td><td class="num ">+0.00%</td><td class="num">0.34</td><td class="num">1.84</td><td class="num ">18.6%</td><td class="num muted">0</td><td class="rs">小家电+跨境电商+母婴产品</td></tr>
+<tr><td class="code">300824</td><td class="nm">北鼎股份</td><td><span class="bd bd1">首板</span></td><td class="num muted">10:45</td><td class="num up">+0.28%</td><td class="num">0.03</td><td class="num">1.57</td><td class="num down">1.9%</td><td class="num muted">7</td><td class="rs">高端厨小家电+自主品牌+内销增长</td></tr>
+<tr><td class="code">000156</td><td class="nm">华数传媒</td><td><span class="bd bd1">首板</span></td><td class="num muted">10:53</td><td class="num up">+1.55%</td><td class="num">0.29</td><td class="num">4.12</td><td class="num down">7.0%</td><td class="num muted">3</td><td class="rs">AI短剧+AI应用+杭州国资</td></tr>
+<tr><td class="code">000628</td><td class="nm">高新发展</td><td><span class="bd bd1">首板</span></td><td class="num muted">11:14</td><td class="num down">-0.80%</td><td class="num">0.94</td><td class="num">4.77</td><td class="num ">19.7%</td><td class="num muted">1</td><td class="rs">成都国资+功率半导体+虚拟电厂</td></tr>
+<tr><td class="code">000533</td><td class="nm">顺钠股份</td><td><span class="bd bd1">首板</span></td><td class="num muted">11:14</td><td class="num up">+0.67%</td><td class="num">0.96</td><td class="num">8.86</td><td class="num down">10.8%</td><td class="num muted">0</td><td class="rs">数据中心配电+干式变压器+核电</td></tr>
+<tr><td class="code">603118</td><td class="nm">共进股份</td><td><span class="bd bd1">首板</span></td><td class="num muted">11:22</td><td class="num down">-2.77%</td><td class="num">0.81</td><td class="num">6.22</td><td class="num down">13.0%</td><td class="num muted">1</td><td class="rs">数据中心交换机+具身机器人代工+国企</td></tr>
+<tr><td class="code">002861</td><td class="nm">瀛通通讯</td><td><span class="bd bd1">首板</span></td><td class="num muted">13:05</td><td class="num up">+0.73%</td><td class="num">0.59</td><td class="num">2.86</td><td class="num ">20.6%</td><td class="num muted">0</td><td class="rs">AI眼镜+智能声学+消费电子</td></tr>
+<tr><td class="code">600530</td><td class="nm">ST交昂</td><td><span class="bd bd1">首板</span></td><td class="num muted">13:29</td><td class="num ">+0.00%</td><td class="num">0.02</td><td class="num">0.11</td><td class="num ">17.7%</td><td class="num muted">1</td><td class="rs">保健品+宠物经济+股东增持</td></tr></tbody>
+  </table>
+  </div>
+  <p class="small">留存率 = 收盘封单 ÷ 盘中最大封单。&lt;15% 记绿（封单被吃掉大半），&gt;45% 记红（封得住）。</p>
+
+  <div class="call">
+    <div class="t">梯队结构：首板 22 / 2 板 8 / 3 板 2 / 4 板 1，断层在 4 板以上</div>
+    <p><b>北纬科技 002148</b>（四足机器人 + 物联网）是全市场唯一 4 板，但它的数据很难看：<b>09:25 竞价封板，全天开板 7 次，封单从峰值 5.12 亿掉到 0.26 亿，留存率 5.2%</b>。这是"名义最高标、实际最脆弱"的典型——开板 7 次意味着全天有 7 次机会让任何持仓者离场，而每次回封都在消耗封单。</p>
+    <p>反观 3 板的 <b>广百股份 002187</b>（百货零售 + 免税退税 + 广州国资）：09:30 封板后<b>全天 0 次开板</b>，留存率 44.6%，是今天结构最干净的连板。而另一只 3 板 <b>国统股份 002205</b> 开板 5 次、留存率 9.7%，封板质量远不如它。</p>
+  </div>
+
+  <h3>4.4 题材：AI 应用 / 短剧成了唯一的"逆势抱团"，消费是第二条线</h3>
+  <p>33 只涨停的题材分布，指向两个方向：</p>
+  <ul>
+    <li><b>AI 应用 / 短剧 / 传媒（6 只）</b>：吉视传媒（AI 微短剧，封单 1.37 亿 / 峰值 10.51 亿）、华数传媒（AI 短剧 + 杭州国资）、北投科技（AI 应用 + 广西国资）、文投控股（AI 漫剧 + 北京国资）、凯撒文化（AI 游戏 + 腾讯代理）、瀛通通讯（AI 眼镜）。<b>注意：这是"AI 软件"而不是"AI 硬件"</b>——硬件在跌停板上，软件在涨停板上，同一天、同一个词，两个方向。</li>
+    <li><b>大消费（7 只）</b>：华帝股份、小熊电器、北鼎股份、丸美生物、天虹股份、长虹美菱、阳光乳业。叠加啤酒 +0.74%、猪肉 +0.63%、免税店 +0.27% 的板块表现，消费是资金从成长撤出后的第一落点。</li>
+  </ul>
+  <p>短剧游戏板块近 20 日 <b class="up">+7.45%</b>、近 10 日 +7.32%，是全场唯一在 20 日维度上为正的成长方向——今天只跌 1.36%，在 390 个板块里排前列。这条线的性质是：<b>它不依赖算力资本开支，只依赖流量和内容</b>，所以在算力链崩塌时反而是避风港。</p>
+
+  <h3>4.5 炸板 16 只：九阳股份 7 次开板，是今天最典型的"分歧票"</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>代码</th><th>名称</th><th class="num">收盘涨幅</th><th class="num">开板次数</th><th class="num">首封 → 末封</th></tr></thead>
+    <tbody><tr><td class="code">603103</td><td class="nm">横店影视</td><td class="num up">+8.75%</td><td class="num muted">1</td><td class="num muted">10:30 → 10:35</td></tr>
+<tr><td class="code">603687</td><td class="nm">大胜达</td><td class="num up">+8.67%</td><td class="num muted">3</td><td class="num muted">13:00 → 13:10</td></tr>
+<tr><td class="code">002549</td><td class="nm">凯美特气</td><td class="num up">+7.39%</td><td class="num muted">1</td><td class="num muted">13:20 → 13:30</td></tr>
+<tr><td class="code">002242</td><td class="nm">九阳股份</td><td class="num up">+7.10%</td><td class="num muted">7</td><td class="num muted">09:25 → 14:50</td></tr>
+<tr><td class="code">603813</td><td class="nm">原尚股份</td><td class="num up">+7.06%</td><td class="num muted">1</td><td class="num muted">11:00 → 13:00</td></tr>
+<tr><td class="code">000820</td><td class="nm">神雾节能</td><td class="num up">+6.91%</td><td class="num muted">2</td><td class="num muted">09:33 → 14:40</td></tr>
+<tr><td class="code">603580</td><td class="nm">艾艾精工</td><td class="num up">+6.73%</td><td class="num muted">1</td><td class="num muted">10:29 → 10:31</td></tr>
+<tr><td class="code">603358</td><td class="nm">华达科技</td><td class="num up">+6.69%</td><td class="num muted">2</td><td class="num muted">09:32 → 14:04</td></tr>
+<tr><td class="code">605338</td><td class="nm">巴比食品</td><td class="num up">+5.63%</td><td class="num muted">2</td><td class="num muted">14:10 → 14:11</td></tr>
+<tr><td class="code">002453</td><td class="nm">华软科技</td><td class="num up">+5.58%</td><td class="num muted">1</td><td class="num muted">13:21 → 13:34</td></tr>
+<tr><td class="code">001379</td><td class="nm">腾达科技</td><td class="num up">+5.18%</td><td class="num muted">1</td><td class="num muted">09:35 → 09:36</td></tr>
+<tr><td class="code">601366</td><td class="nm">利群股份</td><td class="num up">+4.88%</td><td class="num muted">1</td><td class="num muted">09:38 → 09:38</td></tr>
+<tr><td class="code">000831</td><td class="nm">中国稀土</td><td class="num up">+4.64%</td><td class="num muted">1</td><td class="num muted">09:25 → 09:34</td></tr>
+<tr><td class="code">000665</td><td class="nm">湖北广电</td><td class="num up">+3.49%</td><td class="num muted">1</td><td class="num muted">10:59 → 10:59</td></tr>
+<tr><td class="code">002638</td><td class="nm">勤上股份</td><td class="num up">+3.34%</td><td class="num muted">3</td><td class="num muted">10:15 → 10:15</td></tr>
+<tr><td class="code">601599</td><td class="nm">浙文影业</td><td class="num up">+0.40%</td><td class="num muted">1</td><td class="num muted">09:30 → 09:30</td></tr></tbody>
+  </table>
+  </div>
+  <p><b>九阳股份 002242</b> 全天开板 7 次（09:25 首封 → 14:50 末封），最终收 +7.10%。它在午间复盘的焦点位上是"绕异动 + 一字封板"的样本，但<b>午后被反复撬开，说明高位分歧已经出现</b>。同一批里开板 ≥3 次的还有大胜达（3 次）、神雾节能（2 次）、华达科技（2 次）、勤上股份（3 次）——<b>炸板池里开板次数多的，基本都集中在午后</b>，和跌停潮的时间点重合。</p>
+
+  <h3>4.6 热榜：钱在盯"跌得最狠的"，而不是"涨得最好的"</h3>
+  <div class="grid2">
+    <div class="tw">
+    <table>
+      <thead><tr><th class="num">#</th><th>名称</th><th>代码</th><th class="num">今日</th></tr></thead>
+      <tbody><tr><td class="num muted">1</td><td class="nm">九阳股份</td><td class="code">002242</td><td class="num up">+7.10%</td></tr>
+<tr><td class="num muted">2</td><td class="nm">中际旭创</td><td class="code">300308</td><td class="num down">-12.28%</td></tr>
+<tr><td class="num muted">3</td><td class="nm">文投控股</td><td class="code">600715</td><td class="num up">+10.00%</td></tr>
+<tr><td class="num muted">4</td><td class="nm">东方海洋</td><td class="code">002086</td><td class="num down">-9.96%</td></tr>
+<tr><td class="num muted">5</td><td class="nm">东山精密</td><td class="code">002384</td><td class="num down">-10.00%</td></tr>
+<tr><td class="num muted">6</td><td class="nm">新易盛</td><td class="code">300502</td><td class="num down">-11.08%</td></tr>
+<tr><td class="num muted">7</td><td class="nm">冰山冷热</td><td class="code">000530</td><td class="num up">+6.49%</td></tr>
+<tr><td class="num muted">8</td><td class="nm">日出东方</td><td class="code">603366</td><td class="num down">-10.00%</td></tr>
+<tr><td class="num muted">9</td><td class="nm">宇树科技</td><td class="code">688836</td><td class="num up">+1.15%</td></tr>
+<tr><td class="num muted">10</td><td class="nm">阳光照明</td><td class="code">600261</td><td class="num down">-9.60%</td></tr>
+<tr><td class="num muted">11</td><td class="nm">华胜天成</td><td class="code">600410</td><td class="num down">-2.80%</td></tr>
+<tr><td class="num muted">12</td><td class="nm">凯撒文化</td><td class="code">002425</td><td class="num up">+10.10%</td></tr>
+<tr><td class="num muted">13</td><td class="nm">北纬科技</td><td class="code">002148</td><td class="num up">+10.06%</td></tr>
+<tr><td class="num muted">14</td><td class="nm">长鑫科技</td><td class="code">688825</td><td class="num down">-4.10%</td></tr>
+<tr><td class="num muted">15</td><td class="nm">中国稀土</td><td class="code">000831</td><td class="num up">+4.64%</td></tr>
+<tr><td class="num muted">16</td><td class="nm">襄阳轴承</td><td class="code">000678</td><td class="num down">-9.97%</td></tr>
+<tr><td class="num muted">17</td><td class="nm">蓝色光标</td><td class="code">300058</td><td class="num down">-4.26%</td></tr>
+<tr><td class="num muted">18</td><td class="nm">工业富联</td><td class="code">601138</td><td class="num down">-9.68%</td></tr>
+<tr><td class="num muted">19</td><td class="nm">新华传媒</td><td class="code">600825</td><td class="num down">-9.99%</td></tr>
+<tr><td class="num muted">20</td><td class="nm">工商银行</td><td class="code">601398</td><td class="num up">+2.26%</td></tr></tbody>
+    </table>
+    </div>
+    <div>
+      <p>热度前 20 里，<b>中际旭创、东山精密、新易盛、工业富联、兆易创新、天孚通信、长鑫科技</b>——七只全是 AI 硬件链，今天全部大跌。热度集中在下跌股上，说明<b>超短圈今天的注意力在"抄不抄底"，而不是"追不追高"</b>。</p>
+      <p>另一组是 <b>九阳股份（热榜第 1）、文投控股（第 3）、凯撒文化（第 12）、北纬科技（第 13）、吉视传媒（第 25）</b>——这五只是今天的强势票，热度来自"能不能接力"的讨论。</p>
+      <p class="small">两个群体的热度同时高位，是典型的"分歧日"特征：一半人在找底，一半人在找板。这种结构下明天的开盘竞价会非常关键。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 五 ============ -->
+<section class="card">
+  <h2><span class="n">05</span>情绪周期定位：从"分歧"滑进"退潮"，还没到"崩塌"</h2>
+  <p class="lead">近 16 个交易日的涨停 / 炸板 / 跌停家数序列，是判断周期位置最直接的尺子。</p>
+
+  <div id="c_emo" class="chart tall"></div>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>日期</th><th class="num">涨停</th><th class="num">炸板</th><th class="num">跌停</th><th>阶段</th></tr></thead>
+    <tbody>
+      <tr><td>11-02</td><td class="num up">131</td><td class="num">28</td><td class="num">10</td><td class="muted">高潮</td></tr>
+      <tr><td>11-04</td><td class="num up">119</td><td class="num">33</td><td class="num">10</td><td class="muted">高潮延续</td></tr>
+      <tr><td>11-05</td><td class="num up">85</td><td class="num">47</td><td class="num">0</td><td class="muted">加速（跌停归零）</td></tr>
+      <tr><td>11-09</td><td class="num up">57</td><td class="num">44</td><td class="num">2</td><td class="muted">分歧</td></tr>
+      <tr><td>11-10</td><td class="num up">95</td><td class="num">19</td><td class="num">0</td><td class="muted">再加速</td></tr>
+      <tr><td>11-11</td><td class="num up">84</td><td class="num">19</td><td class="num">1</td><td class="muted"><b>情绪高点（CPO 同日见顶）</b></td></tr>
+      <tr><td>11-12</td><td class="num">37</td><td class="num">35</td><td class="num">5</td><td class="muted">分歧（涨停腰斩）</td></tr>
+      <tr><td>11-13</td><td class="num">38</td><td class="num">21</td><td class="num down">34</td><td class="muted">退潮启动</td></tr>
+      <tr><td><b>11-16</b></td><td class="num down"><b>33</b></td><td class="num">16</td><td class="num down"><b>63</b></td><td><b>退潮确认</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call">
+    <div class="t">状态判定：③退潮 → ④崩塌的边界，但还没跨过去</div>
+    <p>按"跌停家数"这把尺子：<b>跌停 0~5 家是加速期，5~20 家是分歧期，20~50 家是退潮期，50 家以上是崩塌</b>。今天 63 家，数值上已进入崩塌区。但有两个反向证据说明还没到最坏：</p>
+    <ul>
+      <li><b>涨停仍有 33 只，且梯队没断</b>——4 板 1 只、3 板 2 只、2 板 8 只，如果真是崩塌，连板会集体断板、2 板以上清零。</li>
+      <li><b>炸板 16 只，是近 16 日最低</b>——炸板少说明"尝试封板的人"少了，而不是"封住了又被打下来"。这是资金退出的标志，不是恐慌的标志。</li>
+    </ul>
+    <p>更准确的描述是：<b>参与度在快速萎缩（涨停 33、炸板 16 双双低位），同时持仓在集中出清（跌停 63）</b>。这是"人走茶凉"型的退潮，不是"多杀多"型的崩塌。两者对次日的含义不同：前者往往需要更长时间修复，后者容易一次性出清后反弹。</p>
+  </div>
+
+  <div id="c_breadth" class="chart"></div>
+  <p class="small">全市场涨跌幅分布（5582 只）：跌超 5% 的 1021 只、跌 2~5% 的 1846 只，两者合计占 51.3%。上涨的 1136 只里，涨超 5% 的只有 88 只。</p>
+</section>
+
+<!-- ============ 六 ============ -->
+<section class="card">
+  <h2><span class="n">06</span>明天（11-17）的规则，不是预测</h2>
+  <p class="lead">不给"等某个指标确认再动手"这种滞后建议——等到确认，机会已经变成陷阱。下面全部是 9:25 竞价就能落地执行的判据。</p>
+
+  <h3>6.1 指数层面：3600 是明牌，但要看的不是它</h3>
+  <ul>
+    <li><b>沪指 3599.02（10-30 低点）</b>：破与不破，对超短没有直接操作意义。真正要看的是<b>破位时科创 50 和创业板指是否同步新低</b>——如果沪指破位而双创不破，是权重补跌、结构转好；如果三个一起破，明天不要开新仓。</li>
+    <li><b>竞价定性（09:25 直接读）</b>：今天全市场高开 1047 / 低开 3834、竞价中位 −0.38%。<b>明天若低开家数仍在 3500 以上但中位好于 −0.3%，是"低开高走"的典型前兆</b>；若低开家数 4000+ 且中位跌破 −0.8%，则延续下杀。</li>
+    <li><b>成交额</b>：今天 1.49 万亿。<b>明天缩到 1.2 万亿以下 + 指数止跌 = 缩量止跌，可以观察；放量到 1.6 万亿以上 + 指数继续跌 = 出清未完，回避。</b></li>
+  </ul>
+
+  <h3>6.2 超短层面：三条可执行规则</h3>
+  <div class="call b">
+    <div class="t">规则一：只做竞价 ≥ +5% 的昨日涨停股，其余一律不看</div>
+    <p>今天的数据：竞价 ≥ +7% 的 7 只全部涨停，竞价 ≤ 0 的 12 只全部断板。<b>把这条线设在 +5%，是为了在"晋级概率"和"还能买到"之间取一个平衡点</b>——+7% 以上大多已经买不到（今天 7 只里 4 只竞价即封死），+5% 左右通常还有开盘后的几秒窗口。</p>
+    <p>执行细节：09:25 竞价出来后，把昨日涨停的 33 只按竞价涨幅排序，<b>只保留 ≥ +5% 的</b>，其余直接划掉，不要在盘中"再看看"。</p>
+  </div>
+
+  <div class="call b">
+    <div class="t">规则二：能买到的票，先看开板次数和留存率，再看它涨多少</div>
+    <p>今天的文投控股是反面教材：竞价 +7.35%、封住了、晋级了，但<b>全天开板 12 次、留存率 10.1%</b>。买它的人拿到的是 +10% 的账面收益和一天的折磨，且明天低开的概率远高于广百股份（0 次开板、留存 44.6%）。</p>
+    <p>判据：<b>留存率 &lt; 15% 的连板，次日按"减仓优先"处理，不加仓。</b>今天符合这条的有：北纬科技（5.2%）、国统股份（9.7%）、新能股份（3.8%）、文投控股（10.1%）、顺钠股份（10.8%）。</p>
+  </div>
+
+  <div class="call b">
+    <div class="t">规则三：不在跌停股里找反弹，除非它前 5 日跌幅已经超过 20%</div>
+    <p>今天 63 只跌停股的前 5 日涨幅中位是 −9.2%，<b>31 只已经跌超 10%</b>。这批票的性质是"下跌中继"，明天大概率继续跌。<b>想做超跌反抽，门槛要设在"前 5 日跌幅 &gt; 20% 且当日缩量跌停"</b>，而不是"跌停了就便宜"。</p>
+    <p>反过来说：如果明天出现"<b>跌停家数从 63 骤降到 20 以下 + 涨停回到 50 以上</b>"，那才是退潮结束的第一个可信信号——注意是<b>同时</b>，只看一个会骗人。</p>
+  </div>
+
+  <h3>6.3 需要盯的三个具体标的（不是推荐，是观察锚）</h3>
+  <ul>
+    <li><b>北纬科技 002148（4 板，唯一最高标）</b>：留存率 5.2%、开板 7 次。它是明天情绪的温度计——<b>若竞价 ≥ +3% 且开盘后能快速封回，说明接力情绪还在；若竞价 ≤ 0 或开盘即破，全市场连板高度会压到 3 板以下</b>，那时所有 2 板以上都该减。</li>
+    <li><b>广百股份 002187（3 板，结构最干净）</b>：0 次开板、留存 44.6%。它是"能封住"的样本，明天若继续一字，说明资金还在找确定性；若它都开板，说明接力彻底断档。</li>
+    <li><b>中际旭创 300308 / 新易盛 300502（热榜第 2、6，CPO 龙头）</b>：CPO 板块三日 −12.1%，明天是第 4 天。<b>龙头竞价若能高开 +2% 以上，是板块止跌的第一信号</b>；若继续低开 −2% 以下，说明出清未完成，任何 AI 硬件链的票都不要碰。</li>
+  </ul>
+</section>
+
+<!-- ============ 七 ============ -->
+<section class="card">
+  <h2><span class="n">07</span>数据口径与来源</h2>
+  <table class="wrapok" style="font-size:12.5px">
+    <tbody>
+      <tr><td class="nm" style="width:150px">数据源</td><td>同花顺官方金融数据服务（hithink-finance CLI，认证 api-key / profile=default）＋ 悟道 A股数据 MCP（stock.quicktiny.cn，两融数据）</td></tr>
+      <tr><td class="nm">取数时点</td><td>2026-11-16 22:10–23:20（北京时间，收盘后）</td></tr>
+      <tr><td class="nm">行情快照</td><td>全市场 5582 只，market snapshot 分页拉取（limit=1000 × 6 页）</td></tr>
+      <tr><td class="nm">涨停 / 炸板 / 跌停</td><td>special limit-up-pool / limit-break-pool / limit-down-pool，date-ms=1794758400000（11-16 00:00 北京时间）</td></tr>
+      <tr><td class="nm">板块涨跌</td><td>同花顺 390 个概念/行业指数（.TI），index snapshot 批量拉取</td></tr>
+      <tr><td class="nm">指数历史</td><td>index history，区间 2026-08-05 ~ 11-16（73 个交易日）</td></tr>
+      <tr><td class="nm">跌停股位置</td><td>market history 逐只拉取 60 日，前复权（adjust=forward）</td></tr>
+      <tr><td class="nm">融资余额</td><td>悟道 MCP <code>margin_trading</code>，按交易日逐日拉取，沪深北三所（SSE/SZSE/BSE）加总；区间 10-12 ~ 11-13 共 25 个交易日。<b>两融数据 T+1 发布，11-16 当日数据截至本报告生成时尚未更新</b></td></tr>
+      <tr><td class="nm">融资换手率</td><td>当日融资买入额 ÷ 融资余额（自算，非官方口径）</td></tr>
+      <tr><td class="nm">竞价高开/低开</td><td>用 snapshot 的 open_price ÷ prev_price 计算，非交易所官方竞价统计，口径为"开盘价相对昨收"</td></tr>
+      <tr><td class="nm">留存率定义</td><td>收盘封单额 seal_money ÷ 盘中最大封单额 max_seal_money</td></tr>
+      <tr><td class="nm">晋级判定</td><td>T 日在涨停池 → 晋级；T 日进炸板池 → 炸板；两者皆非 → 断板</td></tr>
+      <tr><td class="nm">已知源缺陷</td><td>炸板池不含 ST 股（本报告未做封板率类统计，不影响结论）；首封时间记的是攻击量起始时点，与分钟数据可能差 1–2 分钟</td></tr>
+    </tbody>
+  </table>
+  <p class="small" style="margin-top:12px">样本量提示：4.1 节的竞价分层基于 11-13 涨停的 38 只，单日样本，<b>方向可参考，不能当统计规律</b>。3.4 节的跌停位置分析基于 63 只全样本，可信度较高。</p>
+
+  <div class="disclaim">
+    <b>免责声明</b><br>
+    本报告所有内容均为基于公开市场数据的客观统计与事后归因，不构成任何证券买卖建议、投资咨询或收益承诺。文中提及的个股、价位、规则仅用于说明统计现象与操作逻辑，不代表推荐买入或卖出。A 股市场存在较大波动风险，历史统计规律不保证未来重现，单日样本尤其不具备预测效力。投资者应独立判断并自行承担全部交易风险，据此操作，风险自担。本报告数据来源于第三方金融数据服务，虽已尽力核对，仍可能存在延迟、缺失或口径差异，使用者应自行验证。作者及发布平台不对因使用本报告内容而产生的任何直接或间接损失承担责任。
+  </div>
+
+  <div class="foot">
+    明阳量化 · 收盘复盘 · 2026-11-16<br>
+    数据：同花顺官方金融数据服务 · 生成于 2026-11-16 22:40（北京时间）
+  </div>
+</section>
+
+</div>
+
+<script>
+var D = {"index": [{"code": "000001.SH", "name": "上证指数", "close": 3602.57, "chg": -0.874434, "turnover": 7062.1435, "pos": {"hi": 3990.3, "lo": 3599.02, "d_hi": -9.716813272185053, "d_lo": 0.09863796255646928, "hi_day": "08-18", "new_low": false}}, {"code": "399001.SZ", "name": "深证成指", "close": 10690.7784, "chg": -2.534545, "turnover": 7782.7611, "pos": null}, {"code": "399006.SZ", "name": "创业板指", "close": 2320.0199, "chg": -4.371843, "turnover": 3733.8679, "pos": {"hi": 3740.157, "lo": 2320.02, "d_hi": -37.96998361298737, "d_lo": 0.0, "hi_day": "08-17", "new_low": true}}, {"code": "000688.SH", "name": "科创50", "close": 1213.68, "chg": -5.156057, "turnover": 851.16423, "pos": {"hi": 1790.87, "lo": 1151.28, "d_hi": -32.22958673717243, "d_lo": 5.420054200542013, "hi_day": "08-18", "new_low": false}}, {"code": "899050.BJ", "name": "北证50", "close": 836.568, "chg": -4.537441, "turnover": 98.3533, "pos": {"hi": 1137.888, "lo": 836.568, "d_hi": -26.48063781321184, "d_lo": 0.0, "hi_day": "08-18", "new_low": true}}, {"code": "000852.SH", "name": "中证1000", "close": 6164.62, "chg": -3.030236, "turnover": 2793.4302, "pos": null}, {"code": "000016.SH", "name": "上证50", "close": 2766.57, "chg": -0.304502, "turnover": 1264.29742, "pos": null}, {"code": "399905.SZ", "name": "中证500", "close": 6297.1829, "chg": -2.603085, "turnover": 2581.7167, "pos": null}, {"code": "000300.SH", "name": "沪深300", "close": 3979.8, "chg": -0.90855, "turnover": 4305.5418, "pos": {"hi": 4741.1, "lo": 3979.8, "d_hi": -16.057455020986687, "d_lo": 0.0, "hi_day": "08-17", "new_low": true}}, {"code": "399303.SZ", "name": "国证2000", "close": 8198.4993, "chg": -3.11255, "turnover": 4201.2006, "pos": null}], "breadth": {"up": 1136, "down": 4344, "flat": 92, "total": 5572, "median": -2.1157304999999997, "gap_up": 1047, "gap_dn": 3834, "gap_flat": 691, "gap_median": -0.38486224943221625, "gap_up3": 41, "gap_dn3": 112, "oc_median": -1.7310103375677177, "oc_win": 23.259152907394114, "turnover": 14941.567797837002, "buckets": {"涨0~2%": 862, "跌0~2%": 1477, "跌2~5%": 1846, "跌超5%": 1021, "涨2~5%": 278, "涨超5%": 88}}, "board_split": [{"name": "主板", "n": 3192, "up": 908, "dn": 2211, "avg": -1.5798320814536313, "dn_pct": 69.26691729323309, "to": 8794.816977960998}, {"name": "创业板", "n": 1410, "up": 163, "dn": 1235, "avg": -3.0802615028368794, "dn_pct": 87.58865248226951, "to": 3726.4643685560004}, {"name": "科创板", "n": 615, "up": 38, "dn": 573, "avg": -4.8376299056910534, "dn_pct": 93.17073170731707, "to": 2321.93314901}, {"name": "北交所", "n": 355, "up": 27, "dn": 325, "avg": -2.345433732394365, "dn_pct": 91.54929577464789, "to": 98.35330231}], "boards_top": [{"name": "证金持股", "chg": 1.434071, "to": 407.20945}, {"name": "高股息精选", "chg": 1.029856, "to": 1143.78388}, {"name": "啤酒概念", "chg": 0.744809, "to": 58.01522}, {"name": "猪肉", "chg": 0.633348, "to": 96.669123}, {"name": "芬太尼", "chg": 0.621981, "to": 12.1083645}, {"name": "同花顺中特估100", "chg": 0.558533, "to": 884.35209}, {"name": "超级品牌", "chg": 0.39769, "to": 322.99539}, {"name": "免税店", "chg": 0.265486, "to": 54.231067}, {"name": "冰雪产业", "chg": 0.073648, "to": 159.58242}, {"name": "航运概念", "chg": 0.027139, "to": 165.281}, {"name": "自由贸易港", "chg": -0.121984, "to": 59.898692}, {"name": "白酒概念", "chg": -0.179787, "to": 186.67154}, {"name": "参股保险", "chg": -0.195285, "to": 116.883082}, {"name": "煤炭概念", "chg": -0.201761, "to": 218.94567}, {"name": "统一大市场", "chg": -0.218574, "to": 173.24105}], "boards_bot": [{"name": "共封装光学(CPO)", "chg": -6.399293, "to": 2473.2582}, {"name": "科创次新股", "chg": -6.055521, "to": 284.30137}, {"name": "富士康概念", "chg": -5.822536, "to": 565.57824}, {"name": "存储芯片", "chg": -5.813953, "to": 1896.0116}, {"name": "同花顺果指数", "chg": -5.787263, "to": 409.99345}, {"name": "先进封装", "chg": -5.641187, "to": 1620.2686}, {"name": "光刻机", "chg": -5.541579, "to": 268.19075}, {"name": "英伟达概念", "chg": -5.523475, "to": 689.70756}, {"name": "PCB概念", "chg": -5.469933, "to": 1337.28467}, {"name": "玻璃基板", "chg": -5.460421, "to": 413.90343}, {"name": "MLCC概念", "chg": -5.392567, "to": 232.56573}, {"name": "铜缆高速连接", "chg": -5.331975, "to": 289.50975}, {"name": "国家大基金持股", "chg": -5.309274, "to": 855.75598}, {"name": "光纤概念", "chg": -5.304424, "to": 995.25598}, {"name": "培育钻石", "chg": -5.13651, "to": 61.163749}], "boards_stat": {"n": 390, "up": 10, "median": -2.345756}, "trend_days": ["10-29", "10-30", "11-02", "11-03", "11-04", "11-05", "11-06", "11-09", "11-10", "11-11", "11-12", "11-13", "11-16"], "trend": [{"name": "CPO", "chg": -6.399293445146337, "r5": -5.408337179466005, "r10": -5.142115933221147, "r20": -16.83119732763846, "norm": [0.0, -4.91, -3.06, -7.93, -0.98, 0.05, -4.3, -2.79, 0.01, 4.63, 2.77, -1.76, -8.04], "to": 2473.2582, "to_series": [2630, 2698, 2651, 2724, 3471, 3390, 2516, 2302, 2392, 3243, 3853, 3102, 2473]}, {"name": "存储芯片", "chg": -5.813952916468901, "r5": -4.924688880525951, "r10": -1.573397998969972, "r20": -11.530010718113603, "norm": [0.0, -5.05, -2.25, -6.96, 1.64, 4.22, 0.77, 1.2, 3.5, 6.74, 5.66, 2.15, -3.79], "to": 1896.0116, "to_series": [1945, 1957, 2043, 1995, 2751, 3091, 2327, 1733, 1772, 2195, 2884, 2244, 1896]}, {"name": "PCB", "chg": -5.469932904736341, "r5": -5.808114402939902, "r10": -5.052611018578079, "r20": -15.652465548959194, "norm": [0.0, -3.92, -1.79, -5.72, 0.32, 1.92, -2.09, -1.0, 1.71, 5.12, 3.1, -1.35, -6.75], "to": 1337.28467, "to_series": [1446, 1639, 1643, 1582, 2025, 2008, 1485, 1363, 1401, 1777, 2067, 1689, 1337]}, {"name": "机器人", "chg": -2.980703124933437, "r5": -3.268087294335953, "r10": -0.917944433214557, "r20": -3.396093358777774, "norm": [0.0, -3.86, -1.62, -3.47, -0.01, 2.45, -0.04, 0.77, 3.51, 5.3, 2.75, 0.48, -2.52], "to": 3915.5329, "to_series": [4574, 4674, 4726, 4221, 5404, 5423, 4024, 3980, 4321, 4795, 5424, 4445, 3916]}, {"name": "短剧游戏", "chg": -1.3567706020173542, "r5": 1.476709027054257, "r10": 7.315633891173623, "r20": 7.44516505599675, "norm": [0.0, -6.11, 1.68, 1.81, 4.6, 9.03, 7.51, 7.53, 12.38, 13.73, 10.3, 10.62, 9.12], "to": 703.52433, "to_series": [463, 445, 572, 584, 628, 752, 675, 708, 765, 822, 920, 757, 704]}, {"name": "绿色电力", "chg": -1.216959111243543, "r5": -2.7312157210890975, "r10": 0.25210988152484237, "r20": -5.136316318060707, "norm": [0.0, -2.49, -0.95, -0.81, 1.0, 3.1, 2.48, 2.09, 2.91, 3.45, 2.19, 0.53, -0.7], "to": 1013.76528, "to_series": [1100, 1117, 1154, 1134, 1362, 1493, 1288, 1054, 964, 1060, 1163, 1043, 1014]}, {"name": "军工", "chg": -3.690905463629901, "r5": -4.808104055412244, "r10": -2.428256403604301, "r20": -8.47639636784483, "norm": [0.0, -4.07, -1.82, -3.24, 0.06, 1.96, -0.18, 0.63, 2.49, 3.73, 1.95, -0.54, -4.21], "to": 1444.7699, "to_series": [1809, 1858, 1714, 1577, 2026, 1982, 1541, 1563, 1598, 1752, 1961, 1648, 1445]}, {"name": "固态电池", "chg": -2.7523442418351918, "r5": -5.037354140481442, "r10": -1.5998321938505033, "r20": -7.967626492181202, "norm": [0.0, -2.92, -0.87, -1.33, 2.59, 5.66, 3.17, 2.72, 4.34, 5.66, 3.51, 0.31, -2.45], "to": 974.91325, "to_series": [1059, 1184, 1199, 1291, 1559, 1811, 1373, 1159, 1052, 1194, 1324, 1080, 975]}], "emo": [{"date": "10-26", "lu": 59, "lb": 23, "ld": 27}, {"date": "10-27", "lu": 42, "lb": 28, "ld": 23}, {"date": "10-28", "lu": 70, "lb": 69, "ld": 6}, {"date": "10-29", "lu": 39, "lb": 25, "ld": 42}, {"date": "10-30", "lu": 49, "lb": 31, "ld": 86}, {"date": "11-02", "lu": 131, "lb": 28, "ld": 10}, {"date": "11-03", "lu": 52, "lb": 34, "ld": 17}, {"date": "11-04", "lu": 119, "lb": 33, "ld": 10}, {"date": "11-05", "lu": 85, "lb": 47, "ld": 0}, {"date": "11-06", "lu": 33, "lb": 13, "ld": 15}, {"date": "11-09", "lu": 57, "lb": 44, "ld": 2}, {"date": "11-10", "lu": 95, "lb": 19, "ld": 0}, {"date": "11-11", "lu": 84, "lb": 19, "ld": 1}, {"date": "11-12", "lu": 37, "lb": 35, "ld": 5}, {"date": "11-13", "lu": 38, "lb": 21, "ld": 34}, {"date": "11-16", "lu": 33, "lb": 16, "ld": 63}], "limitup": [{"code": "002148", "name": "北纬科技", "board": "4连板", "cnt": 4, "time": "09:25", "seal": 0.26496558, "maxseal": 5.11797545, "ret": 5.177156135049456, "open": 7, "reason": "四足机器人+物联网+手机游戏", "gap": 10.062893081761004, "chg": 10.0629, "st": false}, {"code": "002187", "name": "广百股份", "board": "3连板", "cnt": 3, "time": "09:30", "seal": 1.9946939, "maxseal": 4.47716308, "ret": 44.55262996584882, "open": 0, "reason": "百货零售+免税退税+广州国资", "gap": 9.038737446197986, "chg": 10.043, "st": false}, {"code": "002205", "name": "国统股份", "board": "3连板", "cnt": 3, "time": "09:34", "seal": 0.12299162400000001, "maxseal": 1.2671442, "ret": 9.706205813040063, "open": 5, "reason": "PCCP管道+风电混塔+央企控股", "gap": 1.2374323279195742, "chg": 9.9768, "st": false}, {"code": "000819", "name": "岳阳兴长", "board": "2连板", "cnt": 2, "time": "09:25", "seal": 0.2021266, "maxseal": 1.510475895, "ret": 13.381650158673999, "open": 10, "reason": "MOFs材料+茂金属聚烯烃+三季报扭亏", "gap": 9.98439937597504, "chg": 9.9844, "st": false}, {"code": "002905", "name": "金逸影视", "board": "2连板", "cnt": 2, "time": "09:25", "seal": 1.15834447, "maxseal": 1.58217543, "ret": 73.21213868173898, "open": 0, "reason": "电影院线+特色影厅", "gap": 10.000000000000009, "chg": 10, "st": false}, {"code": "002425", "name": "凯撒文化", "board": "2连板", "cnt": 2, "time": "09:30", "seal": 1.08632975, "maxseal": 3.69961696, "ret": 29.36330332965065, "open": 1, "reason": "AI游戏+手游IP储备+腾讯代理", "gap": 10.1010101010101, "chg": 10.101, "st": false}, {"code": "002548", "name": "金新农", "board": "2连板", "cnt": 2, "time": "09:30", "seal": 0.27617171, "maxseal": 1.8357635114, "ret": 15.043969895086565, "open": 0, "reason": "生猪养殖+猪饲料+养殖机器人", "gap": 8.355091383812008, "chg": 9.9217, "st": false}, {"code": "600715", "name": "文投控股", "board": "2连板", "cnt": 2, "time": "09:30", "seal": 0.28809968, "maxseal": 2.85790978, "ret": 10.080782886015387, "open": 12, "reason": "AI漫剧+剧集发行+北京国资", "gap": 7.352941176470584, "chg": 10, "st": false}, {"code": "002685", "name": "华东重机", "board": "2连板", "cnt": 2, "time": "09:33", "seal": 1.63518, "maxseal": 5.387681712000001, "ret": 30.350345239548183, "open": 2, "reason": "GPU芯片+港口装卸设备+三季报增长", "gap": 2.8880866425992746, "chg": 9.9278, "st": false}, {"code": "002748", "name": "世龙实业", "board": "2连板", "cnt": 2, "time": "10:23", "seal": 0.38502092, "maxseal": 1.87514725, "ret": 20.532836554569247, "open": 2, "reason": "氯化亚砜+扩产+业绩增长", "gap": 6.618240516545604, "chg": 10.0081, "st": false}, {"code": "000595", "name": "新能股份", "board": "2连板", "cnt": 2, "time": "11:14", "seal": 0.18319648, "maxseal": 4.82336736, "ret": 3.7981034063306343, "open": 5, "reason": "储能并网+风光储一体化+宁夏国资", "gap": 4.520795660036159, "chg": 9.9458, "st": false}, {"code": "002419", "name": "天虹股份", "board": "首板", "cnt": 1, "time": "09:32", "seal": 0.57362499, "maxseal": 2.8132758, "ret": 20.389930841476687, "open": 3, "reason": "“AI+零售”+超市调改+央企", "gap": -0.40733197556008793, "chg": 9.9796, "st": false}, {"code": "605378", "name": "野马电池", "board": "首板", "cnt": 1, "time": "09:36", "seal": 0.4122888, "maxseal": 2.24940672, "ret": 18.328779599271403, "open": 0, "reason": "董事会换届+锌锰电池+海外基地", "gap": 0.28348688873141015, "chg": 9.9929, "st": false}, {"code": "002356", "name": "鹏飞绿能", "board": "首板", "cnt": 1, "time": "09:36", "seal": 0.19039432, "maxseal": 1.54890036, "ret": 12.292225175801494, "open": 3, "reason": "综合能源站+风光制氢+商贸零售", "gap": 0.0, "chg": 10.0437, "st": false}, {"code": "601188", "name": "龙江交通", "board": "首板", "cnt": 1, "time": "09:38", "seal": 0.82480709, "maxseal": 2.9189097244999997, "ret": 28.25736894419669, "open": 3, "reason": "冰雪旅游保障+高速公路运营+黑龙江国资", "gap": 2.0930232558139528, "chg": 10, "st": false}, {"code": "600822", "name": "上海物贸", "board": "首板", "cnt": 1, "time": "09:46", "seal": 0.41098976, "maxseal": 1.59527907, "ret": 25.762875457270308, "open": 0, "reason": "汽车贸易+有色金属交易平台+上海国资", "gap": -1.0477299185098987, "chg": 10.0116, "st": false}, {"code": "000521", "name": "长虹美菱", "board": "首板", "cnt": 1, "time": "09:47", "seal": 0.13219632, "maxseal": 3.3359370692000003, "ret": 3.96279417919902, "open": 0, "reason": "B股估值提升+家电+国企", "gap": 0.25510204081633514, "chg": 9.949, "st": false}, {"code": "600936", "name": "北投科技", "board": "首板", "cnt": 1, "time": "09:47", "seal": 0.6443826, "maxseal": 4.71260178, "ret": 13.67360600538584, "open": 0, "reason": "AI应用+平陆运河+广西国资", "gap": 2.191780821917799, "chg": 10.137, "st": false}, {"code": "002035", "name": "华帝股份", "board": "首板", "cnt": 1, "time": "09:48", "seal": 0.23225904, "maxseal": 1.84203864, "ret": 12.608803906523915, "open": 3, "reason": "厨电+高股息", "gap": 0.0, "chg": 10.1176, "st": false}, {"code": "600386", "name": "北巴传媒", "board": "首板", "cnt": 1, "time": "09:51", "seal": 0.16661199, "maxseal": 2.32812336, "ret": 7.15649320231897, "open": 0, "reason": "广告传媒+汽车服务+北京国资", "gap": 0.0, "chg": 10.1156, "st": false}, {"code": "001318", "name": "阳光乳业", "board": "首板", "cnt": 1, "time": "09:57", "seal": 0.12736944, "maxseal": 3.6869156062, "ret": 3.4546339977463187, "open": 3, "reason": "“羊”字辈+低温乳制品+送奶上户", "gap": 0.6772009029345494, "chg": 10.0075, "st": false}, {"code": "601929", "name": "吉视传媒", "board": "首板", "cnt": 1, "time": "10:12", "seal": 1.370938, "maxseal": 10.509120952, "ret": 13.045220492386623, "open": 0, "reason": "AI微短剧+AI应用+智慧广电", "gap": 0.0, "chg": 10.0372, "st": false}, {"code": "002058", "name": "紫竹高科", "board": "首板", "cnt": 1, "time": "10:18", "seal": 0.5160064, "maxseal": 3.5524832, "ret": 14.525231252325135, "open": 0, "reason": "固态电池+铝塑膜+汽车检具", "gap": 3.192534381139489, "chg": 10.0196, "st": false}, {"code": "300530", "name": "领湃科技", "board": "首板", "cnt": 1, "time": "10:35", "seal": 0.98337305, "maxseal": 5.37583761, "ret": 18.292461962964687, "open": 0, "reason": "储能电池+钠离子电池+国企", "gap": 0.38809831824062613, "chg": 20.0086, "st": false}, {"code": "603983", "name": "丸美生物", "board": "首板", "cnt": 1, "time": "10:36", "seal": 0.63040032, "maxseal": 1.46809179, "ret": 42.94011616262768, "open": 2, "reason": "重组胶原蛋白+眼部护理+大消费", "gap": -0.08230452674896638, "chg": 10, "st": false}, {"code": "002959", "name": "小熊电器", "board": "首板", "cnt": 1, "time": "10:42", "seal": 0.34335249, "maxseal": 1.84476474, "ret": 18.612264347593722, "open": 0, "reason": "小家电+跨境电商+母婴产品", "gap": 0.0, "chg": 10.0091, "st": false}, {"code": "300824", "name": "北鼎股份", "board": "首板", "cnt": 1, "time": "10:45", "seal": 0.0291497, "maxseal": 1.5701149, "ret": 1.856532919979296, "open": 7, "reason": "高端厨小家电+自主品牌+内销增长", "gap": 0.2789400278940146, "chg": 19.9442, "st": false}, {"code": "000156", "name": "华数传媒", "board": "首板", "cnt": 1, "time": "10:53", "seal": 0.29031747, "maxseal": 4.1218555951999996, "ret": 7.043368291166767, "open": 3, "reason": "AI短剧+AI应用+杭州国资", "gap": 1.546391752577314, "chg": 10.0515, "st": false}, {"code": "000628", "name": "高新发展", "board": "首板", "cnt": 1, "time": "11:14", "seal": 0.939379, "maxseal": 4.7656028, "ret": 19.711651168242554, "open": 1, "reason": "成都国资+功率半导体+虚拟电厂", "gap": -0.8034026465028488, "chg": 9.9953, "st": false}, {"code": "000533", "name": "顺钠股份", "board": "首板", "cnt": 1, "time": "11:14", "seal": 0.95628486, "maxseal": 8.8617990646, "ret": 10.791091662414761, "open": 0, "reason": "数据中心配电+干式变压器+核电", "gap": 0.6718924972004547, "chg": 9.9664, "st": false}, {"code": "603118", "name": "共进股份", "board": "首板", "cnt": 1, "time": "11:22", "seal": 0.80611992, "maxseal": 6.21925561, "ret": 12.961678544033987, "open": 1, "reason": "数据中心交换机+具身机器人代工+国企", "gap": -2.7673896783844354, "chg": 10.0224, "st": false}, {"code": "002861", "name": "瀛通通讯", "board": "首板", "cnt": 1, "time": "13:05", "seal": 0.58792691, "maxseal": 2.85826032, "ret": 20.56939691203494, "open": 0, "reason": "AI眼镜+智能声学+消费电子", "gap": 0.7281553398058138, "chg": 10.0324, "st": false}, {"code": "600530", "name": "ST交昂", "board": "首板", "cnt": 1, "time": "13:29", "seal": 0.01992044, "maxseal": 0.1126136, "ret": 17.689195621132793, "open": 1, "reason": "保健品+宠物经济+股东增持", "gap": 0.0, "chg": 10.0616, "st": true}], "ladder": {"首板": 22, "3连板": 2, "2连板": 8, "4连板": 1}, "limitbreak": [{"code": "603103", "name": "横店影视", "chg": 8.7519, "open": 1, "first": "10:30", "last": "10:35"}, {"code": "603687", "name": "大胜达", "chg": 8.6738, "open": 3, "first": "13:00", "last": "13:10"}, {"code": "002549", "name": "凯美特气", "chg": 7.394, "open": 1, "first": "13:20", "last": "13:30"}, {"code": "002242", "name": "九阳股份", "chg": 7.1028, "open": 7, "first": "09:25", "last": "14:50"}, {"code": "603813", "name": "原尚股份", "chg": 7.0594, "open": 1, "first": "11:00", "last": "13:00"}, {"code": "000820", "name": "神雾节能", "chg": 6.9079, "open": 2, "first": "09:33", "last": "14:40"}, {"code": "603580", "name": "艾艾精工", "chg": 6.7308, "open": 1, "first": "10:29", "last": "10:31"}, {"code": "603358", "name": "华达科技", "chg": 6.6938, "open": 2, "first": "09:32", "last": "14:04"}, {"code": "605338", "name": "巴比食品", "chg": 5.6312, "open": 2, "first": "14:10", "last": "14:11"}, {"code": "002453", "name": "华软科技", "chg": 5.5825, "open": 1, "first": "13:21", "last": "13:34"}, {"code": "001379", "name": "腾达科技", "chg": 5.1833, "open": 1, "first": "09:35", "last": "09:36"}, {"code": "601366", "name": "利群股份", "chg": 4.878, "open": 1, "first": "09:38", "last": "09:38"}, {"code": "000831", "name": "中国稀土", "chg": 4.6438, "open": 1, "first": "09:25", "last": "09:34"}, {"code": "000665", "name": "湖北广电", "chg": 3.4934, "open": 1, "first": "10:59", "last": "10:59"}, {"code": "002638", "name": "勤上股份", "chg": 3.3413, "open": 3, "first": "10:15", "last": "10:15"}, {"code": "601599", "name": "浙文影业", "chg": 0.3968, "open": 1, "first": "09:30", "last": "09:30"}], "limitdown": [{"code": "603048", "name": "浙江黎明", "time": "14:26", "to": 2.3455, "r5": -17.17687074829931, "r10": -6.256015399422521, "r20": -11.934900542495486, "dd": -17.17687074829931}, {"code": "002463", "name": "沪电股份", "time": "14:37", "to": 4.342, "r5": -4.046692607003877, "r10": -14.026728646135956, "r20": -33.79865771812081, "dd": -35.65277898582239}, {"code": "003033", "name": "征和工业", "time": "09:43", "to": 6.3111, "r5": -12.082262210796902, "r10": -6.416746476946223, "r20": -4.933981931897147, "dd": -19.614525796215766}, {"code": "603124", "name": "江南新材", "time": "14:34", "to": 6.2007, "r5": -13.270202020202026, "r10": -19.235743680188122, "r20": -29.534263438654087, "dd": -31.310000000000006}, {"code": "603256", "name": "宏和科技", "time": "14:37", "to": 1.7984, "r5": -11.122923588039868, "r10": -13.075123472835982, "r20": -31.391054575297506, "dd": -34.97958390044721}, {"code": "603269", "name": "海鸥股份", "time": "14:38", "to": 6.2217, "r5": -15.323117921385732, "r10": -16.381578947368414, "r20": -34.21325051759834, "dd": -34.98721227621483}, {"code": "603738", "name": "泰晶科技", "time": "14:35", "to": 5.5993, "r5": -10.344827586206884, "r10": -11.741214057507976, "r20": -16.001520334473575, "dd": -22.48333917923535}, {"code": "605100", "name": "华丰股份", "time": "14:12", "to": 4.2103, "r5": -16.35412123855211, "r10": -40.04376367614879, "r20": -49.04357066950054, "dd": -51.27032520325203}, {"code": "603366", "name": "日出东方", "time": "14:43", "to": 19.5112, "r5": 26.49140546006066, "r10": 50.0, "r20": 75.45582047685835, "dd": -10.000000000000009}, {"code": "603536", "name": "惠发食品", "time": "13:41", "to": 17.4423, "r5": 7.967313585291125, "r10": 7.747196738022422, "r20": 13.16916488222699, "dd": -18.94171779141104}, {"code": "000678", "name": "襄阳轴承", "time": "14:49", "to": 22.3192, "r5": 1.5419760137064475, "r10": -10.608345902463546, "r20": 61.19673617407073, "dd": -18.960802187784864}, {"code": "002536", "name": "飞龙股份", "time": "14:42", "to": 7.1714, "r5": -8.987210508123056, "r10": -13.245469522240539, "r20": -32.50448602922328, "dd": -35.211614173228355}, {"code": "600228", "name": "返利科技", "time": "09:57", "to": 13.387, "r5": 15.573770491803284, "r10": 16.66666666666665, "r20": 1.7525773195876226, "dd": -10.027347310847778}, {"code": "002086", "name": "东方海洋", "time": "14:43", "to": 32.3554, "r5": -0.6864988558352492, "r10": 39.54983922829582, "r20": 103.75586854460094, "dd": -15.891472868217061}, {"code": "002724", "name": "海洋王", "time": "14:43", "to": 17.5892, "r5": -9.224806201550384, "r10": -11.62264150943395, "r20": 39.07363420427554, "dd": -20.448369565217384}, {"code": "600183", "name": "生益科技", "time": "14:40", "to": 3.7945, "r5": -13.214487832484444, "r10": -25.268031189083818, "r20": -47.85343874861855, "dd": -48.44944953357424}, {"code": "000766", "name": "通化金马", "time": "11:02", "to": 5.7777, "r5": 4.577464788732399, "r10": 2.2727272727272707, "r20": 2.4137931034482696, "dd": -9.999999999999998}, {"code": "601566", "name": "九牧王", "time": "14:21", "to": 8.6507, "r5": -7.200000000000006, "r10": -0.5714285714285783, "r20": 15.231788079470189, "dd": -16.279069767441868}, {"code": "002029", "name": "七匹狼", "time": "14:23", "to": 9.3549, "r5": -14.696132596685096, "r10": -17.78487752928648, "r20": -8.639053254437867, "dd": -25.266214908034858}, {"code": "605118", "name": "力鼎光电", "time": "14:36", "to": 1.8256, "r5": -11.815561959654186, "r10": -17.741935483870975, "r20": 11.882998171846438, "dd": -17.741935483870975}, {"code": "603637", "name": "镇海股份", "time": "14:05", "to": 4.7974, "r5": 5.175600739371533, "r10": 13.572854291417169, "r20": -0.5244755244755095, "dd": -9.968354430379744}, {"code": "603083", "name": "剑桥科技", "time": "14:20", "to": 10.0522, "r5": 1.7324816105303897, "r10": -17.0206047209284, "r20": -35.83419815640071, "dd": -39.456252520016136}, {"code": "603228", "name": "景旺电子", "time": "14:22", "to": 4.5619, "r5": -5.955895120680688, "r10": -15.375000000000005, "r20": -37.67548906789414, "dd": -39.82222222222222}, {"code": "605376", "name": "博迁新材", "time": "14:10", "to": 4.0366, "r5": -11.710647236444792, "r10": -6.167155016045767, "r20": -23.570860325036936, "dd": -25.011150758251567}, {"code": "600857", "name": "宁波中百", "time": "14:13", "to": 6.9223, "r5": 12.155963302752282, "r10": 6.690909090909081, "r20": -3.740157480314965, "dd": -10.000000000000009}, {"code": "603880", "name": "南卫股份", "time": "09:43", "to": 8.8822, "r5": -16.321243523316063, "r10": -23.73081463990555, "r20": -20.148331273176755, "dd": -23.73081463990555}, {"code": "000962", "name": "东方钽业", "time": "14:07", "to": 4.4766, "r5": -13.247422680412368, "r10": -8.780487804878057, "r20": -21.446907817969674, "dd": -21.629802095459848}, {"code": "001270", "name": "铖昌科技", "time": "14:17", "to": 3.4631, "r5": -13.14149767758015, "r10": -5.462392108508007, "r20": -6.987747179424975, "dd": -15.784270650263622}, {"code": "001219", "name": "青岛食品", "time": "09:34", "to": 18.7617, "r5": -22.194513715710727, "r10": -14.6374829001368, "r20": 50.7246376811594, "dd": -25.47770700636943}, {"code": "600180", "name": "*ST瑞茂", "time": "14:07", "to": 2.5611, "r5": -17.000000000000004, "r10": -14.432989690721653, "r20": -34.12698412698413, "dd": -34.12698412698413}, {"code": "000056", "name": "*ST皇庭", "time": "13:57", "to": 3.2877, "r5": -18.131868131868135, "r10": -22.7979274611399, "r20": -35.775862068965516, "dd": -36.59574468085106}, {"code": "603061", "name": "金海通", "time": "14:06", "to": 3.8422, "r5": -8.804492262848807, "r10": -7.900432900432897, "r20": -20.556385362210605, "dd": -21.250370151021624}, {"code": "002865", "name": "钧达股份", "time": "13:55", "to": 10.7221, "r5": -18.8976377952756, "r10": -8.872598584428726, "r20": 8.551641071966266, "dd": -26.278118609406953}, {"code": "001400", "name": "江顺科技", "time": "13:58", "to": 6.8603, "r5": -20.834575260804765, "r10": -16.91345151199165, "r20": 9.135734830845088, "dd": -22.225475841874076}, {"code": "603389", "name": "亚振家居", "time": "13:55", "to": 2.6508, "r5": 3.3495508982035904, "r10": 27.995365005793737, "r20": 42.3086833290389, "dd": -10.004888381945577}, {"code": "603516", "name": "淳中科技", "time": "13:51", "to": 4.146, "r5": -15.132386463264957, "r10": -14.031971580817048, "r20": -25.389240018498537, "dd": -27.761194029850746}, {"code": "605598", "name": "上海港湾", "time": "13:53", "to": 4.5991, "r5": -8.558030480656509, "r10": -8.307210031347967, "r20": 3.9537983118613784, "dd": -21.10586648685099}, {"code": "002647", "name": "仁东控股", "time": "13:29", "to": 5.0977, "r5": 3.5816618911174825, "r10": 1.9746121297602448, "r20": -15.2403282532239, "dd": -15.2403282532239}, {"code": "601091", "name": "沈鼓集团", "time": "10:31", "to": 29.434, "r5": 8.690928843020096, "r10": 15.597920277296385, "r20": 7.2922252010724, "dd": -9.986504723346822}, {"code": "002851", "name": "麦格米特", "time": "13:50", "to": 6.6395, "r5": -15.95786188060866, "r10": -19.295616335706246, "r20": -31.1160857051487, "dd": -34.047764849969376}, {"code": "002929", "name": "润建股份", "time": "13:37", "to": 10.8186, "r5": -11.27118644067796, "r10": -4.015401540154007, "r20": 12.867060497606841, "dd": -17.049595943590557}, {"code": "002931", "name": "锋龙股份", "time": "09:33", "to": 16.1195, "r5": 19.220246238030093, "r10": 34.04255319148937, "r20": 45.41156840934371, "dd": -10.000000000000009}, {"code": "002172", "name": "澳洋健康", "time": "13:32", "to": 17.8432, "r5": -12.783171521035596, "r10": -17.07692307692308, "r20": -6.5857885615251295, "dd": -20.73529411764706}, {"code": "002623", "name": "亚玛顿", "time": "09:53", "to": 10.053, "r5": 22.5622406639004, "r10": 38.42999414176917, "r20": 35.18306636155606, "dd": -9.98095238095238}, {"code": "001233", "name": "海安集团", "time": "09:43", "to": 16.2888, "r5": -21.39824082499242, "r10": -5.298739265485109, "r20": 0.5821851348728924, "dd": -24.49009324009325}, {"code": "000826", "name": "*ST启环", "time": "13:09", "to": 3.6234, "r5": -5.88235294117646, "r10": -8.571428571428562, "r20": -12.568306010928964, "dd": -13.978494623655912}, {"code": "002943", "name": "宇晶股份", "time": "13:01", "to": 5.9452, "r5": -18.200000000000006, "r10": -7.396226415094342, "r20": 5.867126833477143, "dd": -20.556814503075437}, {"code": "600825", "name": "新华传媒", "time": "09:35", "to": 12.2522, "r5": -13.55311355311355, "r10": -5.3728949478748955, "r20": -24.261874197689338, "dd": -27.025355596784173}, {"code": "603725", "name": "天安新材", "time": "09:41", "to": 11.6923, "r5": -1.0657193605683735, "r10": 8.471275559883162, "r20": -4.78632478632478, "dd": -15.34954407294833}, {"code": "002046", "name": "国机精工", "time": "10:22", "to": 2.7049, "r5": -15.006883891693434, "r10": -31.15241635687732, "r20": -25.09605662285137, "dd": -34.74277660324172}, {"code": "002578", "name": "闽发铝业", "time": "09:34", "to": 15.9751, "r5": -11.070780399274039, "r10": 43.2748538011696, "r20": 32.07547169811322, "dd": -19.407894736842103}, {"code": "600327", "name": "大东方", "time": "09:33", "to": 14.3946, "r5": 7.592592592592573, "r10": 47.08860759493669, "r20": 56.603773584905646, "dd": -19.080779944289695}, {"code": "605169", "name": "洪通燃气", "time": "09:35", "to": 4.582, "r5": 8.501683501683498, "r10": 3.7842190016103006, "r20": 4.711616571892763, "dd": -9.986033519553072}, {"code": "600802", "name": "福建水泥", "time": "09:48", "to": 12.3893, "r5": -4.918032786885251, "r10": 1.9033674963396807, "r20": 0.14388489208632116, "dd": -18.9755529685681}, {"code": "605168", "name": "三人行", "time": "09:59", "to": 2.1648, "r5": -3.2498139419498973, "r10": -0.48481755549885097, "r20": -10.324212462635096, "dd": -13.52549889135255}, {"code": "002696", "name": "百洋股份", "time": "09:32", "to": 13.3807, "r5": -16.283185840707958, "r10": -15.836298932384341, "r20": 8.860759493670912, "dd": -23.46278317152103}, {"code": "603353", "name": "和顺石油", "time": "09:45", "to": 4.2413, "r5": 4.274753379612717, "r10": 5.8212829069336225, "r20": -10.92384519350812, "dd": -12.319508448540706}, {"code": "000011", "name": "深物业A", "time": "09:37", "to": 3.2506, "r5": -15.51155115511551, "r10": -20.906282183316183, "r20": -33.564013840830455, "dd": -33.564013840830455}, {"code": "600259", "name": "中稀有色", "time": "09:36", "to": 2.7708, "r5": -9.09504320145521, "r10": 3.450060376056574, "r20": -1.3813517513566853, "dd": -18.981356390164816}, {"code": "603706", "name": "东方环宇", "time": "09:33", "to": 2.6531, "r5": 23.724616146607236, "r10": 43.728423475258936, "r20": 44.811594202898554, "dd": -9.98198198198198}, {"code": "603381", "name": "永臻股份", "time": "09:25", "to": 4.0761, "r5": -8.140703517587934, "r10": 29.096045197740118, "r20": 30.758226037196003, "dd": -19.007532122286218}, {"code": "603396", "name": "金辰股份", "time": "09:30", "to": 3.2374, "r5": 21.56787762906309, "r10": 28.965517241379324, "r20": 17.740740740740748, "dd": -9.994337485843719}, {"code": "300779", "name": "惠城环保", "time": "09:25", "to": 0.6931, "r5": -28.57468643101483, "r10": -23.32925336597308, "r20": -39.278790228770845, "dd": -39.278790228770845}], "ld_stat": {"n": 63, "r5_median": -9.224806201550384, "r5_neg": 71.42857142857143, "r5_lt_neg10": 31, "r5_gt_15": 6, "dd_median": -20.448369565217384}, "ld_time": {"尾盘 14:00-15:00": 25, "早盘 09:25-09:59": 22, "午后 13:00-13:59": 13, "上午 10:00-11:30": 3}, "y13": [{"name": "法狮龙", "board": "首板", "res": "断板", "chg": -6.230714, "gap": -0.9850462853073783, "yret": 30.853719420868696, "ytime": "11:06", "yopen": 0, "yreason": "AI算力+词元服务+集成吊顶"}, {"name": "天普股份", "board": "4连板", "res": "断板", "chg": 0, "gap": 0, "yret": 76.58887785501489, "ytime": "09:30", "yopen": 2, "yreason": "中昊芯英+实控人变更+汽车管路"}, {"name": "日盈电子", "board": "首板", "res": "断板", "chg": -8.242181, "gap": -1.1400400554613999, "yret": 8.928571428571429, "ytime": "13:00", "yopen": 1, "yreason": "人形机器人+电子皮肤+汽车洗涤系统"}, {"name": "维通利", "board": "首板", "res": "断板", "chg": -1.900788, "gap": 3.5697728326379297, "yret": 8.213106726895685, "ytime": "11:04", "yopen": 1, "yreason": "电连接+数据中心+电力电工+次新股"}, {"name": "金辰股份", "board": "3连板", "res": "断板", "chg": -9.994337, "gap": -7.446206115515297, "yret": 22.099952637397116, "ytime": "09:30", "yopen": 1, "yreason": "光伏设备+半导体装备+玻璃基封装+股份回购"}, {"name": "兴欣新材", "board": "2连板", "res": "断板", "chg": 1.388889, "gap": -0.9759759759759845, "yret": 88.34060210594937, "ytime": "09:25", "yopen": 0, "yreason": "光刻胶剥离液+电子化学品+股份回购"}, {"name": "皮阿诺", "board": "首板", "res": "断板", "chg": 4.915021, "gap": 0.0, "yret": 32.42268140688005, "ytime": "09:56", "yopen": 1, "yreason": "定制家居+群核科技酷家乐+定增推进+控股权巩固"}, {"name": "东方中科", "board": "首板", "res": "断板", "chg": -9.308756, "gap": 3.5944700460829537, "yret": 14.49193395457464, "ytime": "09:30", "yopen": 0, "yreason": "股份解除冻结+半导体测试+新能源汽车测试+中科院"}, {"name": "横店影视", "board": "首板", "res": "炸板", "chg": 8.751942, "gap": 4.557224236147084, "yret": 33.335995818357866, "ytime": "09:33", "yopen": 0, "yreason": "AI短剧+影视全产业链+IP运营"}, {"name": "幸福蓝海", "board": "首板", "res": "断板", "chg": -6.725959, "gap": 4.057809894385778, "yret": 2.886775537134768, "ytime": "10:09", "yopen": 1, "yreason": "AI微短剧+影视院线+江苏国资"}, {"name": "中马传动", "board": "首板", "res": "断板", "chg": -3.043968, "gap": 2.9312288613303483, "yret": 14.562601614612781, "ytime": "09:41", "yopen": 1, "yreason": "减速器+汽车变速器+车辆齿轮+三季报增长"}, {"name": "中国电影", "board": "首板", "res": "断板", "chg": -1.935484, "gap": -0.2932551319648091, "yret": 4.393849827807867, "ytime": "10:08", "yopen": 6, "yreason": "影视院线+进口片发行+央企"}, {"name": "通化金马", "board": "首板", "res": "断板", "chg": -10, "gap": 2.9090909090909056, "yret": 10.005445980922223, "ytime": "09:43", "yopen": 5, "yreason": "阿尔茨海默病新药+阿里健康首发+商业化"}, {"name": "华胜天成", "board": "首板", "res": "断板", "chg": -2.797203, "gap": -0.909090909090915, "yret": 7.299956344211105, "ytime": "09:50", "yopen": 3, "yreason": "AI算力+算力服务+华为光模块"}, {"name": "福龙马", "board": "首板", "res": "断板", "chg": 3.308824, "gap": 1.3235294117647012, "yret": 6.884077399981026, "ytime": "10:56", "yopen": 2, "yreason": "环卫机器人+华为云+环卫自动驾驶+新能源环卫装备"}, {"name": "国统股份", "board": "2连板", "res": "晋级", "chg": 9.976798, "gap": 1.2374323279195742, "yret": 9.019530679733666, "ytime": "09:36", "yopen": 17, "yreason": "PCCP管道+风电混塔+央企控股"}, {"name": "岳阳兴长", "board": "首板", "res": "晋级", "chg": 9.984399, "gap": 9.98439937597504, "yret": 18.895677471902832, "ytime": "14:19", "yopen": 0, "yreason": "MOFs材料+茂金属聚烯烃+三季报扭亏+国企"}, {"name": "世龙实业", "board": "首板", "res": "晋级", "chg": 10.008071, "gap": 6.618240516545604, "yret": 9.562971820962973, "ytime": "10:52", "yopen": 0, "yreason": "氯化亚砜+扩产+业绩增长"}, {"name": "兴业股份", "board": "首板", "res": "断板", "chg": -2.508361, "gap": -1.755852842809369, "yret": 21.50179538855702, "ytime": "09:33", "yopen": 1, "yreason": "光刻胶树脂+合成树脂+三季报增长"}, {"name": "福达股份", "board": "首板", "res": "断板", "chg": -4.64527, "gap": 0.16891891891892552, "yret": 14.594910355349661, "ytime": "10:48", "yopen": 0, "yreason": "精密减速器+机器人+曲轴"}, {"name": "儒意电影", "board": "首板", "res": "断板", "chg": 1.492537, "gap": 0.5970149253731183, "yret": 1.7244844000138846, "ytime": "10:38", "yopen": 1, "yreason": "影视院线+院线龙头+IP衍生"}, {"name": "金逸影视", "board": "首板", "res": "晋级", "chg": 10, "gap": 10.000000000000009, "yret": 34.65769843852329, "ytime": "09:32", "yopen": 0, "yreason": "电影院线+影院+特色影厅"}, {"name": "南威软件", "board": "首板", "res": "断板", "chg": -6.210526, "gap": -2.631578947368418, "yret": 7.836681364299272, "ytime": "13:36", "yopen": 3, "yreason": "AI短剧+政务AI+智算中心"}, {"name": "北纬科技", "board": "3连板", "res": "晋级", "chg": 10.062893, "gap": 10.062893081761004, "yret": 23.23840070695416, "ytime": "09:30", "yopen": 0, "yreason": "四足机器人+手机游戏+物联网"}, {"name": "日发精机", "board": "首板", "res": "断板", "chg": -1.168831, "gap": 1.8181818181818077, "yret": 10.860789938301629, "ytime": "11:21", "yopen": 7, "yreason": "人形机器人+数控螺纹磨床+轴承装备"}, {"name": "广百股份", "board": "2连板", "res": "晋级", "chg": 10.043042, "gap": 9.038737446197986, "yret": 9.633017494961543, "ytime": "09:25", "yopen": 5, "yreason": "百货零售+免税退税+广州国资"}, {"name": "华东重机", "board": "首板", "res": "晋级", "chg": 9.927798, "gap": 2.8880866425992746, "yret": 12.057036314064112, "ytime": "09:25", "yopen": 1, "yreason": "GPU芯片+港口装卸设备+三季报增长"}, {"name": "新能股份", "board": "首板", "res": "晋级", "chg": 9.94575, "gap": 4.520795660036159, "yret": 17.40370860715456, "ytime": "11:17", "yopen": 0, "yreason": "储能并网+风光储一体化+宁夏国资"}, {"name": "飞乐音响", "board": "首板", "res": "断板", "chg": -4.054054, "gap": -0.7722007722007707, "yret": 19.259982034637797, "ytime": "10:38", "yopen": 0, "yreason": "芯片测试+存储器+上海国资"}, {"name": "湖北广电", "board": "首板", "res": "炸板", "chg": 3.49345, "gap": -0.4366812227074357, "yret": 10.544094855768567, "ytime": "09:36", "yopen": 0, "yreason": "短剧游戏+广电网络+算力租赁+湖北国资"}, {"name": "凯撒文化", "board": "首板", "res": "晋级", "chg": 10.10101, "gap": 10.1010101010101, "yret": 26.42740722560995, "ytime": "09:35", "yopen": 0, "yreason": "AI游戏+手游IP储备+腾讯代理"}, {"name": "金新农", "board": "首板", "res": "晋级", "chg": 9.921671, "gap": 8.355091383812008, "yret": 19.62723244838057, "ytime": "10:17", "yopen": 0, "yreason": "生猪养殖+猪饲料+养殖机器人"}, {"name": "华孚时尚", "board": "首板", "res": "断板", "chg": -4.696133, "gap": -2.209944751381221, "yret": 2.920130051907324, "ytime": "09:56", "yopen": 4, "yreason": "算力租赁+色纺纱+回购注销"}, {"name": "文投控股", "board": "首板", "res": "晋级", "chg": 10, "gap": 7.352941176470584, "yret": 22.94335327398081, "ytime": "09:30", "yopen": 0, "yreason": "AI漫剧+剧集发行+北京国资"}, {"name": "美晨科技", "board": "首板", "res": "断板", "chg": -3.98773, "gap": 1.8404907975460238, "yret": 17.413679361316724, "ytime": "10:38", "yopen": 1, "yreason": "资产剥离+汽车零部件+摘帽+国企改革"}, {"name": "好当家", "board": "2连板", "res": "断板", "chg": -8.424908, "gap": -2.930402930402931, "yret": 14.297768926992271, "ytime": "09:25", "yopen": 4, "yreason": "海参+海洋经济+预制菜"}, {"name": "天邦食品", "board": "首板", "res": "断板", "chg": -1.731602, "gap": 0.0, "yret": 7.582878255593919, "ytime": "10:20", "yopen": 4, "yreason": "生猪养殖+预重整+通威入主"}, {"name": "*ST亿晶", "board": "首板", "res": "断板", "chg": -3.482587, "gap": 0.4975124378109541, "yret": 53.15394653622295, "ytime": "14:30", "yopen": 0, "yreason": "预重整+中润光能拟入主+光伏组件"}], "y13_stat": {"断板": {"n": 25, "avg": -3.59936484, "med": -3.482587}, "炸板": {"n": 2, "avg": 6.1226959999999995, "med": 6.1226959999999995}, "晋级": {"n": 11, "avg": 9.997402909090908, "med": 10}}, "y13_all": {"n": 38, "avg": 0.8482290263157894, "med": -1.4502165, "up": 17}, "gap_bucket": [{"k": "A 竞价≥+7%", "n": 7, "promote": 7, "avg": 10.016145, "med": 10}, {"k": "B +3~7%", "n": 6, "promote": 2, "avg": 1.795043333333333, "med": 3.4255769999999997}, {"k": "C 0~+3%", "n": 13, "promote": 2, "avg": 0.12007615384615383, "med": -1.168831}, {"k": "D -3~0%", "n": 11, "promote": 0, "avg": -3.656111363636364, "med": -4.054054}, {"k": "E ≤-3%", "n": 1, "promote": 0, "avg": -9.994337, "med": -9.994337}], "hot": [{"rank": 1, "name": "九阳股份", "code": "002242", "heat": 7197213, "chg": 7.102804}, {"rank": 2, "name": "中际旭创", "code": "300308", "heat": 6517468, "chg": -12.275847}, {"rank": 3, "name": "文投控股", "code": "600715", "heat": 6049751, "chg": 10}, {"rank": 4, "name": "东方海洋", "code": "002086", "heat": 3812511, "chg": -9.958506}, {"rank": 5, "name": "东山精密", "code": "002384", "heat": 3714120, "chg": -10.003556}, {"rank": 6, "name": "新易盛", "code": "300502", "heat": 3456832, "chg": -11.07794}, {"rank": 7, "name": "冰山冷热", "code": "000530", "heat": 3428845, "chg": 6.485963}, {"rank": 8, "name": "日出东方", "code": "603366", "heat": 3389953, "chg": -10}, {"rank": 9, "name": "宇树科技", "code": "688836", "heat": 3133397, "chg": 1.147989}, {"rank": 10, "name": "阳光照明", "code": "600261", "heat": 3119024, "chg": -9.598604}, {"rank": 11, "name": "华胜天成", "code": "600410", "heat": 2957885, "chg": -2.797203}, {"rank": 12, "name": "凯撒文化", "code": "002425", "heat": 2868697, "chg": 10.10101}, {"rank": 13, "name": "北纬科技", "code": "002148", "heat": 2560273, "chg": 10.062893}, {"rank": 14, "name": "长鑫科技", "code": "688825", "heat": 2317610, "chg": -4.102051}, {"rank": 15, "name": "中国稀土", "code": "000831", "heat": 2265832, "chg": 4.643833}, {"rank": 16, "name": "襄阳轴承", "code": "000678", "heat": 2240255, "chg": -9.974684}, {"rank": 17, "name": "蓝色光标", "code": "300058", "heat": 2109398, "chg": -4.255319}, {"rank": 18, "name": "工业富联", "code": "601138", "heat": 2006374, "chg": -9.67581}, {"rank": 19, "name": "新华传媒", "code": "600825", "heat": 1932738, "chg": -9.992372}, {"rank": 20, "name": "工商银行", "code": "601398", "heat": 1885784, "chg": 2.259887}], "lead": {"002242.SZ": {"close": 28.65, "chg": 7.102804, "open": 29.43, "high": 29.43, "low": 27.5, "prev": 26.75, "to": 40.466257}, "002148.SZ": {"close": 8.75, "chg": 10.062893, "open": 8.75, "high": 8.75, "low": 7.95, "prev": 7.95, "to": 16.532074}, "600715.SH": {"close": 3.74, "chg": 10, "open": 3.65, "high": 3.74, "low": 3.5, "prev": 3.4, "to": 39.572875}, "601929.SH": {"close": 2.96, "chg": 10.037175, "open": 2.69, "high": 2.96, "low": 2.6, "prev": 2.69, "to": 14.799408}, "000628.SZ": {"close": 46.55, "chg": 9.995274, "open": 41.98, "high": 46.55, "low": 41.5, "prev": 42.32, "to": 7.8618572}, "002463.SZ": {"close": 73.98, "chg": -10, "open": 79.8, "high": 80.99, "low": 73.98, "prev": 82.2, "to": 64.443966}, "600183.SH": {"close": 61.34, "chg": -9.992663, "open": 66, "high": 66.93, "low": 61.34, "prev": 68.15, "to": 58.265803}, "603228.SH": {"close": 54.16, "chg": -10.003323, "open": 58.53, "high": 60.47, "low": 54.16, "prev": 60.18, "to": 25.274557}}, "margin": [{"date": "2026-10-12", "mb": 25253.0, "buy": 1217.2, "net": -47.22, "chg": null, "sb": 297.2, "tot": 25550.2, "sse": 12891.7, "szse": 12280.2, "bse": 81.1}, {"date": "2026-10-13", "mb": 25162.8, "buy": 1358.7, "net": -90.9, "chg": -90.2, "sb": 295.7, "tot": 25458.5, "sse": 12860.6, "szse": 12220.6, "bse": 81.5}, {"date": "2026-10-14", "mb": 25055.6, "buy": 1127.4, "net": -106.78, "chg": -107.2, "sb": 295.4, "tot": 25350.9, "sse": 12800.8, "szse": 12174.1, "bse": 80.7}, {"date": "2026-10-15", "mb": 24742.0, "buy": 1242.8, "net": -316.93, "chg": -313.6, "sb": 290.0, "tot": 25031.9, "sse": 12654.9, "szse": 12006.7, "bse": 80.3}, {"date": "2026-10-16", "mb": 24597.1, "buy": 1218.6, "net": -144.49, "chg": -144.9, "sb": 291.5, "tot": 24888.6, "sse": 12582.5, "szse": 11935.1, "bse": 79.5}, {"date": "2026-10-19", "mb": 24533.7, "buy": 1182.4, "net": -92.64, "chg": -63.3, "sb": 291.7, "tot": 24825.4, "sse": 12590.5, "szse": 11864.5, "bse": 78.8}, {"date": "2026-10-20", "mb": 24512.4, "buy": 1210.2, "net": -22.74, "chg": -21.3, "sb": 291.0, "tot": 24803.5, "sse": 12579.8, "szse": 11853.8, "bse": 78.9}, {"date": "2026-10-21", "mb": 24502.8, "buy": 1173.4, "net": -9.33, "chg": -9.7, "sb": 288.5, "tot": 24791.3, "sse": 12573.2, "szse": 11850.7, "bse": 78.8}, {"date": "2026-10-22", "mb": 24269.1, "buy": 1184.5, "net": -235.01, "chg": -233.6, "sb": 287.8, "tot": 24556.9, "sse": 12469.4, "szse": 11721.6, "bse": 78.1}, {"date": "2026-10-23", "mb": 24026.6, "buy": 1557.4, "net": -241.54, "chg": -242.5, "sb": 291.0, "tot": 24317.6, "sse": 12373.5, "szse": 11574.7, "bse": 78.4}, {"date": "2026-10-26", "mb": 23970.7, "buy": 1267.4, "net": -55.51, "chg": -55.9, "sb": 291.1, "tot": 24261.8, "sse": 12347.0, "szse": 11545.6, "bse": 78.1}, {"date": "2026-10-27", "mb": 23809.9, "buy": 1138.8, "net": -160.27, "chg": -160.8, "sb": 287.7, "tot": 24097.5, "sse": 12272.7, "szse": 11459.3, "bse": 77.9}, {"date": "2026-10-28", "mb": 23830.2, "buy": 1393.1, "net": 20.78, "chg": 20.3, "sb": 290.2, "tot": 24120.4, "sse": 12303.1, "szse": 11449.5, "bse": 77.6}, {"date": "2026-10-29", "mb": 23567.4, "buy": 1185.8, "net": -261.87, "chg": -262.8, "sb": 282.2, "tot": 23849.6, "sse": 12181.9, "szse": 11309.6, "bse": 75.9}, {"date": "2026-10-30", "mb": 23152.9, "buy": 1270.9, "net": -413.22, "chg": -414.4, "sb": 278.4, "tot": 23431.3, "sse": 11989.0, "szse": 11089.1, "bse": 74.8}, {"date": "2026-11-02", "mb": 23026.6, "buy": 1332.5, "net": -125.76, "chg": -126.4, "sb": 281.9, "tot": 23308.4, "sse": 11922.5, "szse": 11028.6, "bse": 75.5}, {"date": "2026-11-03", "mb": 22705.0, "buy": 1221.4, "net": -320.12, "chg": -321.6, "sb": 283.6, "tot": 22988.6, "sse": 11766.2, "szse": 10864.0, "bse": 74.7}, {"date": "2026-11-04", "mb": 22718.2, "buy": 1685.0, "net": 13.69, "chg": 13.2, "sb": 286.3, "tot": 23004.4, "sse": 11776.1, "szse": 10867.5, "bse": 74.6}, {"date": "2026-11-05", "mb": 22785.2, "buy": 1870.8, "net": 67.52, "chg": 67.0, "sb": 288.1, "tot": 23073.3, "sse": 11808.0, "szse": 10901.8, "bse": 75.5}, {"date": "2026-11-06", "mb": 22549.4, "buy": 1287.5, "net": -235.3, "chg": -235.8, "sb": 284.1, "tot": 22833.5, "sse": 11688.4, "szse": 10786.3, "bse": 74.7}, {"date": "2026-11-09", "mb": 22670.3, "buy": 1208.6, "net": 121.03, "chg": 120.9, "sb": 287.5, "tot": 22957.8, "sse": 11781.9, "szse": 10813.5, "bse": 74.9}, {"date": "2026-11-10", "mb": 22656.6, "buy": 1318.6, "net": -13.52, "chg": -13.7, "sb": 289.0, "tot": 22945.6, "sse": 11743.9, "szse": 10837.6, "bse": 75.1}, {"date": "2026-11-11", "mb": 22731.4, "buy": 1513.2, "net": 74.94, "chg": 74.8, "sb": 291.6, "tot": 23022.9, "sse": 11767.5, "szse": 10888.9, "bse": 74.9}, {"date": "2026-11-12", "mb": 22738.3, "buy": 1733.8, "net": 7.32, "chg": 6.9, "sb": 290.3, "tot": 23028.6, "sse": 11779.4, "szse": 10883.9, "bse": 75.0}, {"date": "2026-11-13", "mb": 22572.0, "buy": 1362.5, "net": -165.71, "chg": -166.3, "sb": 293.3, "tot": 22865.3, "sse": 11692.6, "szse": 10805.2, "bse": 74.1}], "margin_ratio": [{"date": "2026-10-12", "ratio": 7.92, "turnover": 15378, "turn": 4.82}, {"date": "2026-10-13", "ratio": 8.11, "turnover": 16759, "turn": 5.4}, {"date": "2026-10-14", "ratio": 7.97, "turnover": 14144, "turn": 4.5}, {"date": "2026-10-15", "ratio": 7.61, "turnover": 16330, "turn": 5.02}, {"date": "2026-10-16", "ratio": 7.83, "turnover": 15554, "turn": 4.95}, {"date": "2026-10-19", "ratio": 8.23, "turnover": 14375, "turn": 4.82}, {"date": "2026-10-20", "ratio": 8.31, "turnover": 14561, "turn": 4.94}, {"date": "2026-10-21", "ratio": 8.21, "turnover": 14293, "turn": 4.79}, {"date": "2026-10-22", "ratio": 7.75, "turnover": 15287, "turn": 4.88}, {"date": "2026-10-23", "ratio": 7.96, "turnover": 19563, "turn": 6.48}, {"date": "2026-10-26", "ratio": 7.88, "turnover": 16088, "turn": 5.29}, {"date": "2026-10-27", "ratio": 7.79, "turnover": 14610, "turn": 4.78}, {"date": "2026-10-28", "ratio": 8.55, "turnover": 16285, "turn": 5.85}, {"date": "2026-10-29", "ratio": 7.62, "turnover": 15565, "turn": 5.03}, {"date": "2026-10-30", "ratio": 7.59, "turnover": 16745, "turn": 5.49}, {"date": "2026-11-02", "ratio": 7.47, "turnover": 17837, "turn": 5.79}, {"date": "2026-11-03", "ratio": 7.17, "turnover": 17034, "turn": 5.38}, {"date": "2026-11-04", "ratio": 8.27, "turnover": 20377, "turn": 7.42}, {"date": "2026-11-05", "ratio": 8.83, "turnover": 21180, "turn": 8.21}, {"date": "2026-11-06", "ratio": 7.77, "turnover": 16578, "turn": 5.71}, {"date": "2026-11-09", "ratio": 8.15, "turnover": 14826, "turn": 5.33}, {"date": "2026-11-10", "ratio": 8.76, "turnover": 15048, "turn": 5.82}, {"date": "2026-11-11", "ratio": 9.03, "turnover": 16763, "turn": 6.66}, {"date": "2026-11-12", "ratio": 8.97, "turnover": 19321, "turn": 7.63}, {"date": "2026-11-13", "ratio": 8.23, "turnover": 16557, "turn": 6.04}]};
+var UP = '#d92b2b', DOWN = '#1a9c5b', MUTED = '#7b838d', LINE = '#e3e6ea';
+
+function mk(id, opt){
+  var el = document.getElementById(id);
+  if(!el || !window.echarts) return null;
+  var c = echarts.init(el, null, {renderer:'canvas'});
+  c.setOption(opt);
+  window.addEventListener('resize', function(){ c.resize(); });
+  return c;
+}
+var baseText = {color:'#1a1d21', fontFamily:'-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif'};
+var axisCommon = {
+  axisLine:{lineStyle:{color:LINE}},
+  axisTick:{show:false},
+  axisLabel:{color:MUTED, fontSize:11},
+  splitLine:{lineStyle:{color:'#f0f2f4'}}
+};
+
+/* ---- 1. 情绪周期双轴 ---- */
+(function(){
+  var emo = D.emo;
+  var dates = emo.map(function(x){return x.date;});
+  var lu = emo.map(function(x){return x.lu;});
+  var lb = emo.map(function(x){return x.lb;});
+  var ld = emo.map(function(x){return x.ld;});
+  mk('c_emo', {
+    textStyle: baseText,
+    tooltip:{trigger:'axis', axisPointer:{type:'shadow'},
+      backgroundColor:'#fff', borderColor:LINE, textStyle:{color:'#1a1d21', fontSize:12}},
+    legend:{data:['涨停','炸板','跌停'], top:2, textStyle:{color:'#3d434b', fontSize:12}, itemGap:18},
+    grid:{left:44, right:52, top:44, bottom:34},
+    xAxis: Object.assign({type:'category', data:dates}, axisCommon, {splitLine:{show:false}}),
+    yAxis:[
+      Object.assign({type:'value', name:'涨停/炸板', nameTextStyle:{color:MUTED, fontSize:11}}, axisCommon),
+      Object.assign({type:'value', name:'跌停', nameTextStyle:{color:MUTED, fontSize:11}}, axisCommon)
+    ],
+    series:[
+      {name:'涨停', type:'bar', data:lu, barWidth:'32%', itemStyle:{color:UP, borderRadius:[2,2,0,0]}},
+      {name:'炸板', type:'bar', data:lb, barWidth:'32%', itemStyle:{color:'#c8841a', borderRadius:[2,2,0,0]}},
+      {name:'跌停', type:'line', yAxisIndex:1, data:ld, smooth:false,
+        symbol:'circle', symbolSize:6, lineStyle:{color:DOWN, width:2.4}, itemStyle:{color:DOWN},
+        areaStyle:{color:'rgba(26,156,91,0.08)'},
+        markPoint:{data:[{coord:[dates.length-1, ld[ld.length-1]], value:'63',
+          itemStyle:{color:DOWN}, label:{color:'#fff', fontSize:11}}], symbolSize:34},
+        markLine:{silent:true, symbol:'none', data:[{yAxis:50, lineStyle:{color:'#c8841a', type:'dashed', width:1},
+          label:{formatter:'崩塌线 50', color:'#8f5c0a', fontSize:10, position:'insideEndTop'}}]}
+      }
+    ]
+  });
+})();
+
+/* ---- 2. AI 硬件链归一化走势 ---- */
+(function(){
+  var days = D.trend_days;
+  var COL = {'CPO':'#d92b2b','存储芯片':'#c8841a','PCB':'#7a4fd0','机器人':'#2c6fb5',
+             '短剧游戏':'#0e8a8a','绿色电力':'#8b919a','军工':'#b06ab3','固态电池':'#5b8c3e'};
+  var series = D.trend.map(function(t){
+    return {name:t.name, type:'line', data:t.norm, smooth:true, symbol:'circle', symbolSize:4,
+      lineStyle:{width: t.name==='CPO'?3:1.8, color:COL[t.name]},
+      itemStyle:{color:COL[t.name]},
+      emphasis:{focus:'series'}};
+  });
+  mk('c_trend', {
+    textStyle: baseText,
+    tooltip:{trigger:'axis', backgroundColor:'#fff', borderColor:LINE,
+      textStyle:{color:'#1a1d21', fontSize:12}, valueFormatter:function(v){return v.toFixed(2)+'%';}},
+    legend:{data:['CPO','存储芯片','PCB','机器人','短剧游戏','绿色电力','军工','固态电池'],
+      top:2, textStyle:{color:'#3d434b', fontSize:11.5}, itemGap:14},
+    grid:{left:48, right:22, top:46, bottom:32},
+    xAxis: Object.assign({type:'category', data:days, boundaryGap:false}, axisCommon, {splitLine:{show:false}}),
+    yAxis: Object.assign({type:'value', name:'相对 11-11 涨跌(%)',
+      nameTextStyle:{color:MUTED, fontSize:11},
+      axisLabel:{color:MUTED, fontSize:11, formatter:'{value}%'}}, axisCommon),
+    series: series.concat([{
+      name:'零轴', type:'line', data:days.map(function(){return 0;}),
+      symbol:'none', lineStyle:{color:'#c9ced4', width:1, type:'dashed'}, silent:true, tooltip:{show:false}
+    }])
+  });
+})();
+
+/* ---- 3. 竞价分层晋级率 ---- */
+(function(){
+  var gb = D.gap_bucket;
+  var names = gb.map(function(x){return x.k;});
+  var rates = gb.map(function(x){return +(x.promote/x.n*100).toFixed(1);});
+  var avgs = gb.map(function(x){return +x.avg.toFixed(2);});
+  var ns = gb.map(function(x){return x.n;});
+  mk('c_gap', {
+    textStyle: baseText,
+    tooltip:{trigger:'axis', axisPointer:{type:'shadow'},
+      backgroundColor:'#fff', borderColor:LINE, textStyle:{color:'#1a1d21', fontSize:12}},
+    legend:{data:['晋级率','当日平均收益'], top:2, textStyle:{color:'#3d434b', fontSize:12}, itemGap:18},
+    grid:{left:48, right:52, top:46, bottom:34},
+    xAxis: Object.assign({type:'category', data:names}, axisCommon, {splitLine:{show:false},
+      axisLabel:{color:'#3d434b', fontSize:11.5, interval:0}}),
+    yAxis:[
+      Object.assign({type:'value', name:'晋级率(%)', max:110, nameTextStyle:{color:MUTED, fontSize:11},
+        axisLabel:{color:MUTED, fontSize:11, formatter:'{value}%'}}, axisCommon),
+      Object.assign({type:'value', name:'收益(%)', nameTextStyle:{color:MUTED, fontSize:11},
+        axisLabel:{color:MUTED, fontSize:11, formatter:'{value}%'}}, axisCommon)
+    ],
+    series:[
+      {name:'晋级率', type:'bar', data:rates, barWidth:'46%',
+        itemStyle:{color:function(p){ return p.value>=50 ? UP : '#e8b4b4'; }, borderRadius:[3,3,0,0]},
+        label:{show:true, position:'top', color:'#1a1d21', fontSize:12, fontWeight:'bold',
+          formatter:function(p){ return p.value.toFixed(0)+'%  ('+ns[p.dataIndex]+'只)'; }}},
+      {name:'当日平均收益', type:'line', yAxisIndex:1, data:avgs, symbol:'circle', symbolSize:7,
+        lineStyle:{color:'#2c6fb5', width:2.2}, itemStyle:{color:'#2c6fb5'},
+        label:{show:true, position:'bottom', color:'#2c6fb5', fontSize:11,
+          formatter:function(p){ return (p.value>0?'+':'')+p.value.toFixed(1)+'%'; }}}
+    ]
+  });
+})();
+
+/* ---- 4. 融资余额 + 单日净买入 ---- */
+(function(){
+  var mg = D.margin, mr = D.margin_ratio;
+  var dates = mg.map(function(x){ return x.date.slice(5); });
+  var net = mg.map(function(x){ return x.net; });
+  var bal = mg.map(function(x){ return x.mb; });
+  var turn = mg.map(function(x){ return x.turn; });
+  mk('c_margin', {
+    textStyle: baseText,
+    tooltip:{trigger:'axis', axisPointer:{type:'cross'},
+      backgroundColor:'#fff', borderColor:LINE, textStyle:{color:'#1a1d21', fontSize:12},
+      formatter:function(ps){
+        var i = ps[0].dataIndex;
+        return '<b>'+mg[i].date+'</b><br>'
+          + '融资余额：'+bal[i].toFixed(0)+' 亿<br>'
+          + '单日净买入：<b style="color:'+(net[i]>=0?UP:DOWN)+'">'+(net[i]>0?'+':'')+net[i].toFixed(2)+' 亿</b><br>'
+          + '融资买入额：'+mg[i].buy.toFixed(0)+' 亿<br>'
+          + '融资换手率：'+turn[i].toFixed(2)+'%';
+      }},
+    legend:{data:['单日净买入','融资余额'], top:2, textStyle:{color:'#3d434b', fontSize:12}, itemGap:18},
+    grid:{left:56, right:64, top:46, bottom:40},
+    xAxis: Object.assign({type:'category', data:dates, axisLabel:{color:MUTED, fontSize:10.5,
+      interval:1, rotate:0}}, axisCommon, {splitLine:{show:false}}),
+    yAxis:[
+      Object.assign({type:'value', name:'净买入(亿)', nameTextStyle:{color:MUTED, fontSize:11},
+        axisLabel:{color:MUTED, fontSize:11}}, axisCommon),
+      Object.assign({type:'value', name:'融资余额(亿)', min:22000, max:25500,
+        nameTextStyle:{color:MUTED, fontSize:11},
+        axisLabel:{color:MUTED, fontSize:11}}, axisCommon)
+    ],
+    series:[
+      {name:'单日净买入', type:'bar', data:net, barWidth:'58%',
+        itemStyle:{color:function(p){ return p.value>=0 ? UP : DOWN; }, borderRadius:[2,2,0,0]},
+        markLine:{silent:true, symbol:'none', data:[{yAxis:0,
+          lineStyle:{color:'#c9ced4', width:1}}], label:{show:false}}},
+      {name:'融资余额', type:'line', yAxisIndex:1, data:bal, smooth:true,
+        symbol:'circle', symbolSize:5, lineStyle:{color:'#7a4fd0', width:2.4},
+        itemStyle:{color:'#7a4fd0'},
+        markPoint:{data:[
+          {coord:[dates.length-1, bal[bal.length-1]], value:bal[bal.length-1].toFixed(0),
+           itemStyle:{color:'#7a4fd0'}, label:{color:'#fff', fontSize:10}},
+          {coord:[0, bal[0]], value:bal[0].toFixed(0),
+           itemStyle:{color:'#a48ad8'}, label:{color:'#fff', fontSize:10}}
+        ], symbolSize:38}}
+    ]
+  });
+})();
+
+/* ---- 5. 全市场涨跌分布 ---- */
+(function(){
+  var bk = D.breadth.buckets;
+  var order = ['跌超5%','跌2~5%','跌0~2%','涨0~2%','涨2~5%','涨超5%'];
+  var vals = order.map(function(k){ return bk[k]||0; });
+  var total = vals.reduce(function(a,b){return a+b;},0);
+  mk('c_breadth', {
+    textStyle: baseText,
+    tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, backgroundColor:'#fff',
+      borderColor:LINE, textStyle:{color:'#1a1d21', fontSize:12}},
+    grid:{left:52, right:28, top:26, bottom:34},
+    xAxis: Object.assign({type:'category', data:order}, axisCommon, {splitLine:{show:false},
+      axisLabel:{color:'#3d434b', fontSize:12, interval:0}}),
+    yAxis: Object.assign({type:'value', name:'家数', nameTextStyle:{color:MUTED, fontSize:11}}, axisCommon),
+    series:[{
+      type:'bar', data: vals, barWidth:'52%',
+      itemStyle:{color:function(p){ return p.dataIndex<3 ? DOWN : UP; }, borderRadius:[3,3,0,0]},
+      label:{show:true, position:'top', color:'#1a1d21', fontSize:12, fontWeight:'bold',
+        formatter:function(p){ return p.value+'  ('+(p.value/total*100).toFixed(1)+'%)'; }}
+    }]
+  });
+})();
+</script>
+</body>
+</html>
