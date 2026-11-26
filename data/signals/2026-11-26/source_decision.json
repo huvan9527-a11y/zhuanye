@@ -1,0 +1,35 @@
+{
+  "target_date": "2026-11-26",
+  "previous_trading_day": "2026-11-25",
+  "trading_calendar_source": "WEEKDAY_FALLBACK_NOT_HOLIDAY_AWARE",
+  "checked_sources": [
+    {
+      "kind": "close",
+      "url": "https://olenara.com/2026-11-25.html",
+      "fetched_at": "2026-11-26T09:34:01.812830+00:00",
+      "http_status": 200,
+      "fetch_error": null,
+      "available": true,
+      "sha256": "f444eda5a5c2979e129df7f180085e785b3bdcdfe725ad337b5a228c9ea233b7"
+    },
+    {
+      "kind": "morning",
+      "url": "https://olenara.com/morning-2026-11-26.html",
+      "fetched_at": "2026-11-26T09:34:01.842339+00:00",
+      "http_status": 200,
+      "fetch_error": null,
+      "available": true,
+      "sha256": "439fcc000520bfd0b1d187c44a6da2463dcd4a14155bdf6a38bb7afc8615c649"
+    }
+  ],
+  "selected_source": null,
+  "selected_url": null,
+  "status": "NO_VALID_STRATEGY",
+  "selection_reason": "收盘复盘与目标日盘前早报均未能解析出有效、可识别的策略候选；严格空仓，不使用隐式种子数据。",
+  "close_parse_note": "原文未明确说明达标后按开盘价买入，执行规则不支持",
+  "morning_parse_note": "原文未明确说明达标后按开盘价买入，执行规则不支持",
+  "candidate_codes": [],
+  "selected_candidates": [],
+  "rejected_candidates": [],
+  "decided_at": "2026-11-26T09:34:01.939511+00:00"
+}
